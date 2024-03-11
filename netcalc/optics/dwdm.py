@@ -27,3 +27,12 @@ ANCHOR_THZ = 193.1
 FLEX_CENTRE_GHZ = 6.25
 FLEX_WIDTH_GHZ = 12.5
 BANDS_THZ = {"C": (191.3, 196.1), "L": (186.0, 190.8)}
+
+
+def frequency_thz(n, spacing_ghz=50.0):
+    """Centre frequency (THz) of grid channel ``n`` at ``spacing_ghz``.
+
+    >>> round(frequency_thz(-10, 50), 4)
+    192.6
+    """
+    return ANCHOR_THZ + n * spacing_ghz / 1000.0
