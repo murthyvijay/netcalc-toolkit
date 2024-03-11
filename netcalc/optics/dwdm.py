@@ -36,3 +36,12 @@ def frequency_thz(n, spacing_ghz=50.0):
     192.6
     """
     return ANCHOR_THZ + n * spacing_ghz / 1000.0
+
+
+def thz_to_nm(freq_thz):
+    """Vacuum wavelength (nm) of an optical frequency (THz).
+
+    >>> round(thz_to_nm(193.1), 2)
+    1552.52
+    """
+    return SPEED_OF_LIGHT_M_S / (freq_thz * 1e12) * 1e9
