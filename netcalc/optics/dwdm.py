@@ -45,3 +45,8 @@ def thz_to_nm(freq_thz):
     1552.52
     """
     return SPEED_OF_LIGHT_M_S / (freq_thz * 1e12) * 1e9
+
+
+def nm_to_thz(wavelength_nm):
+    """Optical frequency (THz) of a vacuum wavelength (nm)."""
+    return SPEED_OF_LIGHT_M_S / (wavelength_nm * 1e-9) / 1e12
