@@ -61,3 +61,16 @@ def channel_number(freq_thz, spacing_ghz=50.0):
 def nm_spacing(spacing_ghz, wavelength_nm=1550.0):
     """Channel spacing in nm: ``dlambda = lambda^2 * df / c`` (0.8 nm for 100 GHz)."""
     return (wavelength_nm * 1e-9) ** 2 * spacing_ghz * 1e9 / SPEED_OF_LIGHT_M_S * 1e9
+
+
+def band_plan(band="C", spacing_ghz=100.0):
+    """Every grid channel inside ``band`` as ``(n, THz, nm)`` tuples, low to high."""
+    lo, hi = BANDS_THZ[band.upper()]
+    step = spacing_ghz / 1000.0
+    first = math.ceil(round((lo - ANCHOR_THZ) / step, 6))
+    last = math.floor(round((hi - ANCHOR_THZ) / step, 6))
+    plan = []
+    for n in range(first, last + 1):
+        f = frequency_thz(n, spacing_ghz)
+        plan.append((n, f, thz_to_nm(f)))
+    return plan
