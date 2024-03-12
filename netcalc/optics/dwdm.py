@@ -56,3 +56,8 @@ def channel_number(freq_thz, spacing_ghz=50.0):
     """Nearest grid index ``n`` and the offset (GHz) of ``freq_thz`` from it."""
     n = round((freq_thz - ANCHOR_THZ) * 1000.0 / spacing_ghz)
     return n, (freq_thz - frequency_thz(n, spacing_ghz)) * 1000.0
+
+
+def nm_spacing(spacing_ghz, wavelength_nm=1550.0):
+    """Channel spacing in nm: ``dlambda = lambda^2 * df / c`` (0.8 nm for 100 GHz)."""
+    return (wavelength_nm * 1e-9) ** 2 * spacing_ghz * 1e9 / SPEED_OF_LIGHT_M_S * 1e9
