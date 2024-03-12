@@ -50,3 +50,9 @@ def thz_to_nm(freq_thz):
 def nm_to_thz(wavelength_nm):
     """Optical frequency (THz) of a vacuum wavelength (nm)."""
     return SPEED_OF_LIGHT_M_S / (wavelength_nm * 1e-9) / 1e12
+
+
+def channel_number(freq_thz, spacing_ghz=50.0):
+    """Nearest grid index ``n`` and the offset (GHz) of ``freq_thz`` from it."""
+    n = round((freq_thz - ANCHOR_THZ) * 1000.0 / spacing_ghz)
+    return n, (freq_thz - frequency_thz(n, spacing_ghz)) * 1000.0
