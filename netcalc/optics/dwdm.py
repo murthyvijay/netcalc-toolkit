@@ -88,3 +88,46 @@ def flex_slot(baud_g, rolloff=0.1, guard_ghz=0.0):
     occupied = baud_g * (1 + rolloff) + guard_ghz
     m = math.ceil(round(occupied / FLEX_WIDTH_GHZ, 9))
     return m, m * FLEX_WIDTH_GHZ
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("channel", help="frequency and wavelength of grid channel n")
+    p.add_argument("--n", type=int, required=True)
+    p.add_argument("--spacing", type=float, default=50.0, help="grid spacing in GHz")
+    p = sub.add_parser("convert", help="convert a wavelength or frequency, find its channel")
+    p.add_argument("value", help="e.g. 1550.12nm or 193.4THz")
+    p.add_argument("--spacing", type=float, default=50.0)
+    p = sub.add_parser("plan", help="list every channel in a band")
+    p.add_argument("--band", default="C", choices=sorted(BANDS_THZ))
+    p.add_argument("--spacing", type=float, default=100.0)
+    p = sub.add_parser("flex", help="flexgrid slot width for a carrier")
+    p.add_argument("--baud", type=float, required=True, help="symbol rate in GBd")
+    p.add_argument("--rolloff", type=float, default=0.1)
+    p.add_argument("--guard", type=float, default=0.0, help="guard band in GHz")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "channel":
+        f = frequency_thz(args.n, args.spacing)
+        print(f"n={args.n}: {f:.4f} THz, {thz_to_nm(f):.3f} nm")
+    elif args.cmd == "convert":
+        text = args.value.strip().lower()
+        if text.endswith("nm"):
+            f = nm_to_thz(float(text[:-2]))
+        else:
+            f = float(text[:-3] if text.endswith("thz") else text)
+        n, offset = channel_number(f, args.spacing)
+        print(f"{f:.4f} THz = {thz_to_nm(f):.3f} nm; nearest channel n={n} ({offset:+.2f} GHz)")
+    elif args.cmd == "plan":
+        rows = band_plan(args.band, args.spacing)
+        for n, f, nm in rows:
+            print(f"{n:>5}  {f:9.4f} THz  {nm:9.3f} nm")
+        print(f"{len(rows)} channels at {args.spacing:g} GHz in the {args.band} band")
+    else:
+        m, width = flex_slot(args.baud, args.rolloff, args.guard)
+        print(f"slot m={m}: {width:g} GHz")
+
+
+if __name__ == "__main__":
+    main()
