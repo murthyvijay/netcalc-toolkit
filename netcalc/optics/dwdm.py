@@ -74,3 +74,17 @@ def band_plan(band="C", spacing_ghz=100.0):
         f = frequency_thz(n, spacing_ghz)
         plan.append((n, f, thz_to_nm(f)))
     return plan
+
+
+def flex_slot(baud_g, rolloff=0.1, guard_ghz=0.0):
+    """Smallest flexgrid slot for a carrier: returns ``(m, width_ghz)``.
+
+    Occupied bandwidth is ``baud * (1 + rolloff) + guard``; the slot width is
+    that rounded up to a multiple of 12.5 GHz.
+
+    >>> flex_slot(64, 0.1)
+    (6, 75.0)
+    """
+    occupied = baud_g * (1 + rolloff) + guard_ghz
+    m = math.ceil(round(occupied / FLEX_WIDTH_GHZ, 9))
+    return m, m * FLEX_WIDTH_GHZ
