@@ -9,6 +9,7 @@ time, `p` = probability (loss or error), `log` = log10 unless noted.
 - [3. CCNA / CCNP calculations](#3-ccna--ccnp-calculations)
 - [4. Protocol overhead and MTU](#4-protocol-overhead-and-mtu)
 - [5. AI/ML fabrics](#5-aiml-fabrics)
+- [6. Optics and DWDM](#6-optics-and-dwdm)
 - [References](#references)
 
 ---
@@ -410,6 +411,16 @@ T = 2 (n - 1) alpha + 2 (n - 1) / n * S / B
 
 The first term (latency) grows with ranks, which is why large jobs switch to
 tree or hierarchical algorithms for small messages.
+
+---
+
+## 6. Optics and DWDM
+
+Long-haul and metro links multiplex many wavelengths on one fibre (DWDM),
+amplify them every 60-100 km with EDFAs, and today mostly use coherent
+transceivers whose DSP undoes dispersion. Planning one is a chain of budgets:
+power (is there enough light?), noise (is OSNR high enough?), dispersion (can
+the receiver undo the pulse spreading?) and spectrum (how many channels fit?).
 
 ---
 
