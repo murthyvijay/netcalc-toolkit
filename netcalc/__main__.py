@@ -36,6 +36,7 @@ TOOLS = {
     "roce": "netcalc.aifabric.roce",
     "buffer": "netcalc.aifabric.buffer",
     "collectives": "netcalc.aifabric.collectives",
+    "dwdm": "netcalc.optics.dwdm",
 }
 
 
