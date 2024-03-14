@@ -112,6 +112,12 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `buffer` | incast peak queue, absorb time, shared-buffer dynamic thresholds | `netcalc buffer dt --buffer 64MB --queues 8` |
 | `collectives` | NCCL algbw/busbw, ring all-reduce time (alpha-beta model) | `netcalc collectives busbw --size 1GB --time 25ms --ranks 64` |
 
+### Optics and DWDM (`netcalc.optics`)
+
+| tool | what it answers | example |
+|---|---|---|
+| `dwdm` | ITU-T grid frequency/wavelength, channel lookup, band plans, flexgrid slot width | `netcalc dwdm plan --band C --spacing 100` |
+
 ## Examples
 
 The `examples/` folder combines several tools into small reports:
