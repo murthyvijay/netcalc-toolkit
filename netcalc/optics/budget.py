@@ -1,0 +1,27 @@
+"""Optical link power budget, loss budget and attenuation-limited reach.
+
+The loss of a passive fibre span adds fibre, connector and splice losses::
+
+    loss   = alpha * L + Nc * Lc + Ns * Ls
+    margin = (P_tx - P_rx_sensitivity) - loss - safety_margin
+
+Typical values: 0.35 dB/km at 1310 nm and 0.25 dB/km at 1550 nm for
+single-mode fibre, 0.5 dB per mated connector pair (0.75 dB worst case in
+TIA-568), 0.1 dB per fusion splice. A link can also fail because the
+receiver is *overloaded*: short links with high-power optics need an
+attenuator so the received power stays below the maximum input.
+
+Usage::
+
+    python -m netcalc.optics.budget loss --km 40 --alpha 0.25 --connectors 4 --splices 8
+    python -m netcalc.optics.budget margin --km 40 --tx -1 --sens -18 --max-rx 0
+    python -m netcalc.optics.budget reach --tx 2 --sens -20 --alpha 0.25
+"""
+
+import argparse
+
+from netcalc.units import dbm_to_mw
+
+FIBER_ATTENUATION_DB_KM = {"1310": 0.35, "1550": 0.25, "850-mmf": 3.0}
+CONNECTOR_LOSS_DB = 0.5
+SPLICE_LOSS_DB = 0.1
