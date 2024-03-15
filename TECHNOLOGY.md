@@ -422,6 +422,14 @@ transceivers whose DSP undoes dispersion. Planning one is a chain of budgets:
 power (is there enough light?), noise (is OSNR high enough?), dispersion (can
 the receiver undo the pulse spreading?) and spectrum (how many channels fit?).
 
+### DWDM grid (`dwdm`)
+
+ITU-T G.694.1 anchors the fixed grid at 193.1 THz: channel n sits at
+`193.1 THz + n * spacing` with 100, 50, 25 or 12.5 GHz spacing, and
+`lambda = c / f` (193.1 THz is 1552.52 nm). At 1550 nm, 100 GHz is about
+0.8 nm (`dlambda = lambda^2 df / c`). The C band (191.3-196.1 THz) holds 49
+channels at 100 GHz or 97 at 50 GHz.
+
 ---
 
 ## References
