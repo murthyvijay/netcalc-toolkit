@@ -25,3 +25,13 @@ from netcalc.units import dbm_to_mw
 FIBER_ATTENUATION_DB_KM = {"1310": 0.35, "1550": 0.25, "850-mmf": 3.0}
 CONNECTOR_LOSS_DB = 0.5
 SPLICE_LOSS_DB = 0.1
+
+
+def span_loss(km, alpha_db_km=0.25, connectors=2, splices=0,
+              connector_db=CONNECTOR_LOSS_DB, splice_db=SPLICE_LOSS_DB):
+    """Total passive loss (dB) of a fibre span.
+
+    >>> span_loss(40, 0.25, connectors=4, splices=8)
+    12.8
+    """
+    return round(km * alpha_db_km + connectors * connector_db + splices * splice_db, 9)
