@@ -430,6 +430,11 @@ ITU-T G.694.1 anchors the fixed grid at 193.1 THz: channel n sits at
 0.8 nm (`dlambda = lambda^2 df / c`). The C band (191.3-196.1 THz) holds 49
 channels at 100 GHz or 97 at 50 GHz.
 
+Flexgrid replaces fixed channels with slots centred on a 6.25 GHz grid and
+`m * 12.5 GHz` wide. A carrier occupies `baud * (1 + roll-off)`, so a 64 GBd
+signal with 0.1 roll-off (70.4 GHz) fits a 75 GHz slot (m = 6) instead of a
+100 GHz channel: a third more carriers per fibre.
+
 ---
 
 ## References
