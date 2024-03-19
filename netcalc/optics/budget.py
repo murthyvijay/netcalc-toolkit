@@ -35,3 +35,8 @@ def span_loss(km, alpha_db_km=0.25, connectors=2, splices=0,
     12.8
     """
     return round(km * alpha_db_km + connectors * connector_db + splices * splice_db, 9)
+
+
+def power_budget(tx_dbm, sensitivity_dbm):
+    """Available power budget (dB): launch power minus receiver sensitivity."""
+    return tx_dbm - sensitivity_dbm
