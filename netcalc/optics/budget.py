@@ -50,3 +50,13 @@ def link_margin(tx_dbm, sensitivity_dbm, loss_db, safety_db=3.0):
 def received_power(tx_dbm, loss_db):
     """Received optical power (dBm)."""
     return tx_dbm - loss_db
+
+
+def overload_check(tx_dbm, loss_db, max_rx_dbm):
+    """Return ``(ok, attenuation_db)`` against the receiver overload point.
+
+    ``attenuation_db`` is the fixed attenuator needed to bring the received
+    power down to ``max_rx_dbm`` (0 when the link is already fine).
+    """
+    excess = received_power(tx_dbm, loss_db) - max_rx_dbm
+    return excess <= 0, max(excess, 0.0)
