@@ -45,3 +45,8 @@ def power_budget(tx_dbm, sensitivity_dbm):
 def link_margin(tx_dbm, sensitivity_dbm, loss_db, safety_db=3.0):
     """Margin (dB) left after the span loss and a safety allowance; >= 0 passes."""
     return power_budget(tx_dbm, sensitivity_dbm) - loss_db - safety_db
+
+
+def received_power(tx_dbm, loss_db):
+    """Received optical power (dBm)."""
+    return tx_dbm - loss_db
