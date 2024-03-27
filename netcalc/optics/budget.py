@@ -60,3 +60,15 @@ def overload_check(tx_dbm, loss_db, max_rx_dbm):
     """
     excess = received_power(tx_dbm, loss_db) - max_rx_dbm
     return excess <= 0, max(excess, 0.0)
+
+
+def max_reach_km(tx_dbm, sensitivity_dbm, alpha_db_km=0.25, connectors=2, splice_every_km=0.0,
+                 safety_db=3.0, connector_db=CONNECTOR_LOSS_DB, splice_db=SPLICE_LOSS_DB):
+    """Attenuation-limited reach (km).
+
+    With a splice every ``splice_every_km`` the effective loss per km becomes
+    ``alpha + splice_db / splice_every_km``.
+    """
+    per_km = alpha_db_km + (splice_db / splice_every_km if splice_every_km else 0.0)
+    available = power_budget(tx_dbm, sensitivity_dbm) - safety_db - connectors * connector_db
+    return max(available, 0.0) / per_km
