@@ -72,3 +72,51 @@ def max_reach_km(tx_dbm, sensitivity_dbm, alpha_db_km=0.25, connectors=2, splice
     per_km = alpha_db_km + (splice_db / splice_every_km if splice_every_km else 0.0)
     available = power_budget(tx_dbm, sensitivity_dbm) - safety_db - connectors * connector_db
     return max(available, 0.0) / per_km
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+
+    def span_args(p):
+        p.add_argument("--km", type=float, required=True)
+        p.add_argument("--alpha", type=float, default=0.25, help="fibre loss in dB/km")
+        p.add_argument("--connectors", type=int, default=2)
+        p.add_argument("--splices", type=int, default=0)
+
+    span_args(sub.add_parser("loss", help="passive loss of a span"))
+    p = sub.add_parser("margin", help="power margin of a link")
+    span_args(p)
+    p.add_argument("--tx", type=float, required=True, help="launch power in dBm")
+    p.add_argument("--sens", type=float, required=True, help="receiver sensitivity in dBm")
+    p.add_argument("--max-rx", type=float, default=None, help="receiver overload in dBm")
+    p.add_argument("--safety", type=float, default=3.0, help="safety margin in dB")
+    p = sub.add_parser("reach", help="attenuation-limited reach")
+    p.add_argument("--tx", type=float, required=True)
+    p.add_argument("--sens", type=float, required=True)
+    p.add_argument("--alpha", type=float, default=0.25)
+    p.add_argument("--connectors", type=int, default=2)
+    p.add_argument("--splice-every", type=float, default=0.0, help="km between splices")
+    p.add_argument("--safety", type=float, default=3.0)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "loss":
+        print(f"span loss = {span_loss(args.km, args.alpha, args.connectors, args.splices):.2f} dB")
+    elif args.cmd == "margin":
+        loss = span_loss(args.km, args.alpha, args.connectors, args.splices)
+        rx = received_power(args.tx, loss)
+        margin = link_margin(args.tx, args.sens, loss, args.safety)
+        verdict = "PASS" if margin >= 0 else "FAIL"
+        print(f"loss {loss:.2f} dB, rx {rx:.2f} dBm ({dbm_to_mw(rx) * 1000:.1f} uW), "
+              f"margin {margin:.2f} dB -> {verdict}")
+        if args.max_rx is not None:
+            ok, atten = overload_check(args.tx, loss, args.max_rx)
+            print("receiver not overloaded" if ok else f"overload: add a {atten:.1f} dB attenuator")
+    else:
+        km = max_reach_km(args.tx, args.sens, args.alpha, args.connectors, args.splice_every,
+                          args.safety)
+        print(f"attenuation-limited reach = {km:.1f} km")
+
+
+if __name__ == "__main__":
+    main()
