@@ -435,6 +435,16 @@ Flexgrid replaces fixed channels with slots centred on a 6.25 GHz grid and
 signal with 0.1 roll-off (70.4 GHz) fits a 75 GHz slot (m = 6) instead of a
 100 GHz channel: a third more carriers per fibre.
 
+### Optical power budget (`budget`)
+
+A passive span loses `alpha * L` in the fibre (about 0.35 dB/km at 1310 nm,
+0.25 dB/km at 1550 nm) plus about 0.5 dB per connector pair and 0.1 dB per
+splice. The link works when
+
+```
+P_tx - loss - safety_margin >= receiver sensitivity
+```
+
 ---
 
 ## References
