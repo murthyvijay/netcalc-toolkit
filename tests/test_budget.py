@@ -22,3 +22,18 @@ class TestMargin(unittest.TestCase):
         self.assertFalse(ok)
         self.assertAlmostEqual(atten, 3.0)
         self.assertEqual(budget.overload_check(0, 5.0, 0.0), (True, 0.0))
+
+
+class TestReach(unittest.TestCase):
+    def test_reach_without_splices(self):
+        self.assertAlmostEqual(budget.max_reach_km(2, -20), 72.0)
+
+    def test_splices_shorten_reach(self):
+        self.assertAlmostEqual(budget.max_reach_km(2, -20, splice_every_km=2), 60.0)
+
+    def test_no_budget_means_no_reach(self):
+        self.assertEqual(budget.max_reach_km(-10, -12), 0.0)
+
+
+if __name__ == "__main__":
+    unittest.main()
