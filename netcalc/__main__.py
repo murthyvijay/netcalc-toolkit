@@ -37,6 +37,7 @@ TOOLS = {
     "buffer": "netcalc.aifabric.buffer",
     "collectives": "netcalc.aifabric.collectives",
     "dwdm": "netcalc.optics.dwdm",
+    "budget": "netcalc.optics.budget",
 }
 
 
