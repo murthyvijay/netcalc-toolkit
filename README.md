@@ -117,6 +117,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | tool | what it answers | example |
 |---|---|---|
 | `dwdm` | ITU-T grid frequency/wavelength, channel lookup, band plans, flexgrid slot width | `netcalc dwdm plan --band C --spacing 100` |
+| `budget` | span loss, power budget and margin, receiver overload, attenuation-limited reach | `netcalc budget margin --km 40 --tx -1 --sens -18` |
 
 ## Examples
 
