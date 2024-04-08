@@ -445,6 +445,11 @@ splice. The link works when
 P_tx - loss - safety_margin >= receiver sensitivity
 ```
 
+and the received power is also below the receiver's overload point; short
+links with long-reach optics need an attenuator. Solving the budget for L
+gives the attenuation-limited reach; splices every few km add
+`splice_loss / spacing` to the per-km loss.
+
 ---
 
 ## References
