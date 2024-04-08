@@ -34,3 +34,8 @@ PMD_COEF_PS_SQRT_KM = 0.1
 def accumulated_cd(km, d_ps_nm_km=SMF_D_PS_NM_KM):
     """Accumulated chromatic dispersion (ps/nm) over ``km`` of fibre."""
     return d_ps_nm_km * km
+
+
+def signal_width_nm(bitrate_bps, wavelength_nm=1550.0):
+    """Spectral width (nm) of a signal modulated at ``bitrate_bps``: ``lambda^2 B / c``."""
+    return (wavelength_nm * 1e-9) ** 2 * bitrate_bps / SPEED_OF_LIGHT_M_S * 1e9
