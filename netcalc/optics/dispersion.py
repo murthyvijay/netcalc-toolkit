@@ -29,3 +29,8 @@ from netcalc.units import SPEED_OF_LIGHT_M_S, parse_rate
 
 SMF_D_PS_NM_KM = 17.0
 PMD_COEF_PS_SQRT_KM = 0.1
+
+
+def accumulated_cd(km, d_ps_nm_km=SMF_D_PS_NM_KM):
+    """Accumulated chromatic dispersion (ps/nm) over ``km`` of fibre."""
+    return d_ps_nm_km * km
