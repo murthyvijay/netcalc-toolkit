@@ -56,3 +56,8 @@ def compensation_needed(km, d_ps_nm_km=SMF_D_PS_NM_KM, tolerance_ps_nm=0.0):
     """Dispersion compensation (ps/nm, negative) that brings residual CD within tolerance."""
     excess = abs(accumulated_cd(km, d_ps_nm_km)) - tolerance_ps_nm
     return -max(excess, 0.0)
+
+
+def mean_dgd_ps(km, coef_ps_sqrt_km=PMD_COEF_PS_SQRT_KM):
+    """Mean differential group delay (ps) from PMD: ``coef * sqrt(L)``."""
+    return coef_ps_sqrt_km * km ** 0.5
