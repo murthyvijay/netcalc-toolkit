@@ -44,3 +44,9 @@ def signal_width_nm(bitrate_bps, wavelength_nm=1550.0):
 def pulse_spread_ps(km, bitrate_bps, d_ps_nm_km=SMF_D_PS_NM_KM, wavelength_nm=1550.0):
     """Pulse spreading (ps) caused by CD for a signal at ``bitrate_bps``."""
     return abs(accumulated_cd(km, d_ps_nm_km)) * signal_width_nm(bitrate_bps, wavelength_nm)
+
+
+def cd_limited_reach_km(bitrate_bps, d_ps_nm_km=SMF_D_PS_NM_KM, wavelength_nm=1550.0):
+    """Uncompensated reach (km) where CD spreading equals one bit period."""
+    bit_period_ps = 1e12 / bitrate_bps
+    return bit_period_ps / (abs(d_ps_nm_km) * signal_width_nm(bitrate_bps, wavelength_nm))
