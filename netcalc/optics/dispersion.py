@@ -39,3 +39,8 @@ def accumulated_cd(km, d_ps_nm_km=SMF_D_PS_NM_KM):
 def signal_width_nm(bitrate_bps, wavelength_nm=1550.0):
     """Spectral width (nm) of a signal modulated at ``bitrate_bps``: ``lambda^2 B / c``."""
     return (wavelength_nm * 1e-9) ** 2 * bitrate_bps / SPEED_OF_LIGHT_M_S * 1e9
+
+
+def pulse_spread_ps(km, bitrate_bps, d_ps_nm_km=SMF_D_PS_NM_KM, wavelength_nm=1550.0):
+    """Pulse spreading (ps) caused by CD for a signal at ``bitrate_bps``."""
+    return abs(accumulated_cd(km, d_ps_nm_km)) * signal_width_nm(bitrate_bps, wavelength_nm)
