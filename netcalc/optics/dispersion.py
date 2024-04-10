@@ -61,3 +61,13 @@ def compensation_needed(km, d_ps_nm_km=SMF_D_PS_NM_KM, tolerance_ps_nm=0.0):
 def mean_dgd_ps(km, coef_ps_sqrt_km=PMD_COEF_PS_SQRT_KM):
     """Mean differential group delay (ps) from PMD: ``coef * sqrt(L)``."""
     return coef_ps_sqrt_km * km ** 0.5
+
+
+def pmd_limited_reach_km(bitrate_bps, coef_ps_sqrt_km=PMD_COEF_PS_SQRT_KM, fraction=0.1):
+    """Reach (km) where the mean DGD reaches ``fraction`` of a bit period.
+
+    >>> round(pmd_limited_reach_km(10e9))
+    10000
+    """
+    bit_period_ps = 1e12 / bitrate_bps
+    return (fraction * bit_period_ps / coef_ps_sqrt_km) ** 2
