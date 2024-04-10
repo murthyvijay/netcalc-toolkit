@@ -22,3 +22,16 @@ class TestChromaticDispersion(unittest.TestCase):
     def test_compensation(self):
         self.assertEqual(dispersion.compensation_needed(80, tolerance_ps_nm=800), -560)
         self.assertEqual(dispersion.compensation_needed(20, tolerance_ps_nm=800), 0)
+
+
+class TestPmd(unittest.TestCase):
+    def test_dgd(self):
+        self.assertAlmostEqual(dispersion.mean_dgd_ps(100), 1.0)
+
+    def test_pmd_reach(self):
+        self.assertAlmostEqual(dispersion.pmd_limited_reach_km(10e9), 10000)
+        self.assertAlmostEqual(dispersion.pmd_limited_reach_km(40e9), 625)
+
+
+if __name__ == "__main__":
+    unittest.main()
