@@ -71,3 +71,42 @@ def pmd_limited_reach_km(bitrate_bps, coef_ps_sqrt_km=PMD_COEF_PS_SQRT_KM, fract
     """
     bit_period_ps = 1e12 / bitrate_bps
     return (fraction * bit_period_ps / coef_ps_sqrt_km) ** 2
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("cd", help="accumulated chromatic dispersion")
+    p.add_argument("--km", type=float, required=True)
+    p.add_argument("--d", type=float, default=SMF_D_PS_NM_KM, help="ps/(nm km)")
+    p.add_argument("--tolerance", type=float, default=0.0, help="receiver CD tolerance ps/nm")
+    p = sub.add_parser("reach", help="CD- and PMD-limited reach of direct-detect NRZ")
+    p.add_argument("--rate", required=True, help="bit rate per lane, e.g. 10G")
+    p.add_argument("--d", type=float, default=SMF_D_PS_NM_KM)
+    p.add_argument("--coef", type=float, default=PMD_COEF_PS_SQRT_KM, help="ps/sqrt(km)")
+    p = sub.add_parser("pmd", help="mean DGD over a route")
+    p.add_argument("--km", type=float, required=True)
+    p.add_argument("--coef", type=float, default=PMD_COEF_PS_SQRT_KM)
+    p.add_argument("--rate", default=None, help="bit rate to compare against")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "cd":
+        cd = accumulated_cd(args.km, args.d)
+        print(f"accumulated CD = {cd:.0f} ps/nm")
+        if args.tolerance:
+            comp = compensation_needed(args.km, args.d, args.tolerance)
+            print("within receiver tolerance" if comp == 0 else f"compensate {comp:.0f} ps/nm")
+    elif args.cmd == "reach":
+        rate = parse_rate(args.rate)
+        print(f"CD-limited reach  = {cd_limited_reach_km(rate, args.d):.1f} km")
+        print(f"PMD-limited reach = {pmd_limited_reach_km(rate, args.coef):.0f} km")
+    else:
+        dgd = mean_dgd_ps(args.km, args.coef)
+        print(f"mean DGD = {dgd:.2f} ps")
+        if args.rate:
+            pct = dgd / (1e12 / parse_rate(args.rate)) * 100
+            print(f"{pct:.1f} % of a bit period -> {'OK' if pct <= 10 else 'too high for NRZ'}")
+
+
+if __name__ == "__main__":
+    main()
