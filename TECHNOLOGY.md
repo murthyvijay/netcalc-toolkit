@@ -461,6 +461,11 @@ bit rate: `L = c / (D lambda^2 B^2)`, about 73 km at 10 Gb/s and under 1 km at
 coherent receivers, which compensate tens of thousands of ps/nm in the DSP,
 took over.
 
+Polarisation mode dispersion is random: the mean differential group delay
+grows as `PMD_coef * sqrt(L)`, and NRZ tolerates about 10 % of a bit period.
+With a modern 0.1 ps/sqrt(km) fibre that is 10,000 km at 10 Gb/s but only 625
+km at 40 Gb/s.
+
 ---
 
 ## References
