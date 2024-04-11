@@ -38,6 +38,7 @@ TOOLS = {
     "collectives": "netcalc.aifabric.collectives",
     "dwdm": "netcalc.optics.dwdm",
     "budget": "netcalc.optics.budget",
+    "dispersion": "netcalc.optics.dispersion",
 }
 
 
