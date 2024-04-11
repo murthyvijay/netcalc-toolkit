@@ -450,6 +450,17 @@ links with long-reach optics need an attenuator. Solving the budget for L
 gives the attenuation-limited reach; splices every few km add
 `splice_loss / spacing` to the per-km loss.
 
+### Chromatic dispersion and PMD (`dispersion`)
+
+Chromatic dispersion spreads a pulse by `D * L * dlambda`, with D about 17
+ps/(nm km) in standard fibre at 1550 nm. Because a faster signal is both
+spectrally wider (`dlambda = lambda^2 B / c`) and has shorter bits, the
+uncompensated reach of a direct-detect signal falls with the square of the
+bit rate: `L = c / (D lambda^2 B^2)`, about 73 km at 10 Gb/s and under 1 km at
+100 Gb/s. That is why 1550 nm direct-detect links above 10G are rare and
+coherent receivers, which compensate tens of thousands of ps/nm in the DSP,
+took over.
+
 ---
 
 ## References
