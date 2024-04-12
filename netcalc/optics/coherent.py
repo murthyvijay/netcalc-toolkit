@@ -24,3 +24,17 @@ import math
 
 MODULATION_BITS = {"bpsk": 1, "qpsk": 2, "8qam": 3, "16qam": 4, "32qam": 5, "64qam": 6}
 C_BAND_GHZ = 4800.0
+
+
+def bits_per_symbol(modulation):
+    """Bits per symbol per polarisation for a name (``"16qam"``) or a number.
+
+    >>> bits_per_symbol("16QAM"), bits_per_symbol(3.5)
+    (4, 3.5)
+    """
+    if isinstance(modulation, str):
+        key = modulation.lower().replace("dp-", "").replace("-", "")
+        if key in MODULATION_BITS:
+            return MODULATION_BITS[key]
+        return float(key)
+    return modulation
