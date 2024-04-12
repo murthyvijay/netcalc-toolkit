@@ -38,3 +38,8 @@ def bits_per_symbol(modulation):
             return MODULATION_BITS[key]
         return float(key)
     return modulation
+
+
+def line_rate_gbps(baud_g, modulation, polarizations=2):
+    """Raw line rate (Gb/s) before FEC and framing are removed."""
+    return baud_g * bits_per_symbol(modulation) * polarizations
