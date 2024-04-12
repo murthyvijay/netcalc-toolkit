@@ -43,3 +43,9 @@ def bits_per_symbol(modulation):
 def line_rate_gbps(baud_g, modulation, polarizations=2):
     """Raw line rate (Gb/s) before FEC and framing are removed."""
     return baud_g * bits_per_symbol(modulation) * polarizations
+
+
+def net_rate_gbps(baud_g, modulation, polarizations=2, fec_overhead=0.15, framing_overhead=0.0):
+    """Client (net) rate in Gb/s after FEC and framing overhead."""
+    line = line_rate_gbps(baud_g, modulation, polarizations)
+    return line / ((1 + fec_overhead) * (1 + framing_overhead))
