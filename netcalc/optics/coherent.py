@@ -65,3 +65,9 @@ def occupied_bandwidth_ghz(baud_g, rolloff=0.1):
 def spectral_efficiency(net_gbps, spacing_ghz):
     """Net spectral efficiency in b/s/Hz."""
     return net_gbps / spacing_ghz
+
+
+def fiber_capacity_tbps(net_gbps, spacing_ghz, band_ghz=C_BAND_GHZ):
+    """Channels that fit in ``band_ghz`` and the total capacity (Tb/s) per fibre."""
+    channels = math.floor(band_ghz / spacing_ghz)
+    return channels, channels * net_gbps / 1000.0
