@@ -55,3 +55,8 @@ def required_baud(net_gbps, modulation, polarizations=2, fec_overhead=0.15, fram
     """Symbol rate (GBd) needed to carry ``net_gbps``."""
     gross = net_gbps * (1 + fec_overhead) * (1 + framing_overhead)
     return gross / (bits_per_symbol(modulation) * polarizations)
+
+
+def occupied_bandwidth_ghz(baud_g, rolloff=0.1):
+    """Spectral width (GHz) of a raised-cosine shaped carrier."""
+    return baud_g * (1 + rolloff)
