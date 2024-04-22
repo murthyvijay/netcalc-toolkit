@@ -60,3 +60,8 @@ def required_baud(net_gbps, modulation, polarizations=2, fec_overhead=0.15, fram
 def occupied_bandwidth_ghz(baud_g, rolloff=0.1):
     """Spectral width (GHz) of a raised-cosine shaped carrier."""
     return baud_g * (1 + rolloff)
+
+
+def spectral_efficiency(net_gbps, spacing_ghz):
+    """Net spectral efficiency in b/s/Hz."""
+    return net_gbps / spacing_ghz
