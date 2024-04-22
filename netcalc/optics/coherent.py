@@ -49,3 +49,9 @@ def net_rate_gbps(baud_g, modulation, polarizations=2, fec_overhead=0.15, framin
     """Client (net) rate in Gb/s after FEC and framing overhead."""
     line = line_rate_gbps(baud_g, modulation, polarizations)
     return line / ((1 + fec_overhead) * (1 + framing_overhead))
+
+
+def required_baud(net_gbps, modulation, polarizations=2, fec_overhead=0.15, framing_overhead=0.0):
+    """Symbol rate (GBd) needed to carry ``net_gbps``."""
+    gross = net_gbps * (1 + fec_overhead) * (1 + framing_overhead)
+    return gross / (bits_per_symbol(modulation) * polarizations)
