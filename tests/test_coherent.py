@@ -21,3 +21,16 @@ class TestRates(unittest.TestCase):
 
     def test_800g_needs_about_115gbd(self):
         self.assertAlmostEqual(coherent.required_baud(800, "16qam"), 115.0)
+
+
+class TestSpectrum(unittest.TestCase):
+    def test_occupied_bandwidth(self):
+        self.assertAlmostEqual(coherent.occupied_bandwidth_ghz(64, 0.1), 70.4)
+
+    def test_capacity(self):
+        self.assertEqual(coherent.fiber_capacity_tbps(400, 75), (64, 25.6))
+        self.assertAlmostEqual(coherent.spectral_efficiency(400, 75), 5.333, places=3)
+
+
+if __name__ == "__main__":
+    unittest.main()
