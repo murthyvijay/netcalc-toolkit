@@ -71,3 +71,42 @@ def fiber_capacity_tbps(net_gbps, spacing_ghz, band_ghz=C_BAND_GHZ):
     """Channels that fit in ``band_ghz`` and the total capacity (Tb/s) per fibre."""
     channels = math.floor(band_ghz / spacing_ghz)
     return channels, channels * net_gbps / 1000.0
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("rate", help="line and net rate from baud and modulation")
+    p.add_argument("--baud", type=float, required=True, help="GBd")
+    p.add_argument("--mod", default="16qam", help="qpsk, 8qam, 16qam, 64qam or bits/symbol")
+    p.add_argument("--pol", type=int, default=2)
+    p.add_argument("--fec", type=float, default=0.15, help="FEC overhead as a fraction")
+    p.add_argument("--framing", type=float, default=0.0)
+    p.add_argument("--rolloff", type=float, default=0.1)
+    p = sub.add_parser("baud", help="baud needed for a net rate")
+    p.add_argument("--net", type=float, required=True, help="Gb/s")
+    p.add_argument("--mod", default="16qam")
+    p.add_argument("--pol", type=int, default=2)
+    p.add_argument("--fec", type=float, default=0.15)
+    p.add_argument("--framing", type=float, default=0.0)
+    p = sub.add_parser("capacity", help="channels and capacity per fibre")
+    p.add_argument("--net", type=float, required=True, help="net Gb/s per channel")
+    p.add_argument("--spacing", type=float, required=True, help="GHz")
+    p.add_argument("--band", type=float, default=C_BAND_GHZ, help="usable spectrum in GHz")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "rate":
+        line = line_rate_gbps(args.baud, args.mod, args.pol)
+        net = net_rate_gbps(args.baud, args.mod, args.pol, args.fec, args.framing)
+        occ = occupied_bandwidth_ghz(args.baud, args.rolloff)
+        print(f"line {line:.2f} Gb/s, net {net:.2f} Gb/s, occupies {occ:.1f} GHz")
+    elif args.cmd == "baud":
+        print(f"{required_baud(args.net, args.mod, args.pol, args.fec, args.framing):.2f} GBd")
+    else:
+        n, tbps = fiber_capacity_tbps(args.net, args.spacing, args.band)
+        se = spectral_efficiency(args.net, args.spacing)
+        print(f"{n} channels x {args.net:g} Gb/s = {tbps:.1f} Tb/s ({se:.2f} b/s/Hz)")
+
+
+if __name__ == "__main__":
+    main()
