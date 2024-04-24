@@ -466,6 +466,15 @@ grows as `PMD_coef * sqrt(L)`, and NRZ tolerates about 10 % of a bit period.
 With a modern 0.1 ps/sqrt(km) fibre that is 10,000 km at 10 Gb/s but only 625
 km at 40 Gb/s.
 
+### Coherent line rates (`coherent`)
+
+A dual-polarisation coherent signal carries `baud * bits_per_symbol * 2` bits
+per second on the line; FEC (typically 15-25 % overhead) and framing come off
+that to give the client rate. 400ZR is 59.84 GBd DP-16QAM: 478.75 Gb/s on the
+line for 400GbE. Doubling capacity means doubling baud (wider spectrum) or
+adding bits per symbol (needs more OSNR, about 3 dB per extra bit at high
+order), which is the reach/rate trade-off of every coherent modem.
+
 ---
 
 ## References
