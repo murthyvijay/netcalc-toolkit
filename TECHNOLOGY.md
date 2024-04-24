@@ -475,6 +475,9 @@ line for 400GbE. Doubling capacity means doubling baud (wider spectrum) or
 adding bits per symbol (needs more OSNR, about 3 dB per extra bit at high
 order), which is the reach/rate trade-off of every coherent modem.
 
+Spectral efficiency is net rate over channel spacing: 400G in 75 GHz is 5.3
+b/s/Hz, and 64 such channels fill the 4.8 THz C band with 25.6 Tb/s.
+
 ---
 
 ## References
