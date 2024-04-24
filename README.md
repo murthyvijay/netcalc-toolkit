@@ -119,6 +119,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `dwdm` | ITU-T grid frequency/wavelength, channel lookup, band plans, flexgrid slot width | `netcalc dwdm plan --band C --spacing 100` |
 | `budget` | span loss, power budget and margin, receiver overload, attenuation-limited reach | `netcalc budget margin --km 40 --tx -1 --sens -18` |
 | `dispersion` | accumulated CD, CD- and PMD-limited reach for NRZ, compensation needed | `netcalc dispersion reach --rate 10G` |
+| `coherent` | line and net rate from baud, modulation and FEC, baud for a target rate, spectral efficiency, capacity per fibre | `netcalc coherent rate --baud 59.84 --mod 16qam --fec 0.148` |
 
 ## Examples
 
