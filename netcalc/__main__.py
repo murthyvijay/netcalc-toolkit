@@ -39,6 +39,7 @@ TOOLS = {
     "dwdm": "netcalc.optics.dwdm",
     "budget": "netcalc.optics.budget",
     "dispersion": "netcalc.optics.dispersion",
+    "coherent": "netcalc.optics.coherent",
 }
 
 
