@@ -35,3 +35,8 @@ def per_channel_power(total_dbm, channels):
     3.98
     """
     return total_dbm - 10 * math.log10(channels)
+
+
+def total_power(channel_dbm, channels):
+    """Total composite power (dBm) of ``channels`` at ``channel_dbm`` each."""
+    return channel_dbm + 10 * math.log10(channels)
