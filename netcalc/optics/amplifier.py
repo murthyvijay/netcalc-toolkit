@@ -26,3 +26,12 @@ import argparse
 import math
 
 from netcalc.units import db_to_linear, linear_to_db
+
+
+def per_channel_power(total_dbm, channels):
+    """Per-channel power (dBm) when ``channels`` share ``total_dbm``.
+
+    >>> round(per_channel_power(20, 40), 2)
+    3.98
+    """
+    return total_dbm - 10 * math.log10(channels)
