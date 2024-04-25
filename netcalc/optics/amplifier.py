@@ -40,3 +40,8 @@ def per_channel_power(total_dbm, channels):
 def total_power(channel_dbm, channels):
     """Total composite power (dBm) of ``channels`` at ``channel_dbm`` each."""
     return channel_dbm + 10 * math.log10(channels)
+
+
+def spans_needed(km, max_span_km):
+    """Number of spans to cover ``km`` with spans no longer than ``max_span_km``."""
+    return max(1, math.ceil(round(km / max_span_km, 9)))
