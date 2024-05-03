@@ -50,3 +50,8 @@ def spans_needed(km, max_span_km):
 def inline_amplifiers(km, max_span_km):
     """Inline amplifiers needed between the terminal booster and pre-amplifier."""
     return spans_needed(km, max_span_km) - 1
+
+
+def gain_needed(span_loss_db, extra_loss_db=0.0):
+    """Amplifier gain (dB) that restores the launch power after a span."""
+    return span_loss_db + extra_loss_db
