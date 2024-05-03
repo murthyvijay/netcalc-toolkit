@@ -55,3 +55,18 @@ def inline_amplifiers(km, max_span_km):
 def gain_needed(span_loss_db, extra_loss_db=0.0):
     """Amplifier gain (dB) that restores the launch power after a span."""
     return span_loss_db + extra_loss_db
+
+
+def friis_nf_db(stages):
+    """Cascaded noise figure (dB) of ``[(gain_db, nf_db), ...]`` in signal order.
+
+    >>> round(friis_nf_db([(20, 5), (20, 5)]), 3)
+    5.03
+    """
+    total_f = 0.0
+    gain = 1.0
+    for i, (g_db, nf_db) in enumerate(stages):
+        f = db_to_linear(nf_db)
+        total_f += f if i == 0 else (f - 1) / gain
+        gain *= db_to_linear(g_db)
+    return linear_to_db(total_f)
