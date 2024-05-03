@@ -45,3 +45,8 @@ def total_power(channel_dbm, channels):
 def spans_needed(km, max_span_km):
     """Number of spans to cover ``km`` with spans no longer than ``max_span_km``."""
     return max(1, math.ceil(round(km / max_span_km, 9)))
+
+
+def inline_amplifiers(km, max_span_km):
+    """Inline amplifiers needed between the terminal booster and pre-amplifier."""
+    return spans_needed(km, max_span_km) - 1
