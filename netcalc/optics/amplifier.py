@@ -70,3 +70,8 @@ def friis_nf_db(stages):
         total_f += f if i == 0 else (f - 1) / gain
         gain *= db_to_linear(g_db)
     return linear_to_db(total_f)
+
+
+def parse_stages(items):
+    """Parse ``["20:5", "15:6"]`` into ``[(20.0, 5.0), (15.0, 6.0)]``."""
+    return [tuple(float(x) for x in item.split(":", 1)) for item in items]
