@@ -75,3 +75,32 @@ def friis_nf_db(stages):
 def parse_stages(items):
     """Parse ``["20:5", "15:6"]`` into ``[(20.0, 5.0), (15.0, 6.0)]``."""
     return [tuple(float(x) for x in item.split(":", 1)) for item in items]
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("channel", help="per-channel power from total output")
+    p.add_argument("--total", type=float, required=True, help="total output in dBm")
+    p.add_argument("--channels", type=int, required=True)
+    p = sub.add_parser("spans", help="spans and amplifiers for a route")
+    p.add_argument("--km", type=float, required=True)
+    p.add_argument("--max-span", type=float, default=80.0)
+    p.add_argument("--alpha", type=float, default=0.25, help="dB/km, to estimate gain")
+    p = sub.add_parser("friis", help="cascaded noise figure")
+    p.add_argument("stages", nargs="+", help="gain_dB:NF_dB per stage, in order")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "channel":
+        print(f"{per_channel_power(args.total, args.channels):.2f} dBm per channel")
+    elif args.cmd == "spans":
+        n = spans_needed(args.km, args.max_span)
+        span_km = args.km / n
+        print(f"{n} spans of {span_km:.1f} km, {inline_amplifiers(args.km, args.max_span)} inline "
+              f"amplifiers, ~{gain_needed(span_km * args.alpha):.1f} dB gain each")
+    else:
+        print(f"cascaded NF = {friis_nf_db(parse_stages(args.stages)):.2f} dB")
+
+
+if __name__ == "__main__":
+    main()
