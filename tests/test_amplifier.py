@@ -10,3 +10,14 @@ class TestChannelPower(unittest.TestCase):
 
     def test_round_trip(self):
         self.assertAlmostEqual(amplifier.total_power(amplifier.per_channel_power(17, 96), 96), 17)
+
+
+class TestSpans(unittest.TestCase):
+    def test_spans_and_inline_amplifiers(self):
+        self.assertEqual(amplifier.spans_needed(600, 80), 8)
+        self.assertEqual(amplifier.spans_needed(160, 80), 2)
+        self.assertEqual(amplifier.inline_amplifiers(160, 80), 1)
+        self.assertEqual(amplifier.spans_needed(10, 80), 1)
+
+    def test_gain(self):
+        self.assertEqual(amplifier.gain_needed(20, 2.5), 22.5)
