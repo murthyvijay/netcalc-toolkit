@@ -21,3 +21,21 @@ class TestSpans(unittest.TestCase):
 
     def test_gain(self):
         self.assertEqual(amplifier.gain_needed(20, 2.5), 22.5)
+
+
+class TestFriis(unittest.TestCase):
+    def test_single_stage(self):
+        self.assertAlmostEqual(amplifier.friis_nf_db([(20, 5)]), 5.0)
+
+    def test_first_stage_dominates(self):
+        self.assertAlmostEqual(amplifier.friis_nf_db([(20, 5), (15, 6), (10, 8)]), 5.043, places=3)
+        low_first = amplifier.friis_nf_db([(20, 4), (20, 8)])
+        high_first = amplifier.friis_nf_db([(20, 8), (20, 4)])
+        self.assertLess(low_first, high_first)
+
+    def test_parse(self):
+        self.assertEqual(amplifier.parse_stages(["20:5", "15:6.5"]), [(20.0, 5.0), (15.0, 6.5)])
+
+
+if __name__ == "__main__":
+    unittest.main()
