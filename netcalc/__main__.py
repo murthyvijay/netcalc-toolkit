@@ -40,6 +40,7 @@ TOOLS = {
     "budget": "netcalc.optics.budget",
     "dispersion": "netcalc.optics.dispersion",
     "coherent": "netcalc.optics.coherent",
+    "amplifier": "netcalc.optics.amplifier",
 }
 
 
