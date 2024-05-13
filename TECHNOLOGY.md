@@ -478,6 +478,14 @@ order), which is the reach/rate trade-off of every coherent modem.
 Spectral efficiency is net rate over channel spacing: 400G in 75 GHz is 5.3
 b/s/Hz, and 64 such channels fill the 4.8 THz C band with 25.6 Tb/s.
 
+### Optical amplifiers (`amplifier`)
+
+An EDFA's total output power is shared by its channels:
+`P_ch = P_total - 10 log10(N)`, so 20 dBm across 40 channels is about 4 dBm
+each. Inline amplifiers sit every 60-100 km and their gain makes up the
+previous span's loss. The OSNR contribution of each amplifier is covered by
+`osnr chain`.
+
 ---
 
 ## References
