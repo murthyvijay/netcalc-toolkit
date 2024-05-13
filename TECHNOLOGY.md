@@ -486,6 +486,11 @@ each. Inline amplifiers sit every 60-100 km and their gain makes up the
 previous span's loss. The OSNR contribution of each amplifier is covered by
 `osnr chain`.
 
+Within a multi-stage amplifier (or a receiver chain), noise figures cascade
+by the Friis formula in linear units,
+`F = F1 + (F2 - 1)/G1 + (F3 - 1)/(G1 G2) + ...`, so the first stage's noise
+figure dominates once its gain is high.
+
 ---
 
 ## References
