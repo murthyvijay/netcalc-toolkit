@@ -28,3 +28,12 @@ import math
 
 DIPOLE_GAIN_DBI = 2.15
 STANDARD_K = 4.0 / 3.0
+
+
+def fspl_db(km, mhz):
+    """Free-space path loss (dB).
+
+    >>> round(fspl_db(1, 2400), 2)
+    100.04
+    """
+    return 20 * math.log10(km) + 20 * math.log10(mhz) + 32.44
