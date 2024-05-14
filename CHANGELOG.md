@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Optics: ITU-T G.694.1 DWDM grid and flexgrid slots, optical power budget and
+  reach, chromatic dispersion and PMD limits, coherent line rates, EDFA planning.
+
 ## 1.0.0
 
 - Layer 1: BER confidence and test time, Q-factor, Reed-Solomon FEC (KR4/KP4)
