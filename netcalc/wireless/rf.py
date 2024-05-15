@@ -47,3 +47,8 @@ def eirp_dbm(tx_dbm, antenna_dbi, cable_loss_db=0.0):
 def dbd_to_dbi(dbd):
     """Convert antenna gain relative to a dipole into dBi."""
     return dbd + DIPOLE_GAIN_DBI
+
+
+def received_power_dbm(tx_dbm, tx_dbi, rx_dbi, km, mhz, losses_db=0.0):
+    """Received signal level (dBm) over a free-space path."""
+    return eirp_dbm(tx_dbm, tx_dbi) - fspl_db(km, mhz) - losses_db + rx_dbi
