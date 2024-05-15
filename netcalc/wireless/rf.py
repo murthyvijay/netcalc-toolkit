@@ -42,3 +42,8 @@ def fspl_db(km, mhz):
 def eirp_dbm(tx_dbm, antenna_dbi, cable_loss_db=0.0):
     """Effective isotropic radiated power (dBm)."""
     return tx_dbm - cable_loss_db + antenna_dbi
+
+
+def dbd_to_dbi(dbd):
+    """Convert antenna gain relative to a dipole into dBi."""
+    return dbd + DIPOLE_GAIN_DBI
