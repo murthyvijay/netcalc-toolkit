@@ -52,3 +52,8 @@ def dbd_to_dbi(dbd):
 def received_power_dbm(tx_dbm, tx_dbi, rx_dbi, km, mhz, losses_db=0.0):
     """Received signal level (dBm) over a free-space path."""
     return eirp_dbm(tx_dbm, tx_dbi) - fspl_db(km, mhz) - losses_db + rx_dbi
+
+
+def fade_margin_db(rx_dbm, sensitivity_dbm):
+    """Fade margin (dB): how far the received level sits above sensitivity."""
+    return rx_dbm - sensitivity_dbm
