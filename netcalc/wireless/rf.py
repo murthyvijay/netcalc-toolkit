@@ -37,3 +37,8 @@ def fspl_db(km, mhz):
     100.04
     """
     return 20 * math.log10(km) + 20 * math.log10(mhz) + 32.44
+
+
+def eirp_dbm(tx_dbm, antenna_dbi, cable_loss_db=0.0):
+    """Effective isotropic radiated power (dBm)."""
+    return tx_dbm - cable_loss_db + antenna_dbi
