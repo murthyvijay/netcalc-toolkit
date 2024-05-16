@@ -73,3 +73,8 @@ def fresnel_radius_m(d1_km, d2_km, ghz, zone=1):
 def earth_bulge_m(d1_km, d2_km, k=STANDARD_K):
     """Height (m) the earth's curvature rises at a point on the path."""
     return d1_km * d2_km / (12.74 * k)
+
+
+def radio_horizon_km(height_m, k=STANDARD_K):
+    """Distance (km) to the radio horizon from an antenna ``height_m`` high."""
+    return 3.57 * math.sqrt(k * height_m)
