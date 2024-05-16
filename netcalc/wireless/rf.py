@@ -68,3 +68,8 @@ def max_range_km(tx_dbm, tx_dbi, rx_dbi, mhz, sensitivity_dbm, margin_db=10.0, l
 def fresnel_radius_m(d1_km, d2_km, ghz, zone=1):
     """Radius (m) of Fresnel zone ``zone`` at a point between the antennas."""
     return 17.32 * math.sqrt(zone * d1_km * d2_km / (ghz * (d1_km + d2_km)))
+
+
+def earth_bulge_m(d1_km, d2_km, k=STANDARD_K):
+    """Height (m) the earth's curvature rises at a point on the path."""
+    return d1_km * d2_km / (12.74 * k)
