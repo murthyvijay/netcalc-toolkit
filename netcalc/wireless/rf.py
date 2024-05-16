@@ -63,3 +63,8 @@ def max_range_km(tx_dbm, tx_dbi, rx_dbi, mhz, sensitivity_dbm, margin_db=10.0, l
     """Longest free-space path (km) that still leaves ``margin_db`` of fade margin."""
     allowed_fspl = eirp_dbm(tx_dbm, tx_dbi) + rx_dbi - losses_db - sensitivity_dbm - margin_db
     return 10 ** ((allowed_fspl - 32.44 - 20 * math.log10(mhz)) / 20)
+
+
+def fresnel_radius_m(d1_km, d2_km, ghz, zone=1):
+    """Radius (m) of Fresnel zone ``zone`` at a point between the antennas."""
+    return 17.32 * math.sqrt(zone * d1_km * d2_km / (ghz * (d1_km + d2_km)))
