@@ -57,3 +57,9 @@ def received_power_dbm(tx_dbm, tx_dbi, rx_dbi, km, mhz, losses_db=0.0):
 def fade_margin_db(rx_dbm, sensitivity_dbm):
     """Fade margin (dB): how far the received level sits above sensitivity."""
     return rx_dbm - sensitivity_dbm
+
+
+def max_range_km(tx_dbm, tx_dbi, rx_dbi, mhz, sensitivity_dbm, margin_db=10.0, losses_db=0.0):
+    """Longest free-space path (km) that still leaves ``margin_db`` of fade margin."""
+    allowed_fspl = eirp_dbm(tx_dbm, tx_dbi) + rx_dbi - losses_db - sensitivity_dbm - margin_db
+    return 10 ** ((allowed_fspl - 32.44 - 20 * math.log10(mhz)) / 20)
