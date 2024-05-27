@@ -84,3 +84,44 @@ def clearance_height_m(km, ghz, clear_fraction=0.6, k=STANDARD_K):
     """Mid-path clearance (m) above obstacles: earth bulge + ``clear_fraction`` of zone 1."""
     half = km / 2
     return earth_bulge_m(half, half, k) + clear_fraction * fresnel_radius_m(half, half, ghz)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("fspl", help="free-space path loss")
+    p.add_argument("--km", type=float, required=True)
+    p.add_argument("--mhz", type=float, required=True)
+    p = sub.add_parser("link", help="received level and fade margin")
+    p.add_argument("--tx", type=float, required=True, help="transmit power dBm")
+    p.add_argument("--tx-gain", type=float, default=0.0, help="dBi")
+    p.add_argument("--rx-gain", type=float, default=0.0, help="dBi")
+    p.add_argument("--km", type=float, required=True)
+    p.add_argument("--mhz", type=float, required=True)
+    p.add_argument("--losses", type=float, default=0.0, help="cables, radome, rain (dB)")
+    p.add_argument("--sens", type=float, required=True, help="receiver sensitivity dBm")
+    p = sub.add_parser("fresnel", help="Fresnel zone and clearance at mid-path")
+    p.add_argument("--km", type=float, required=True)
+    p.add_argument("--ghz", type=float, required=True)
+    p = sub.add_parser("horizon", help="radio horizon of an antenna")
+    p.add_argument("--height", type=float, required=True, help="metres")
+    p.add_argument("--k", type=float, default=STANDARD_K)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "fspl":
+        print(f"FSPL = {fspl_db(args.km, args.mhz):.2f} dB")
+    elif args.cmd == "link":
+        rx = received_power_dbm(args.tx, args.tx_gain, args.rx_gain, args.km, args.mhz, args.losses)
+        margin = fade_margin_db(rx, args.sens)
+        print(f"EIRP {eirp_dbm(args.tx, args.tx_gain):.1f} dBm, rx {rx:.1f} dBm, "
+              f"fade margin {margin:.1f} dB")
+    elif args.cmd == "fresnel":
+        r = fresnel_radius_m(args.km / 2, args.km / 2, args.ghz)
+        print(f"zone 1 radius at mid-path {r:.2f} m; clear {clearance_height_m(args.km, args.ghz):.2f} m "
+              f"above obstacles (60 % zone 1 + earth bulge)")
+    else:
+        print(f"radio horizon = {radio_horizon_km(args.height, args.k):.1f} km")
+
+
+if __name__ == "__main__":
+    main()
