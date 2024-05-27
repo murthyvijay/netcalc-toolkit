@@ -78,3 +78,9 @@ def earth_bulge_m(d1_km, d2_km, k=STANDARD_K):
 def radio_horizon_km(height_m, k=STANDARD_K):
     """Distance (km) to the radio horizon from an antenna ``height_m`` high."""
     return 3.57 * math.sqrt(k * height_m)
+
+
+def clearance_height_m(km, ghz, clear_fraction=0.6, k=STANDARD_K):
+    """Mid-path clearance (m) above obstacles: earth bulge + ``clear_fraction`` of zone 1."""
+    half = km / 2
+    return earth_bulge_m(half, half, k) + clear_fraction * fresnel_radius_m(half, half, ghz)
