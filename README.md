@@ -122,6 +122,12 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `coherent` | line and net rate from baud, modulation and FEC, baud for a target rate, spectral efficiency, capacity per fibre | `netcalc coherent rate --baud 59.84 --mod 16qam --fec 0.148` |
 | `amplifier` | per-channel power from total output, spans and inline amplifiers, Friis cascaded noise figure | `netcalc amplifier friis 20:5 15:6 10:8` |
 
+### Wireless (`netcalc.wireless`)
+
+| tool | what it answers | example |
+|---|---|---|
+| `rf` | free-space path loss, EIRP, received level and fade margin, Fresnel zone, earth bulge, radio horizon | `netcalc rf link --tx 20 --tx-gain 23 --rx-gain 23 --km 10 --mhz 5800 --sens -75` |
+
 ## Examples
 
 The `examples/` folder combines several tools into small reports:
