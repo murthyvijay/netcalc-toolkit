@@ -10,6 +10,7 @@ time, `p` = probability (loss or error), `log` = log10 unless noted.
 - [4. Protocol overhead and MTU](#4-protocol-overhead-and-mtu)
 - [5. AI/ML fabrics](#5-aiml-fabrics)
 - [6. Optics and DWDM](#6-optics-and-dwdm)
+- [7. Wireless](#7-wireless)
 - [References](#references)
 
 ---
@@ -490,6 +491,14 @@ Within a multi-stage amplifier (or a receiver chain), noise figures cascade
 by the Friis formula in linear units,
 `F = F1 + (F2 - 1)/G1 + (F3 - 1)/(G1 G2) + ...`, so the first stage's noise
 figure dominates once its gain is high.
+
+---
+
+## 7. Wireless
+
+Radio links follow the same budget logic as optical ones, but the loss
+depends on distance and frequency in free space, the noise floor is set by
+thermodynamics, and the achievable rate is bounded by Shannon.
 
 ---
 
