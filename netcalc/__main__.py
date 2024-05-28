@@ -41,6 +41,7 @@ TOOLS = {
     "dispersion": "netcalc.optics.dispersion",
     "coherent": "netcalc.optics.coherent",
     "amplifier": "netcalc.optics.amplifier",
+    "rf": "netcalc.wireless.rf",
 }
 
 
