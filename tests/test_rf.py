@@ -26,3 +26,20 @@ class TestLinkBudget(unittest.TestCase):
         km = rf.max_range_km(20, 23, 23, 5800, -75, margin_db=10)
         rx = rf.received_power_dbm(20, 23, 23, km, 5800)
         self.assertAlmostEqual(rf.fade_margin_db(rx, -75), 10.0)
+
+
+class TestPathClearance(unittest.TestCase):
+    def test_fresnel(self):
+        self.assertAlmostEqual(rf.fresnel_radius_m(5, 5, 5.8), 11.37, places=2)
+        self.assertAlmostEqual(rf.fresnel_radius_m(5, 5, 5.8, zone=4), 2 * 11.371, places=2)
+
+    def test_bulge_and_horizon(self):
+        self.assertAlmostEqual(rf.earth_bulge_m(5, 5), 1.47, places=2)
+        self.assertAlmostEqual(rf.radio_horizon_km(30), 22.58, places=2)
+
+    def test_clearance(self):
+        self.assertAlmostEqual(rf.clearance_height_m(10, 5.8), 1.47 + 0.6 * 11.37, places=1)
+
+
+if __name__ == "__main__":
+    unittest.main()
