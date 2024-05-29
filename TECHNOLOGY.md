@@ -510,6 +510,8 @@ P_rx = P_tx - cable loss + G_tx - FSPL - other losses + G_rx
 fade margin = P_rx - receiver sensitivity
 ```
 
+with 10-20 dB of fade margin typical to ride out rain and multipath.
+
 ---
 
 ## References
