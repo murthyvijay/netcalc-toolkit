@@ -500,6 +500,16 @@ Radio links follow the same budget logic as optical ones, but the loss
 depends on distance and frequency in free space, the noise floor is set by
 thermodynamics, and the achievable rate is bounded by Shannon.
 
+### RF link budget (`rf`)
+
+Free-space path loss is `20 log10(d_km) + 20 log10(f_MHz) + 32.44` dB: every
+doubling of distance or frequency costs 6 dB. A point-to-point budget is
+
+```
+P_rx = P_tx - cable loss + G_tx - FSPL - other losses + G_rx
+fade margin = P_rx - receiver sensitivity
+```
+
 ---
 
 ## References
