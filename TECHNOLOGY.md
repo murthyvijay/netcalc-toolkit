@@ -512,6 +512,12 @@ fade margin = P_rx - receiver sensitivity
 
 with 10-20 dB of fade margin typical to ride out rain and multipath.
 
+Line of sight is not enough: the first Fresnel zone, of radius
+`17.32 sqrt(d1 d2 / (f_GHz D))` metres, should be at least 60 % clear, and on
+long paths the earth itself rises `d1 d2 / (12.74 k)` metres mid-path (k = 4/3
+for standard refraction). The radio horizon of an antenna h metres high is
+`3.57 sqrt(k h)` km.
+
 ---
 
 ## References
