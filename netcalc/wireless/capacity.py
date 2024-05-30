@@ -46,3 +46,8 @@ def shannon_capacity(bandwidth_hz, snr_db):
 def spectral_efficiency(snr_db):
     """Shannon spectral efficiency in b/s/Hz."""
     return math.log2(1 + 10 ** (snr_db / 10))
+
+
+def snr_for_rate_db(rate_bps, bandwidth_hz):
+    """Minimum SNR (dB) at which ``rate_bps`` fits in ``bandwidth_hz``."""
+    return 10 * math.log10(2 ** (rate_bps / bandwidth_hz) - 1)
