@@ -41,3 +41,8 @@ def noise_floor_dbm(bandwidth_hz, nf_db=0.0):
 def shannon_capacity(bandwidth_hz, snr_db):
     """Shannon limit in bits per second."""
     return bandwidth_hz * math.log2(1 + 10 ** (snr_db / 10))
+
+
+def spectral_efficiency(snr_db):
+    """Shannon spectral efficiency in b/s/Hz."""
+    return math.log2(1 + 10 ** (snr_db / 10))
