@@ -27,3 +27,12 @@ import math
 from netcalc.units import dbm_to_mw, fmt_rate, mw_to_dbm, parse_rate
 
 THERMAL_NOISE_DBM_HZ = -174.0
+
+
+def noise_floor_dbm(bandwidth_hz, nf_db=0.0):
+    """Receiver noise floor (dBm) for a bandwidth and noise figure.
+
+    >>> round(noise_floor_dbm(20e6), 1)
+    -101.0
+    """
+    return THERMAL_NOISE_DBM_HZ + 10 * math.log10(bandwidth_hz) + nf_db
