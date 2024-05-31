@@ -51,3 +51,8 @@ def spectral_efficiency(snr_db):
 def snr_for_rate_db(rate_bps, bandwidth_hz):
     """Minimum SNR (dB) at which ``rate_bps`` fits in ``bandwidth_hz``."""
     return 10 * math.log10(2 ** (rate_bps / bandwidth_hz) - 1)
+
+
+def ebn0_db(snr_db, rate_bps, bandwidth_hz):
+    """Energy per bit over noise density (dB) from SNR."""
+    return snr_db - 10 * math.log10(rate_bps / bandwidth_hz)
