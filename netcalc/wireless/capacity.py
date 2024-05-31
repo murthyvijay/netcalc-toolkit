@@ -62,3 +62,37 @@ def sinr_db(signal_dbm, noise_dbm, interferers_dbm=()):
     """Signal to interference-plus-noise ratio (dB)."""
     total_mw = dbm_to_mw(noise_dbm) + sum(dbm_to_mw(i) for i in interferers_dbm)
     return signal_dbm - mw_to_dbm(total_mw)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("noise", help="thermal noise floor")
+    p.add_argument("--bw", required=True, help="bandwidth, e.g. 20M")
+    p.add_argument("--nf", type=float, default=0.0)
+    p = sub.add_parser("shannon", help="Shannon capacity")
+    p.add_argument("--bw", required=True)
+    p.add_argument("--snr", type=float, required=True, help="dB")
+    p = sub.add_parser("snr", help="minimum SNR for a rate")
+    p.add_argument("--bw", required=True)
+    p.add_argument("--rate", required=True)
+    p = sub.add_parser("sinr", help="SINR from signal, noise and interferers")
+    p.add_argument("--signal", type=float, required=True, help="dBm")
+    p.add_argument("--noise", type=float, required=True, help="dBm")
+    p.add_argument("--interferer", type=float, nargs="*", default=[], help="dBm each")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "noise":
+        print(f"noise floor = {noise_floor_dbm(parse_rate(args.bw), args.nf):.1f} dBm")
+    elif args.cmd == "shannon":
+        bw = parse_rate(args.bw)
+        print(f"C = {fmt_rate(shannon_capacity(bw, args.snr))} "
+              f"({spectral_efficiency(args.snr):.2f} b/s/Hz)")
+    elif args.cmd == "snr":
+        print(f"SNR >= {snr_for_rate_db(parse_rate(args.rate), parse_rate(args.bw)):.2f} dB")
+    else:
+        print(f"SINR = {sinr_db(args.signal, args.noise, args.interferer):.2f} dB")
+
+
+if __name__ == "__main__":
+    main()
