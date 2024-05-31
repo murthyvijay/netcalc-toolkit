@@ -56,3 +56,9 @@ def snr_for_rate_db(rate_bps, bandwidth_hz):
 def ebn0_db(snr_db, rate_bps, bandwidth_hz):
     """Energy per bit over noise density (dB) from SNR."""
     return snr_db - 10 * math.log10(rate_bps / bandwidth_hz)
+
+
+def sinr_db(signal_dbm, noise_dbm, interferers_dbm=()):
+    """Signal to interference-plus-noise ratio (dB)."""
+    total_mw = dbm_to_mw(noise_dbm) + sum(dbm_to_mw(i) for i in interferers_dbm)
+    return signal_dbm - mw_to_dbm(total_mw)
