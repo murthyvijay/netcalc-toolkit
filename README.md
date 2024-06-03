@@ -127,6 +127,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | tool | what it answers | example |
 |---|---|---|
 | `rf` | free-space path loss, EIRP, received level and fade margin, Fresnel zone, earth bulge, radio horizon | `netcalc rf link --tx 20 --tx-gain 23 --rx-gain 23 --km 10 --mhz 5800 --sens -75` |
+| `capacity` | thermal noise floor, Shannon capacity, SNR needed for a rate, Eb/N0, SINR | `netcalc capacity shannon --bw 80M --snr 30` |
 
 ## Examples
 
