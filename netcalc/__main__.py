@@ -42,6 +42,7 @@ TOOLS = {
     "coherent": "netcalc.optics.coherent",
     "amplifier": "netcalc.optics.amplifier",
     "rf": "netcalc.wireless.rf",
+    "capacity": "netcalc.wireless.capacity",
 }
 
 
