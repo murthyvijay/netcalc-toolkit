@@ -22,3 +22,15 @@ class TestShannon(unittest.TestCase):
 
     def test_ebn0(self):
         self.assertAlmostEqual(capacity.ebn0_db(10, 2e6, 1e6), 6.99, places=2)
+
+
+class TestSinr(unittest.TestCase):
+    def test_noise_only(self):
+        self.assertAlmostEqual(capacity.sinr_db(-60, -95), 35.0)
+
+    def test_interference_dominates(self):
+        self.assertAlmostEqual(capacity.sinr_db(-60, -95, [-80, -85]), 18.70, places=2)
+
+
+if __name__ == "__main__":
+    unittest.main()
