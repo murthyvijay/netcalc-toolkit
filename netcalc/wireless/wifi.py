@@ -53,3 +53,8 @@ def phy_rate_mbps(std, mcs, width_mhz, nss=1, gi_us=0.8):
     bits, rate = MCS[mcs]
     nsd = DATA_SUBCARRIERS[std][width_mhz]
     return nss * nsd * bits * rate / (SYMBOL_US[std] + gi_us)
+
+
+def rate_table(std, width_mhz, nss=1, gi_us=0.8):
+    """``[(mcs, Mb/s), ...]`` for every MCS the standard defines."""
+    return [(m, phy_rate_mbps(std, m, width_mhz, nss, gi_us)) for m in range(MAX_MCS[std.lower()] + 1)]
