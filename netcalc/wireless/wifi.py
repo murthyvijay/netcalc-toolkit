@@ -37,3 +37,19 @@ MODULATION = {1: "BPSK", 2: "QPSK", 4: "16-QAM", 6: "64-QAM", 8: "256-QAM", 10: 
 SYMBOL_US = {"n": 3.2, "ac": 3.2, "ax": 12.8}
 MAX_MCS = {"n": 7, "ac": 9, "ax": 11}
 BAND_BASE_MHZ = {"2.4": 2407, "5": 5000, "6": 5950}
+
+
+def phy_rate_mbps(std, mcs, width_mhz, nss=1, gi_us=0.8):
+    """PHY data rate in Mb/s for a standard (``n``, ``ac``, ``ax``).
+
+    >>> round(phy_rate_mbps("ax", 11, 80), 1)
+    600.5
+    >>> round(phy_rate_mbps("ac", 9, 80))
+    390
+    """
+    std = std.lower()
+    if mcs > MAX_MCS[std]:
+        raise ValueError(f"802.11{std} has no MCS {mcs}")
+    bits, rate = MCS[mcs]
+    nsd = DATA_SUBCARRIERS[std][width_mhz]
+    return nss * nsd * bits * rate / (SYMBOL_US[std] + gi_us)
