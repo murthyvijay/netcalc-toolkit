@@ -518,6 +518,15 @@ long paths the earth itself rises `d1 d2 / (12.74 k)` metres mid-path (k = 4/3
 for standard refraction). The radio horizon of an antenna h metres high is
 `3.57 sqrt(k h)` km.
 
+### Capacity and noise (`capacity`)
+
+Thermal noise is -174 dBm/Hz at room temperature, so a 20 MHz receiver with
+a 7 dB noise figure has a floor of about -94 dBm. Shannon's limit
+`C = B log2(1 + SNR)` bounds any modulation and coding: 20 MHz at 30 dB SNR
+cannot exceed about 199 Mb/s, and real systems run a few dB short of the
+bound. Interference adds to noise in milliwatts, so one strong interferer can
+dominate the SINR.
+
 ---
 
 ## References
