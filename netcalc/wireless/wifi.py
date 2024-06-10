@@ -75,3 +75,40 @@ def non_overlapping_24ghz(width_mhz=20):
 def frame_airtime_us(payload_bytes, phy_rate, overhead_us=40.0):
     """Approximate airtime (us) of one frame: preamble overhead + payload at the PHY rate."""
     return overhead_us + payload_bytes * 8 / phy_rate
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    for name, help_text in (("rate", "PHY rate for one MCS"), ("table", "every MCS for a width")):
+        p = sub.add_parser(name, help=help_text)
+        p.add_argument("--std", default="ax", choices=sorted(DATA_SUBCARRIERS))
+        p.add_argument("--width", type=int, default=80, help="channel width in MHz")
+        p.add_argument("--nss", type=int, default=1, help="spatial streams")
+        p.add_argument("--gi", type=float, default=0.8, help="guard interval in us")
+        if name == "rate":
+            p.add_argument("--mcs", type=int, required=True)
+    p = sub.add_parser("channel", help="centre frequency of a channel")
+    p.add_argument("--band", choices=sorted(BAND_BASE_MHZ), required=True)
+    p.add_argument("--ch", type=int, required=True)
+    p = sub.add_parser("airtime", help="airtime of a frame")
+    p.add_argument("--bytes", type=int, required=True)
+    p.add_argument("--rate", type=float, required=True, help="PHY rate in Mb/s")
+    p.add_argument("--overhead", type=float, default=40.0, help="preamble and gaps in us")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "rate":
+        r = phy_rate_mbps(args.std, args.mcs, args.width, args.nss, args.gi)
+        print(f"802.11{args.std} MCS {args.mcs}, {args.width} MHz, {args.nss}ss: {r:.1f} Mb/s")
+    elif args.cmd == "table":
+        for mcs, r in rate_table(args.std, args.width, args.nss, args.gi):
+            bits, code = MCS[mcs]
+            print(f"MCS {mcs:>2}  {MODULATION[bits]:<8}  {code:.3f}  {r:8.1f} Mb/s")
+    elif args.cmd == "channel":
+        print(f"channel {args.ch} ({args.band} GHz) = {channel_mhz(args.band, args.ch)} MHz")
+    else:
+        print(f"airtime = {frame_airtime_us(args.bytes, args.rate, args.overhead):.1f} us")
+
+
+if __name__ == "__main__":
+    main()
