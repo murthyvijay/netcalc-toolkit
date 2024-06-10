@@ -65,3 +65,8 @@ def channel_mhz(band, channel):
     if band == "2.4" and channel == 14:
         return 2484
     return BAND_BASE_MHZ[band] + 5 * channel
+
+
+def non_overlapping_24ghz(width_mhz=20):
+    """The classic non-overlapping 2.4 GHz channel set."""
+    return [1, 6, 11] if width_mhz == 20 else [3]
