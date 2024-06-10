@@ -58,3 +58,10 @@ def phy_rate_mbps(std, mcs, width_mhz, nss=1, gi_us=0.8):
 def rate_table(std, width_mhz, nss=1, gi_us=0.8):
     """``[(mcs, Mb/s), ...]`` for every MCS the standard defines."""
     return [(m, phy_rate_mbps(std, m, width_mhz, nss, gi_us)) for m in range(MAX_MCS[std.lower()] + 1)]
+
+
+def channel_mhz(band, channel):
+    """Centre frequency (MHz) of a Wi-Fi channel in the 2.4, 5 or 6 GHz band."""
+    if band == "2.4" and channel == 14:
+        return 2484
+    return BAND_BASE_MHZ[band] + 5 * channel
