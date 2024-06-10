@@ -70,3 +70,8 @@ def channel_mhz(band, channel):
 def non_overlapping_24ghz(width_mhz=20):
     """The classic non-overlapping 2.4 GHz channel set."""
     return [1, 6, 11] if width_mhz == 20 else [3]
+
+
+def frame_airtime_us(payload_bytes, phy_rate, overhead_us=40.0):
+    """Approximate airtime (us) of one frame: preamble overhead + payload at the PHY rate."""
+    return overhead_us + payload_bytes * 8 / phy_rate
