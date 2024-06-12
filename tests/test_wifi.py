@@ -20,3 +20,14 @@ class TestPhyRate(unittest.TestCase):
         table = wifi.rate_table("ac", 20)
         self.assertEqual(len(table), 10)
         self.assertEqual([m for m, _ in table], list(range(10)))
+
+
+class TestChannels(unittest.TestCase):
+    def test_centre_frequencies(self):
+        self.assertEqual(wifi.channel_mhz("2.4", 6), 2437)
+        self.assertEqual(wifi.channel_mhz("2.4", 14), 2484)
+        self.assertEqual(wifi.channel_mhz("5", 36), 5180)
+        self.assertEqual(wifi.channel_mhz("6", 37), 6135)
+
+    def test_non_overlapping(self):
+        self.assertEqual(wifi.non_overlapping_24ghz(), [1, 6, 11])
