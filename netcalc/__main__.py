@@ -43,6 +43,7 @@ TOOLS = {
     "amplifier": "netcalc.optics.amplifier",
     "rf": "netcalc.wireless.rf",
     "capacity": "netcalc.wireless.capacity",
+    "wifi": "netcalc.wireless.wifi",
 }
 
 
