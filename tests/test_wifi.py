@@ -31,3 +31,13 @@ class TestChannels(unittest.TestCase):
 
     def test_non_overlapping(self):
         self.assertEqual(wifi.non_overlapping_24ghz(), [1, 6, 11])
+
+
+class TestAirtime(unittest.TestCase):
+    def test_frame_airtime(self):
+        self.assertAlmostEqual(wifi.frame_airtime_us(1500, 600), 60.0)
+        self.assertAlmostEqual(wifi.frame_airtime_us(1500, 6, overhead_us=0), 2000.0)
+
+
+if __name__ == "__main__":
+    unittest.main()
