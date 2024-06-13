@@ -536,6 +536,10 @@ An OFDM Wi-Fi rate is `Nss * Nsd * bits_per_subcarrier * coding_rate / (T_sym + 
 reaches 600.5 Mb/s per stream; 2 streams at 160 MHz is the familiar
 2.4 Gb/s headline.
 
+Those are PHY rates: preambles, contention and acknowledgements mean real
+throughput is often 60-70 % of them, and every frame's airtime at a low MCS
+is time no one else can use.
+
 ---
 
 ## References
