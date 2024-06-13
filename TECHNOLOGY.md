@@ -527,6 +527,15 @@ cannot exceed about 199 Mb/s, and real systems run a few dB short of the
 bound. Interference adds to noise in milliwatts, so one strong interferer can
 dominate the SINR.
 
+### Wi-Fi PHY rates (`wifi`)
+
+An OFDM Wi-Fi rate is `Nss * Nsd * bits_per_subcarrier * coding_rate / (T_sym + GI)`.
+802.11ac uses 3.2 us symbols and 234 data subcarriers in 80 MHz, so MCS 9
+(256-QAM 5/6) gives 390 Mb/s per stream with a 0.8 us guard. 802.11ax uses
+12.8 us symbols and 980 subcarriers in 80 MHz, and MCS 11 (1024-QAM 5/6)
+reaches 600.5 Mb/s per stream; 2 streams at 160 MHz is the familiar
+2.4 Gb/s headline.
+
 ---
 
 ## References
