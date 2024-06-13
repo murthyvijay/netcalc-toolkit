@@ -128,6 +128,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 |---|---|---|
 | `rf` | free-space path loss, EIRP, received level and fade margin, Fresnel zone, earth bulge, radio horizon | `netcalc rf link --tx 20 --tx-gain 23 --rx-gain 23 --km 10 --mhz 5800 --sens -75` |
 | `capacity` | thermal noise floor, Shannon capacity, SNR needed for a rate, Eb/N0, SINR | `netcalc capacity shannon --bw 80M --snr 30` |
+| `wifi` | 802.11n/ac/ax PHY rate per MCS, width, streams and guard interval, channel frequencies, airtime | `netcalc wifi rate --std ax --mcs 11 --width 80 --nss 2` |
 
 ## Examples
 
