@@ -4,6 +4,8 @@
 
 - Optics: ITU-T G.694.1 DWDM grid and flexgrid slots, optical power budget and
   reach, chromatic dispersion and PMD limits, coherent line rates, EDFA planning.
+- Wireless: free-space path loss, EIRP, Fresnel clearance and radio horizon,
+  Shannon capacity, noise floor and SINR, 802.11n/ac/ax PHY rates and channels.
 
 ## 1.0.0
 
