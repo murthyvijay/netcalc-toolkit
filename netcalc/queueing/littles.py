@@ -40,3 +40,8 @@ def littles_law(count=None, rate=None, time=None):
     if rate is None:
         return count / time
     return count / rate
+
+
+def utilization(throughput, service_time):
+    """Utilisation law ``U = X * S``; values above 1 mean the server cannot keep up."""
+    return throughput * service_time
