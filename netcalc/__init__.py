@@ -9,6 +9,7 @@ Subpackages:
 * ``netcalc.aifabric``  load balancing, retransmission, MRC, RoCE/PFC/DCQCN, buffers, collectives
 * ``netcalc.optics``    DWDM grid, power budget, dispersion, coherent line rates, amplifiers
 * ``netcalc.wireless``  RF link budget, Shannon capacity and noise, Wi-Fi channels and PHY rates
+* ``netcalc.queueing``  Little's law, Erlang B/C, M/G/1 and Kingman, M/M/1/K buffers
 
 Every module is also a command-line tool: ``python -m netcalc.<package>.<module> --help``.
 """
