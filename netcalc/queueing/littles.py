@@ -60,3 +60,32 @@ def buffer_bytes(rate_bps, delay_s):
 def delay_from_buffer(rate_bps, queued_bytes):
     """Queueing delay (s) of ``queued_bytes`` ahead of a packet on a ``rate_bps`` port."""
     return queued_bytes * 8 / rate_bps
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("solve", help="solve L = lambda * W (give any two)")
+    p.add_argument("--count", type=float, help="mean number in system (L)")
+    p.add_argument("--rate", type=float, help="arrival rate per second (lambda)")
+    p.add_argument("--time", type=float, help="mean time in system in seconds (W)")
+    p = sub.add_parser("buffer", help="buffer occupancy from queueing delay")
+    p.add_argument("--rate", required=True, help="port rate, e.g. 400G")
+    p.add_argument("--delay", required=True, help="queueing delay, e.g. 10us")
+    p = sub.add_parser("delay", help="queueing delay from buffer occupancy")
+    p.add_argument("--rate", required=True)
+    p.add_argument("--bytes", type=float, required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "solve":
+        value = littles_law(args.count, args.rate, args.time)
+        name = "L" if args.count is None else "lambda" if args.rate is None else "W"
+        print(f"{name} = {value:g}")
+    elif args.cmd == "buffer":
+        print(f"{fmt_size(buffer_bytes(parse_rate(args.rate), parse_time(args.delay)))} queued")
+    else:
+        print(f"queueing delay = {fmt_time(delay_from_buffer(parse_rate(args.rate), args.bytes))}")
+
+
+if __name__ == "__main__":
+    main()
