@@ -45,3 +45,8 @@ def littles_law(count=None, rate=None, time=None):
 def utilization(throughput, service_time):
     """Utilisation law ``U = X * S``; values above 1 mean the server cannot keep up."""
     return throughput * service_time
+
+
+def max_throughput(service_time, servers=1):
+    """Saturation throughput (jobs/s) of ``servers`` identical servers."""
+    return servers / service_time
