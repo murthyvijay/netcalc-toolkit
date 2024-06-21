@@ -55,3 +55,8 @@ def max_throughput(service_time, servers=1):
 def buffer_bytes(rate_bps, delay_s):
     """Bytes queued when a port draining at ``rate_bps`` shows ``delay_s`` of delay."""
     return rate_bps * delay_s / 8
+
+
+def delay_from_buffer(rate_bps, queued_bytes):
+    """Queueing delay (s) of ``queued_bytes`` ahead of a packet on a ``rate_bps`` port."""
+    return queued_bytes * 8 / rate_bps
