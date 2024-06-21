@@ -50,3 +50,8 @@ def utilization(throughput, service_time):
 def max_throughput(service_time, servers=1):
     """Saturation throughput (jobs/s) of ``servers`` identical servers."""
     return servers / service_time
+
+
+def buffer_bytes(rate_bps, delay_s):
+    """Bytes queued when a port draining at ``rate_bps`` shows ``delay_s`` of delay."""
+    return rate_bps * delay_s / 8
