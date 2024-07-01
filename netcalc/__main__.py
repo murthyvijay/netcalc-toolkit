@@ -44,6 +44,7 @@ TOOLS = {
     "rf": "netcalc.wireless.rf",
     "capacity": "netcalc.wireless.capacity",
     "wifi": "netcalc.wireless.wifi",
+    "littles": "netcalc.queueing.littles",
 }
 
 
