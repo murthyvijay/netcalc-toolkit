@@ -14,3 +14,9 @@ class TestLittlesLaw(unittest.TestCase):
             littles.littles_law(rate=10)
         with self.assertRaises(ValueError):
             littles.littles_law(count=1, rate=2, time=3)
+
+
+class TestOperationalLaws(unittest.TestCase):
+    def test_utilization(self):
+        self.assertAlmostEqual(littles.utilization(800, 0.001), 0.8)
+        self.assertEqual(littles.max_throughput(0.002, servers=4), 2000)
