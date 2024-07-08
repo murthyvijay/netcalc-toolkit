@@ -11,6 +11,7 @@ time, `p` = probability (loss or error), `log` = log10 unless noted.
 - [5. AI/ML fabrics](#5-aiml-fabrics)
 - [6. Optics and DWDM](#6-optics-and-dwdm)
 - [7. Wireless](#7-wireless)
+- [8. Queueing theory](#8-queueing-theory)
 - [References](#references)
 
 ---
@@ -539,6 +540,15 @@ reaches 600.5 Mb/s per stream; 2 streams at 160 MHz is the familiar
 Those are PHY rates: preambles, contention and acknowledgements mean real
 throughput is often 60-70 % of them, and every frame's airtime at a low MCS
 is time no one else can use.
+
+---
+
+## 8. Queueing theory
+
+Every buffer, trunk group and server pool is a queue. A few classic results
+explain most of what network engineers see: delay rises without bound as
+utilisation approaches 1, variability (bursty arrivals, mixed packet sizes)
+multiplies queueing delay, and finite buffers turn delay into loss.
 
 ---
 
