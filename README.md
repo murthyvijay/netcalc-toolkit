@@ -130,6 +130,12 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `capacity` | thermal noise floor, Shannon capacity, SNR needed for a rate, Eb/N0, SINR | `netcalc capacity shannon --bw 80M --snr 30` |
 | `wifi` | 802.11n/ac/ax PHY rate per MCS, width, streams and guard interval, channel frequencies, airtime | `netcalc wifi rate --std ax --mcs 11 --width 80 --nss 2` |
 
+### Queueing theory (`netcalc.queueing`)
+
+| tool | what it answers | example |
+|---|---|---|
+| `littles` | Little's law for any unknown, utilisation law, buffer bytes from queueing delay | `netcalc littles buffer --rate 400G --delay 10us` |
+
 ## Examples
 
 The `examples/` folder combines several tools into small reports:
