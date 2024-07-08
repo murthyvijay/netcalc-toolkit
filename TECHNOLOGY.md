@@ -550,6 +550,14 @@ explain most of what network engineers see: delay rises without bound as
 utilisation approaches 1, variability (bursty arrivals, mixed packet sizes)
 multiplies queueing delay, and finite buffers turn delay into loss.
 
+### Little's law (`littles`)
+
+`L = lambda W` holds for any stable system: the average number inside equals
+arrival rate times average time inside, regardless of distributions. For a
+switch port it says queued bytes equal drain rate times queueing delay, so
+10 us of delay on a 400 Gb/s port is 500 KB of buffer, and a 64 MB shared
+buffer can hold at most 1.3 ms of one 400G port's traffic.
+
 ---
 
 ## References
