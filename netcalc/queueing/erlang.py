@@ -32,3 +32,15 @@ def offered_traffic(calls_per_hour, holding_time_s):
     10.0
     """
     return calls_per_hour * holding_time_s / 3600.0
+
+
+def erlang_b(traffic, servers):
+    """Blocking probability with ``servers`` circuits offered ``traffic`` Erlangs.
+
+    >>> round(erlang_b(10, 15), 4)
+    0.0365
+    """
+    b = 1.0
+    for n in range(1, servers + 1):
+        b = traffic * b / (n + traffic * b)
+    return b
