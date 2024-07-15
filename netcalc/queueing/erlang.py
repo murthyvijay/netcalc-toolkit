@@ -44,3 +44,13 @@ def erlang_b(traffic, servers):
     for n in range(1, servers + 1):
         b = traffic * b / (n + traffic * b)
     return b
+
+
+def servers_for_blocking(traffic, target):
+    """Fewest circuits that keep Erlang B blocking at or below ``target``."""
+    n = 0
+    b = 1.0
+    while b > target:
+        n += 1
+        b = traffic * b / (n + traffic * b)
+    return n
