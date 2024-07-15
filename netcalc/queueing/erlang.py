@@ -54,3 +54,11 @@ def servers_for_blocking(traffic, target):
         n += 1
         b = traffic * b / (n + traffic * b)
     return n
+
+
+def erlang_c(traffic, servers):
+    """Probability that an arrival has to wait (``servers`` must exceed ``traffic``)."""
+    if servers <= traffic:
+        return 1.0
+    b = erlang_b(traffic, servers)
+    return servers * b / (servers - traffic * (1 - b))
