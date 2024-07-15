@@ -23,3 +23,12 @@ Usage::
 
 import argparse
 import math
+
+
+def offered_traffic(calls_per_hour, holding_time_s):
+    """Offered load in Erlangs.
+
+    >>> offered_traffic(300, 120)
+    10.0
+    """
+    return calls_per_hour * holding_time_s / 3600.0
