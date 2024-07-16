@@ -76,3 +76,35 @@ def service_level(traffic, servers, holding_time_s, target_s):
     if servers <= traffic:
         return 0.0
     return 1 - erlang_c(traffic, servers) * math.exp(-(servers - traffic) * target_s / holding_time_s)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("b", help="Erlang B blocking probability")
+    p.add_argument("--traffic", type=float, required=True, help="Erlangs")
+    p.add_argument("--servers", type=int, required=True)
+    p = sub.add_parser("size", help="circuits needed for a blocking target")
+    p.add_argument("--traffic", type=float, required=True)
+    p.add_argument("--blocking", type=float, default=0.01)
+    p = sub.add_parser("c", help="Erlang C waiting probability and service level")
+    p.add_argument("--traffic", type=float, required=True)
+    p.add_argument("--servers", type=int, required=True)
+    p.add_argument("--aht", type=float, required=True, help="mean holding time in seconds")
+    p.add_argument("--target", type=float, default=20.0, help="answer-time target in seconds")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "b":
+        print(f"blocking = {erlang_b(args.traffic, args.servers):.4%}")
+    elif args.cmd == "size":
+        n = servers_for_blocking(args.traffic, args.blocking)
+        print(f"{n} circuits (blocking {erlang_b(args.traffic, n):.4%})")
+    else:
+        c = erlang_c(args.traffic, args.servers)
+        w = mean_wait(args.traffic, args.servers, args.aht)
+        sl = service_level(args.traffic, args.servers, args.aht, args.target)
+        print(f"P(wait) {c:.2%}, mean wait {w:.1f} s, {sl:.1%} answered within {args.target:g} s")
+
+
+if __name__ == "__main__":
+    main()
