@@ -62,3 +62,10 @@ def erlang_c(traffic, servers):
         return 1.0
     b = erlang_b(traffic, servers)
     return servers * b / (servers - traffic * (1 - b))
+
+
+def mean_wait(traffic, servers, holding_time_s):
+    """Mean wait (s) over all arrivals in an M/M/c queue."""
+    if servers <= traffic:
+        return float("inf")
+    return erlang_c(traffic, servers) * holding_time_s / (servers - traffic)
