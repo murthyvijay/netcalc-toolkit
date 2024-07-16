@@ -69,3 +69,10 @@ def mean_wait(traffic, servers, holding_time_s):
     if servers <= traffic:
         return float("inf")
     return erlang_c(traffic, servers) * holding_time_s / (servers - traffic)
+
+
+def service_level(traffic, servers, holding_time_s, target_s):
+    """Fraction of arrivals answered within ``target_s`` seconds."""
+    if servers <= traffic:
+        return 0.0
+    return 1 - erlang_c(traffic, servers) * math.exp(-(servers - traffic) * target_s / holding_time_s)
