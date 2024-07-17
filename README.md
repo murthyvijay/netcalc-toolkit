@@ -135,6 +135,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | tool | what it answers | example |
 |---|---|---|
 | `littles` | Little's law for any unknown, utilisation law, buffer bytes from queueing delay | `netcalc littles buffer --rate 400G --delay 10us` |
+| `erlang` | Erlang B blocking, circuits for a blocking target, Erlang C wait probability, mean wait and service level | `netcalc erlang size --traffic 10 --blocking 0.01` |
 
 ## Examples
 
