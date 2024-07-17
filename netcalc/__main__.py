@@ -45,6 +45,7 @@ TOOLS = {
     "capacity": "netcalc.wireless.capacity",
     "wifi": "netcalc.wireless.wifi",
     "littles": "netcalc.queueing.littles",
+    "erlang": "netcalc.queueing.erlang",
 }
 
 
