@@ -558,6 +558,16 @@ switch port it says queued bytes equal drain rate times queueing delay, so
 10 us of delay on a 400 Gb/s port is 500 KB of buffer, and a 64 MB shared
 buffer can hold at most 1.3 ms of one 400G port's traffic.
 
+### Erlang B and C (`erlang`)
+
+Offered traffic in Erlangs is calls per hour times holding time in hours.
+Erlang B gives the blocking probability of c circuits when blocked calls are
+lost (SIP trunks, PRI channels, NAT port pools): 10 Erlangs on 15 circuits
+blocks 3.65 %, and 18 circuits are needed for 1 %. Erlang C is the
+"blocked calls wait" version used for call centres and server pools: it gives
+the probability of waiting, the mean wait `C * AHT / (c - A)` and the share
+answered within a target time.
+
 ---
 
 ## References
