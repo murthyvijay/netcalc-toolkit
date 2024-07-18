@@ -36,3 +36,8 @@ def pk_wait(utilization, mean_service_s, cs2=1.0):
     if not 0 <= utilization < 1:
         raise ValueError("utilization must be in [0, 1)")
     return utilization / (1 - utilization) * (1 + cs2) / 2 * mean_service_s
+
+
+def md1_wait(utilization, service_s):
+    """Mean wait (s) of an M/D/1 queue (constant service time)."""
+    return pk_wait(utilization, service_s, cs2=0.0)
