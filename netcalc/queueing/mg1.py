@@ -25,3 +25,14 @@ Usage::
 import argparse
 
 from netcalc.units import fmt_time, parse_rate
+
+
+def pk_wait(utilization, mean_service_s, cs2=1.0):
+    """Pollaczek-Khinchine mean wait in queue (s).
+
+    >>> round(pk_wait(0.8, 1.0, cs2=1.0), 3)
+    4.0
+    """
+    if not 0 <= utilization < 1:
+        raise ValueError("utilization must be in [0, 1)")
+    return utilization / (1 - utilization) * (1 + cs2) / 2 * mean_service_s
