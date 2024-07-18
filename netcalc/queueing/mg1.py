@@ -41,3 +41,10 @@ def pk_wait(utilization, mean_service_s, cs2=1.0):
 def md1_wait(utilization, service_s):
     """Mean wait (s) of an M/D/1 queue (constant service time)."""
     return pk_wait(utilization, service_s, cs2=0.0)
+
+
+def kingman_wait(utilization, mean_service_s, ca2, cs2):
+    """Kingman's G/G/1 approximation of the mean wait in queue (s)."""
+    if not 0 <= utilization < 1:
+        raise ValueError("utilization must be in [0, 1)")
+    return utilization / (1 - utilization) * (ca2 + cs2) / 2 * mean_service_s
