@@ -48,3 +48,15 @@ def kingman_wait(utilization, mean_service_s, ca2, cs2):
     if not 0 <= utilization < 1:
         raise ValueError("utilization must be in [0, 1)")
     return utilization / (1 - utilization) * (ca2 + cs2) / 2 * mean_service_s
+
+
+def size_mix_moments(mix):
+    """Mean size and squared coefficient of variation of ``{bytes: weight}``.
+
+    >>> size_mix_moments({1000: 1})
+    (1000.0, 0.0)
+    """
+    total = sum(mix.values())
+    mean = sum(s * w for s, w in mix.items()) / total
+    second = sum(s * s * w for s, w in mix.items()) / total
+    return mean, second / mean ** 2 - 1
