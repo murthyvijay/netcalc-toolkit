@@ -66,3 +66,8 @@ def mix_wait(link_bps, utilization, mix):
     """Mean M/G/1 queueing delay (s) for a packet-size mix on a link."""
     mean_bytes, cs2 = size_mix_moments(mix)
     return pk_wait(utilization, mean_bytes * 8 / link_bps, cs2)
+
+
+def parse_mix(items):
+    """Parse ``["64:7", "1500:1"]`` into ``{64: 7.0, 1500: 1.0}``."""
+    return {int(s): float(w) for s, w in (item.split(":", 1) for item in items)}
