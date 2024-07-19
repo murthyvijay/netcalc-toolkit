@@ -60,3 +60,9 @@ def size_mix_moments(mix):
     mean = sum(s * w for s, w in mix.items()) / total
     second = sum(s * s * w for s, w in mix.items()) / total
     return mean, second / mean ** 2 - 1
+
+
+def mix_wait(link_bps, utilization, mix):
+    """Mean M/G/1 queueing delay (s) for a packet-size mix on a link."""
+    mean_bytes, cs2 = size_mix_moments(mix)
+    return pk_wait(utilization, mean_bytes * 8 / link_bps, cs2)
