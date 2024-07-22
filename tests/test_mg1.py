@@ -13,3 +13,11 @@ class TestPollaczekKhinchine(unittest.TestCase):
     def test_rejects_saturation(self):
         with self.assertRaises(ValueError):
             mg1.pk_wait(1.0, 1.0)
+
+
+class TestKingman(unittest.TestCase):
+    def test_poisson_matches_pk(self):
+        self.assertAlmostEqual(mg1.kingman_wait(0.7, 1.0, 1.0, 0.5), mg1.pk_wait(0.7, 1.0, 0.5))
+
+    def test_bursty_arrivals_wait_longer(self):
+        self.assertAlmostEqual(mg1.kingman_wait(0.5, 1.0, 4.0, 0.0), 2.0)
