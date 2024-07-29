@@ -577,6 +577,12 @@ variability of service times, not just their mean:
 Wq = rho / (1 - rho) * (1 + cs2) / 2 * E[S]
 ```
 
+Fixed-size cells (cs2 = 0) wait half as long as exponential service
+(cs2 = 1); a 7:4:1 IMIX of 64/576/1500-byte packets has cs2 of about 1.39 and
+waits longer than M/M/1 predicts. Kingman's approximation adds arrival
+variability ca2: fixed-size packets arriving in bursts (ca2 = 4) at 50 % load
+queue as long as Poisson arrivals of the same packets at 80 %.
+
 ---
 
 ## References
