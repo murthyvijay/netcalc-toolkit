@@ -568,6 +568,15 @@ blocks 3.65 %, and 18 circuits are needed for 1 %. Erlang C is the
 the probability of waiting, the mean wait `C * AHT / (c - A)` and the share
 answered within a target time.
 
+### M/G/1 and Kingman (`mg1`)
+
+The Pollaczek-Khinchine formula shows that queueing delay depends on the
+variability of service times, not just their mean:
+
+```
+Wq = rho / (1 - rho) * (1 + cs2) / 2 * E[S]
+```
+
 ---
 
 ## References
