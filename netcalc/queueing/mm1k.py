@@ -19,3 +19,12 @@ Usage::
 
 import argparse
 import math
+
+
+def state_probability(rho, k, n):
+    """Probability that exactly ``n`` packets are in an M/M/1/K system."""
+    if not 0 <= n <= k:
+        return 0.0
+    if math.isclose(rho, 1.0):
+        return 1.0 / (k + 1)
+    return (1 - rho) * rho ** n / (1 - rho ** (k + 1))
