@@ -28,3 +28,12 @@ def state_probability(rho, k, n):
     if math.isclose(rho, 1.0):
         return 1.0 / (k + 1)
     return (1 - rho) * rho ** n / (1 - rho ** (k + 1))
+
+
+def loss_probability(rho, k):
+    """Probability an arrival is dropped because the buffer is full.
+
+    >>> round(loss_probability(1.0, 9), 2)
+    0.1
+    """
+    return state_probability(rho, k, k)
