@@ -42,3 +42,8 @@ def loss_probability(rho, k):
 def mean_occupancy(rho, k):
     """Mean number of packets in the system."""
     return sum(n * state_probability(rho, k, n) for n in range(k + 1))
+
+
+def carried_load(rho, k):
+    """Fraction of the service rate actually used (throughput / mu)."""
+    return rho * (1 - loss_probability(rho, k))
