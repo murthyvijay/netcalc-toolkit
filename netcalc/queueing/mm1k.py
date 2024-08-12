@@ -37,3 +37,8 @@ def loss_probability(rho, k):
     0.1
     """
     return state_probability(rho, k, k)
+
+
+def mean_occupancy(rho, k):
+    """Mean number of packets in the system."""
+    return sum(n * state_probability(rho, k, n) for n in range(k + 1))
