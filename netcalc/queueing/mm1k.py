@@ -47,3 +47,8 @@ def mean_occupancy(rho, k):
 def carried_load(rho, k):
     """Fraction of the service rate actually used (throughput / mu)."""
     return rho * (1 - loss_probability(rho, k))
+
+
+def mean_delay(rho, k, service_s):
+    """Mean time in system (s) of an accepted packet, by Little's law."""
+    return mean_occupancy(rho, k) * service_s / carried_load(rho, k)
