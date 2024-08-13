@@ -52,3 +52,11 @@ def carried_load(rho, k):
 def mean_delay(rho, k, service_s):
     """Mean time in system (s) of an accepted packet, by Little's law."""
     return mean_occupancy(rho, k) * service_s / carried_load(rho, k)
+
+
+def buffer_for_loss(rho, target, max_k=1_000_000):
+    """Smallest K whose loss probability is at or below ``target``."""
+    for k in range(1, max_k + 1):
+        if loss_probability(rho, k) <= target:
+            return k
+    raise ValueError("loss target not reachable at this load")
