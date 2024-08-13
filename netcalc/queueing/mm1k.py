@@ -60,3 +60,26 @@ def buffer_for_loss(rho, target, max_k=1_000_000):
         if loss_probability(rho, k) <= target:
             return k
     raise ValueError("loss target not reachable at this load")
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("loss", help="loss, occupancy and throughput for a buffer")
+    p.add_argument("--load", type=float, required=True, help="offered load rho")
+    p.add_argument("--k", type=int, required=True, help="buffer size in packets")
+    p = sub.add_parser("size", help="buffer needed for a loss target")
+    p.add_argument("--load", type=float, required=True)
+    p.add_argument("--loss", type=float, required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "loss":
+        print(f"loss {loss_probability(args.load, args.k):.3e}, mean occupancy "
+              f"{mean_occupancy(args.load, args.k):.2f} pkts, carried load "
+              f"{carried_load(args.load, args.k):.3f}")
+    else:
+        print(f"K = {buffer_for_loss(args.load, args.loss)} packets")
+
+
+if __name__ == "__main__":
+    main()
