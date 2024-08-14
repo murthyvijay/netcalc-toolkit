@@ -137,6 +137,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `littles` | Little's law for any unknown, utilisation law, buffer bytes from queueing delay | `netcalc littles buffer --rate 400G --delay 10us` |
 | `erlang` | Erlang B blocking, circuits for a blocking target, Erlang C wait probability, mean wait and service level | `netcalc erlang size --traffic 10 --blocking 0.01` |
 | `mg1` | Pollaczek-Khinchine and M/D/1 wait, Kingman G/G/1 approximation, packet-size mix moments | `netcalc mg1 mix --rate 10G --load 0.7 64:7 576:4 1500:1` |
+| `mm1k` | M/M/1/K state probabilities, loss, carried load, delay, buffer size for a loss target | `netcalc mm1k size --load 0.9 --loss 1e-6` |
 
 ## Examples
 
