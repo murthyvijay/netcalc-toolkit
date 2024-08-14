@@ -47,6 +47,7 @@ TOOLS = {
     "littles": "netcalc.queueing.littles",
     "erlang": "netcalc.queueing.erlang",
     "mg1": "netcalc.queueing.mg1",
+    "mm1k": "netcalc.queueing.mm1k",
 }
 
 
