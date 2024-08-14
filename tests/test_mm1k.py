@@ -22,3 +22,18 @@ class TestLoss(unittest.TestCase):
 
     def test_overload_drops_the_excess(self):
         self.assertAlmostEqual(mm1k.carried_load(2.0, 50), 1.0, places=6)
+
+
+class TestSizing(unittest.TestCase):
+    def test_buffer_for_loss(self):
+        k = mm1k.buffer_for_loss(0.9, 1e-6)
+        self.assertEqual(k, 110)
+        self.assertLessEqual(mm1k.loss_probability(0.9, k), 1e-6)
+        self.assertGreater(mm1k.loss_probability(0.9, k - 1), 1e-6)
+
+    def test_delay_by_littles_law(self):
+        self.assertAlmostEqual(mm1k.mean_delay(0.5, 1000, 1.0), 2.0, places=6)
+
+
+if __name__ == "__main__":
+    unittest.main()
