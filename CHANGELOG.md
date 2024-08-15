@@ -6,6 +6,8 @@
   reach, chromatic dispersion and PMD limits, coherent line rates, EDFA planning.
 - Wireless: free-space path loss, EIRP, Fresnel clearance and radio horizon,
   Shannon capacity, noise floor and SINR, 802.11n/ac/ax PHY rates and channels.
+- Queueing: Little's law and buffer occupancy, Erlang B and C sizing,
+  Pollaczek-Khinchine and Kingman waits, M/M/1/K loss and buffer sizing.
 
 ## 1.0.0
 
