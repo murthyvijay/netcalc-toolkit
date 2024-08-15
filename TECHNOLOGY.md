@@ -583,6 +583,14 @@ waits longer than M/M/1 predicts. Kingman's approximation adds arrival
 variability ca2: fixed-size packets arriving in bursts (ca2 = 4) at 50 % load
 queue as long as Poisson arrivals of the same packets at 80 %.
 
+### Finite buffers (`mm1k`)
+
+With room for K packets, an M/M/1/K queue drops arrivals that find it full,
+with probability `(1 - rho) rho^K / (1 - rho^(K+1))`. Loss falls geometrically
+with buffer size at loads below 1: at 90 % load, 20 packets of buffer lose
+1.4 % and 110 packets are needed for 1e-6. Above 100 % load the buffer only
+adds delay; the excess is dropped whatever its size.
+
 ---
 
 ## References
