@@ -40,3 +40,19 @@ RFC4594_CLASSES = {
     "Standard": "DF",
     "Low-Priority Data": "LE",
 }
+
+
+def parse_dscp(value):
+    """DSCP number from a name (``"AF41"``), a decimal string or an int.
+
+    >>> parse_dscp("af41"), parse_dscp("46"), parse_dscp(10)
+    (34, 46, 10)
+    """
+    if isinstance(value, int):
+        dscp = value
+    else:
+        text = str(value).strip().upper()
+        dscp = NAMED[text] if text in NAMED else int(text, 0)
+    if not 0 <= dscp <= 63:
+        raise ValueError("DSCP must be 0..63")
+    return dscp
