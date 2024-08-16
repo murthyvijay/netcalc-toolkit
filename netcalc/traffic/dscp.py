@@ -56,3 +56,15 @@ def parse_dscp(value):
     if not 0 <= dscp <= 63:
         raise ValueError("DSCP must be 0..63")
     return dscp
+
+
+def phb_name(dscp):
+    """Per-hop behaviour name of a DSCP, or ``"EXP/LU"`` for unassigned values.
+
+    >>> phb_name(34), phb_name(48), phb_name(5)
+    ('AF41', 'CS6', 'EXP/LU')
+    """
+    for name, value in NAMED.items():
+        if value == dscp and name != "CS0":
+            return name
+    return "EXP/LU"
