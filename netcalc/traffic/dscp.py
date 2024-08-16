@@ -73,3 +73,8 @@ def phb_name(dscp):
 def dscp_to_tos(dscp, ecn=0):
     """ToS / Traffic Class byte for a DSCP and ECN codepoint."""
     return (parse_dscp(dscp) << 2) | (ecn & 0b11)
+
+
+def tos_to_dscp(tos):
+    """Split a ToS byte into ``(dscp, ecn)``."""
+    return tos >> 2, tos & 0b11
