@@ -68,3 +68,8 @@ def phb_name(dscp):
         if value == dscp and name != "CS0":
             return name
     return "EXP/LU"
+
+
+def dscp_to_tos(dscp, ecn=0):
+    """ToS / Traffic Class byte for a DSCP and ECN codepoint."""
+    return (parse_dscp(dscp) << 2) | (ecn & 0b11)
