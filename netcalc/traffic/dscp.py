@@ -83,3 +83,9 @@ def tos_to_dscp(tos):
 def ip_precedence(dscp):
     """Legacy IP precedence (top three bits of the DSCP)."""
     return parse_dscp(dscp) >> 3
+
+
+def af_drop_precedence(dscp):
+    """AF drop precedence (1 low .. 3 high), or ``None`` for non-AF code points."""
+    name = phb_name(parse_dscp(dscp))
+    return int(name[3]) if name.startswith("AF") else None
