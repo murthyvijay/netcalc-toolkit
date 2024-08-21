@@ -89,3 +89,8 @@ def af_drop_precedence(dscp):
     """AF drop precedence (1 low .. 3 high), or ``None`` for non-AF code points."""
     name = phb_name(parse_dscp(dscp))
     return int(name[3]) if name.startswith("AF") else None
+
+
+def default_cos(dscp):
+    """Default 802.1p / MPLS TC value for a DSCP (its class bits)."""
+    return ip_precedence(dscp)
