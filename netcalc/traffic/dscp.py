@@ -78,3 +78,8 @@ def dscp_to_tos(dscp, ecn=0):
 def tos_to_dscp(tos):
     """Split a ToS byte into ``(dscp, ecn)``."""
     return tos >> 2, tos & 0b11
+
+
+def ip_precedence(dscp):
+    """Legacy IP precedence (top three bits of the DSCP)."""
+    return parse_dscp(dscp) >> 3
