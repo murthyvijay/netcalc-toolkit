@@ -94,3 +94,30 @@ def af_drop_precedence(dscp):
 def default_cos(dscp):
     """Default 802.1p / MPLS TC value for a DSCP (its class bits)."""
     return ip_precedence(dscp)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("lookup", help="describe a DSCP name or number")
+    p.add_argument("dscp")
+    p = sub.add_parser("tos", help="decode a ToS / Traffic Class byte")
+    p.add_argument("tos", help="decimal or 0x hex")
+    sub.add_parser("table", help="RFC 4594 service classes")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "lookup":
+        d = parse_dscp(args.dscp)
+        drop = af_drop_precedence(d)
+        print(f"DSCP {d} ({phb_name(d)}): ToS 0x{dscp_to_tos(d):02x}, precedence {ip_precedence(d)}, "
+              f"CoS {default_cos(d)}" + (f", AF drop precedence {drop}" if drop else ""))
+    elif args.cmd == "tos":
+        d, ecn = tos_to_dscp(int(args.tos, 0))
+        print(f"DSCP {d} ({phb_name(d)}), ECN {ecn:02b}")
+    else:
+        for service, name in RFC4594_CLASSES.items():
+            print(f"{service:<24} {name:<5} {NAMED[name]:>2}")
+
+
+if __name__ == "__main__":
+    main()
