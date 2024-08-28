@@ -27,3 +27,21 @@ class TestTosByte(unittest.TestCase):
 
     def test_decode(self):
         self.assertEqual(dscp.tos_to_dscp(0xB9), (46, 1))
+
+
+class TestMappings(unittest.TestCase):
+    def test_precedence_and_cos(self):
+        self.assertEqual(dscp.ip_precedence("EF"), 5)
+        self.assertEqual(dscp.default_cos("AF41"), 4)
+
+    def test_drop_precedence(self):
+        self.assertEqual(dscp.af_drop_precedence("AF23"), 3)
+        self.assertIsNone(dscp.af_drop_precedence("EF"))
+
+    def test_rfc4594_names_resolve(self):
+        for name in dscp.RFC4594_CLASSES.values():
+            self.assertIn(name, dscp.NAMED)
+
+
+if __name__ == "__main__":
+    unittest.main()
