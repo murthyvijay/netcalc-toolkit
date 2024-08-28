@@ -48,6 +48,7 @@ TOOLS = {
     "erlang": "netcalc.queueing.erlang",
     "mg1": "netcalc.queueing.mg1",
     "mm1k": "netcalc.queueing.mm1k",
+    "dscp": "netcalc.traffic.dscp",
 }
 
 
