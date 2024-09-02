@@ -12,6 +12,7 @@ time, `p` = probability (loss or error), `log` = log10 unless noted.
 - [6. Optics and DWDM](#6-optics-and-dwdm)
 - [7. Wireless](#7-wireless)
 - [8. Queueing theory](#8-queueing-theory)
+- [9. Traffic management (QoS)](#9-traffic-management-qos)
 - [References](#references)
 
 ---
@@ -590,6 +591,15 @@ with probability `(1 - rho) rho^K / (1 - rho^(K+1))`. Loss falls geometrically
 with buffer size at loads below 1: at 90 % load, 20 packets of buffer lose
 1.4 % and 110 packets are needed for 1e-6. Above 100 % load the buffer only
 adds delay; the excess is dropped whatever its size.
+
+---
+
+## 9. Traffic management (QoS)
+
+QoS is a pipeline: classify and mark (DSCP), police at the edge (token
+bucket markers), manage queue depth (RED/WRED) and schedule queues onto the
+link (priority, WFQ/DWRR). The `ccna/qos` tool covers the CCNA-level
+basics; this package goes one level deeper.
 
 ---
 
