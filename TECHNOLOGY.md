@@ -601,6 +601,16 @@ bucket markers), manage queue depth (RED/WRED) and schedule queues onto the
 link (priority, WFQ/DWRR). The `ccna/qos` tool covers the CCNA-level
 basics; this package goes one level deeper.
 
+### DSCP and PHBs (`dscp`)
+
+The DSCP is the top six bits of the IPv4 ToS / IPv6 Traffic Class byte
+(`tos = dscp << 2 | ecn`), so EF (46) is ToS 0xB8. Class selectors CSx = 8x
+keep compatibility with IP precedence; Assured Forwarding AFxy = 8x + 2y uses
+x for the queue and y for drop precedence (AF13 is dropped before AF11 in the
+same queue). RFC 4594 maps service classes to code points (Telephony EF,
+Multimedia Conferencing AF41, OAM CS2, Low-Priority Data LE), and the default
+802.1p CoS is the DSCP's top three bits.
+
 ---
 
 ## References
