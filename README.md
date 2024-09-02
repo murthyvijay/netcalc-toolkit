@@ -139,6 +139,12 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `mg1` | Pollaczek-Khinchine and M/D/1 wait, Kingman G/G/1 approximation, packet-size mix moments | `netcalc mg1 mix --rate 10G --load 0.7 64:7 576:4 1500:1` |
 | `mm1k` | M/M/1/K state probabilities, loss, carried load, delay, buffer size for a loss target | `netcalc mm1k size --load 0.9 --loss 1e-6` |
 
+### Traffic management / QoS (`netcalc.traffic`)
+
+| tool | what it answers | example |
+|---|---|---|
+| `dscp` | DSCP names and numbers, ToS byte encode/decode, IP precedence, AF drop precedence, RFC 4594 classes | `netcalc dscp lookup AF41` |
+
 ## Examples
 
 The `examples/` folder combines several tools into small reports:
