@@ -82,3 +82,8 @@ def color_summary(packets, colors):
     for (_, size), color in zip(packets, colors):
         out[color] += size
     return dict(out)
+
+
+def conforming_bytes(cir_bps, bc_bytes, window_s):
+    """Most bytes a token bucket lets through in ``window_s`` starting full."""
+    return bc_bytes + cir_bps * window_s / 8
