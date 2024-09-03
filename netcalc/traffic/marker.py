@@ -23,3 +23,30 @@ import argparse
 from collections import Counter
 
 from netcalc.units import parse_rate, parse_size, parse_time
+
+
+def srtcm(packets, cir_bps, cbs_bytes, ebs_bytes):
+    """Colour a packet trace with the RFC 2697 single-rate three-colour marker.
+
+    >>> srtcm([(0, 1500)] * 3, 1e6, 1500, 1500)
+    ['green', 'yellow', 'red']
+    """
+    tc, te = float(cbs_bytes), float(ebs_bytes)
+    last = None
+    colors = []
+    for t, size in packets:
+        if last is not None:
+            tokens = (t - last) * cir_bps / 8
+            room = cbs_bytes - tc
+            tc += min(tokens, room)
+            te = min(ebs_bytes, te + max(tokens - room, 0.0))
+        last = t
+        if tc >= size:
+            tc -= size
+            colors.append("green")
+        elif te >= size:
+            te -= size
+            colors.append("yellow")
+        else:
+            colors.append("red")
+    return colors
