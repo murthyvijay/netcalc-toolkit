@@ -50,3 +50,27 @@ def srtcm(packets, cir_bps, cbs_bytes, ebs_bytes):
         else:
             colors.append("red")
     return colors
+
+
+def trtcm(packets, cir_bps, cbs_bytes, pir_bps, pbs_bytes):
+    """Colour a packet trace with the RFC 2698 two-rate three-colour marker."""
+    if pir_bps < cir_bps:
+        raise ValueError("PIR must be at least CIR")
+    tc, tp = float(cbs_bytes), float(pbs_bytes)
+    last = None
+    colors = []
+    for t, size in packets:
+        if last is not None:
+            tc = min(cbs_bytes, tc + (t - last) * cir_bps / 8)
+            tp = min(pbs_bytes, tp + (t - last) * pir_bps / 8)
+        last = t
+        if tp < size:
+            colors.append("red")
+        elif tc < size:
+            tp -= size
+            colors.append("yellow")
+        else:
+            tp -= size
+            tc -= size
+            colors.append("green")
+    return colors
