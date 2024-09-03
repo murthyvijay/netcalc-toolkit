@@ -74,3 +74,11 @@ def trtcm(packets, cir_bps, cbs_bytes, pir_bps, pbs_bytes):
             tc -= size
             colors.append("green")
     return colors
+
+
+def color_summary(packets, colors):
+    """Bytes per colour: ``{"green": ..., "yellow": ..., "red": ...}``."""
+    out = Counter({"green": 0, "yellow": 0, "red": 0})
+    for (_, size), color in zip(packets, colors):
+        out[color] += size
+    return dict(out)
