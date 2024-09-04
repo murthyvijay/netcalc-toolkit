@@ -87,3 +87,12 @@ def color_summary(packets, colors):
 def conforming_bytes(cir_bps, bc_bytes, window_s):
     """Most bytes a token bucket lets through in ``window_s`` starting full."""
     return bc_bytes + cir_bps * window_s / 8
+
+
+def parse_trace(items):
+    """Parse ``["0:1500", "0.001:64"]`` into ``[(0.0, 1500), (0.001, 64)]``."""
+    trace = []
+    for item in items:
+        t, size = item.split(":", 1)
+        trace.append((float(t), int(parse_size(size))))
+    return trace
