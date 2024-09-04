@@ -96,3 +96,42 @@ def parse_trace(items):
         t, size = item.split(":", 1)
         trace.append((float(t), int(parse_size(size))))
     return trace
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("srtcm", help="RFC 2697 single-rate marker")
+    p.add_argument("--cir", required=True)
+    p.add_argument("--cbs", required=True, help="committed burst, bytes")
+    p.add_argument("--ebs", required=True, help="excess burst, bytes")
+    p.add_argument("trace", nargs="+", help="time_s:bytes per packet")
+    p = sub.add_parser("trtcm", help="RFC 2698 two-rate marker")
+    p.add_argument("--cir", required=True)
+    p.add_argument("--cbs", required=True)
+    p.add_argument("--pir", required=True)
+    p.add_argument("--pbs", required=True)
+    p.add_argument("trace", nargs="+")
+    p = sub.add_parser("burst", help="bytes a bucket admits in a window")
+    p.add_argument("--cir", required=True)
+    p.add_argument("--bc", required=True)
+    p.add_argument("--window", required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "burst":
+        b = conforming_bytes(parse_rate(args.cir), parse_size(args.bc), parse_time(args.window))
+        print(f"{b:.0f} bytes conform in {args.window}")
+        return
+    trace = parse_trace(args.trace)
+    if args.cmd == "srtcm":
+        colors = srtcm(trace, parse_rate(args.cir), parse_size(args.cbs), parse_size(args.ebs))
+    else:
+        colors = trtcm(trace, parse_rate(args.cir), parse_size(args.cbs),
+                       parse_rate(args.pir), parse_size(args.pbs))
+    for (t, size), color in zip(trace, colors):
+        print(f"t={t:<10g} {size:>6} B  {color}")
+    print(color_summary(trace, colors))
+
+
+if __name__ == "__main__":
+    main()
