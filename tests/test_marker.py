@@ -24,3 +24,20 @@ class TestTrTcm(unittest.TestCase):
     def test_pir_below_cir(self):
         with self.assertRaises(ValueError):
             marker.trtcm([(0, 64)], 2e6, 1500, 1e6, 1500)
+
+
+class TestHelpers(unittest.TestCase):
+    def test_summary(self):
+        trace = [(0, 100), (0, 200), (0, 300)]
+        summary = marker.color_summary(trace, ["green", "red", "green"])
+        self.assertEqual(summary, {"green": 400, "yellow": 0, "red": 200})
+
+    def test_conforming_bytes(self):
+        self.assertAlmostEqual(marker.conforming_bytes(10e6, 15000, 0.01), 27500)
+
+    def test_parse_trace(self):
+        self.assertEqual(marker.parse_trace(["0:1500", "0.5:9KB"]), [(0.0, 1500), (0.5, 9000)])
+
+
+if __name__ == "__main__":
+    unittest.main()
