@@ -611,6 +611,15 @@ same queue). RFC 4594 maps service classes to code points (Telephony EF,
 Multimedia Conferencing AF41, OAM CS2, Low-Priority Data LE), and the default
 802.1p CoS is the DSCP's top three bits.
 
+### Policer colour markers (`marker`)
+
+Policers meter traffic with token buckets. The single-rate three-colour
+marker (RFC 2697) has a committed bucket (CBS) and an excess bucket (EBS),
+both filled at CIR: excess burst is only usable after a quiet period. The
+two-rate marker (RFC 2698) adds a separate peak rate: traffic above PIR is
+red, between CIR and PIR yellow, below CIR green. Typical actions are
+transmit green, re-mark yellow to a higher drop precedence, drop red.
+
 ---
 
 ## References
