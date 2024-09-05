@@ -144,6 +144,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | tool | what it answers | example |
 |---|---|---|
 | `dscp` | DSCP names and numbers, ToS byte encode/decode, IP precedence, AF drop precedence, RFC 4594 classes | `netcalc dscp lookup AF41` |
+| `marker` | RFC 2697 srTCM and RFC 2698 trTCM colouring of a packet trace, bytes per colour, conforming burst | `netcalc marker srtcm --cir 1M --cbs 3000 --ebs 3000 0:1500 0:1500 0:1500` |
 
 ## Examples
 
