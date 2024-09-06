@@ -34,3 +34,10 @@ def drop_probability(avg, min_th, max_th, mpd=10):
     if avg >= max_th:
         return 1.0
     return (avg - min_th) / (max_th - min_th) / mpd
+
+
+def spaced_probability(pb, count):
+    """Floyd-Jacobson probability after ``count`` packets accepted since the last drop."""
+    if count * pb >= 1:
+        return 1.0
+    return pb / (1 - count * pb)
