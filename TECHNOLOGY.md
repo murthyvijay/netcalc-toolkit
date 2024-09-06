@@ -620,6 +620,9 @@ two-rate marker (RFC 2698) adds a separate peak rate: traffic above PIR is
 red, between CIR and PIR yellow, below CIR green. Typical actions are
 transmit green, re-mark yellow to a higher drop precedence, drop red.
 
+Starting full, a bucket admits at most `Bc + CIR * t / 8` bytes in a window
+t, which is how to size Bc for a known burst.
+
 ---
 
 ## References
