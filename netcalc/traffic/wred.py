@@ -21,3 +21,16 @@ Usage::
 
 import argparse
 import math
+
+
+def drop_probability(avg, min_th, max_th, mpd=10):
+    """Early-drop probability for an average queue depth.
+
+    >>> drop_probability(30, 20, 40, mpd=10)
+    0.05
+    """
+    if avg < min_th:
+        return 0.0
+    if avg >= max_th:
+        return 1.0
+    return (avg - min_th) / (max_th - min_th) / mpd
