@@ -62,3 +62,13 @@ def ewma_series(samples, n=9, start=0.0):
 def samples_to_reach(fraction, n=9):
     """Samples of a step change before the average reaches ``fraction`` of it."""
     return math.ceil(math.log(1 - fraction) / math.log(1 - ewma_weight(n)))
+
+
+def af_profiles(queue_limit, mpd=10):
+    """Example WRED profiles per AF drop precedence: ``{1: (min, max, mpd), ...}``.
+
+    AFx1 starts dropping at 75 % of the queue limit, AFx2 at 50 % and AFx3 at
+    25 %; all reach their maximum probability at the limit.
+    """
+    return {dp: (queue_limit * start, queue_limit, mpd)
+            for dp, start in ((1, 0.75), (2, 0.5), (3, 0.25))}
