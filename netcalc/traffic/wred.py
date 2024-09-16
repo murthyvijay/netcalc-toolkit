@@ -41,3 +41,8 @@ def spaced_probability(pb, count):
     if count * pb >= 1:
         return 1.0
     return pb / (1 - count * pb)
+
+
+def ewma_weight(n):
+    """EWMA weight ``2^-n`` for an exponential weighting constant ``n``."""
+    return 2.0 ** -n
