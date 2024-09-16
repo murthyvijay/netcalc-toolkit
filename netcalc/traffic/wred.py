@@ -46,3 +46,14 @@ def spaced_probability(pb, count):
 def ewma_weight(n):
     """EWMA weight ``2^-n`` for an exponential weighting constant ``n``."""
     return 2.0 ** -n
+
+
+def ewma_series(samples, n=9, start=0.0):
+    """Average queue depth after each instantaneous sample."""
+    w = ewma_weight(n)
+    avg = start
+    out = []
+    for q in samples:
+        avg = (1 - w) * avg + w * q
+        out.append(avg)
+    return out
