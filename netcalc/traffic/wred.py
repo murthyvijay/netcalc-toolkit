@@ -57,3 +57,8 @@ def ewma_series(samples, n=9, start=0.0):
         avg = (1 - w) * avg + w * q
         out.append(avg)
     return out
+
+
+def samples_to_reach(fraction, n=9):
+    """Samples of a step change before the average reaches ``fraction`` of it."""
+    return math.ceil(math.log(1 - fraction) / math.log(1 - ewma_weight(n)))
