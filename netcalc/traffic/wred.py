@@ -72,3 +72,34 @@ def af_profiles(queue_limit, mpd=10):
     """
     return {dp: (queue_limit * start, queue_limit, mpd)
             for dp, start in ((1, 0.75), (2, 0.5), (3, 0.25))}
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("prob", help="drop probability at an average depth")
+    p.add_argument("--avg", type=float, required=True)
+    p.add_argument("--min", type=float, required=True)
+    p.add_argument("--max", type=float, required=True)
+    p.add_argument("--mpd", type=float, default=10)
+    p = sub.add_parser("ewma", help="average queue for a series of samples")
+    p.add_argument("--n", type=int, default=9, help="exponential weighting constant")
+    p.add_argument("samples", type=float, nargs="+")
+    p = sub.add_parser("profiles", help="example WRED profiles per AF drop precedence")
+    p.add_argument("--limit", type=float, required=True, help="queue limit in packets")
+    p.add_argument("--mpd", type=float, default=10)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "prob":
+        print(f"drop probability = {drop_probability(args.avg, args.min, args.max, args.mpd):.4f}")
+    elif args.cmd == "ewma":
+        for q, avg in zip(args.samples, ewma_series(args.samples, args.n)):
+            print(f"q={q:<8g} avg={avg:.4f}")
+        print(f"a step reaches 63 % of its size after {samples_to_reach(0.63, args.n)} samples")
+    else:
+        for dp, (lo, hi, mpd) in af_profiles(args.limit, args.mpd).items():
+            print(f"AFx{dp}: min {lo:g}, max {hi:g}, 1/{mpd:g} at max")
+
+
+if __name__ == "__main__":
+    main()
