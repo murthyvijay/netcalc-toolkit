@@ -28,3 +28,15 @@ class TestAverage(unittest.TestCase):
     def test_samples_to_reach(self):
         self.assertEqual(wred.samples_to_reach(0.5, 1), 1)
         self.assertEqual(wred.samples_to_reach(0.63, 9), 509)
+
+
+class TestProfiles(unittest.TestCase):
+    def test_af_profiles_order(self):
+        p = wred.af_profiles(64)
+        self.assertEqual(p[1], (48, 64, 10))
+        self.assertLess(p[3][0], p[2][0])
+        self.assertLess(p[2][0], p[1][0])
+
+
+if __name__ == "__main__":
+    unittest.main()
