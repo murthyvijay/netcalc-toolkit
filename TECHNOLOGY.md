@@ -623,6 +623,16 @@ transmit green, re-mark yellow to a higher drop precedence, drop red.
 Starting full, a bucket admits at most `Bc + CIR * t / 8` bytes in a window
 t, which is how to size Bc for a known burst.
 
+### RED and WRED (`wred`)
+
+RED drops (or ECN-marks) early, before the queue is full, so TCP flows back
+off one at a time instead of all at once. It acts on an EWMA of queue depth
+(`avg += w (q - avg)`, w = 1/512 by default), which lets short bursts through:
+the average needs about 500 samples to reach 63 % of a step change. The drop
+probability ramps linearly from 0 at the minimum threshold to 1/MPD at the
+maximum, then jumps to 1. WRED keeps a profile per drop precedence so AFx3
+traffic is dropped first.
+
 ---
 
 ## References
