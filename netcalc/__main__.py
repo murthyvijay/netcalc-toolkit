@@ -50,6 +50,7 @@ TOOLS = {
     "mm1k": "netcalc.queueing.mm1k",
     "dscp": "netcalc.traffic.dscp",
     "marker": "netcalc.traffic.marker",
+    "wred": "netcalc.traffic.wred",
 }
 
 
