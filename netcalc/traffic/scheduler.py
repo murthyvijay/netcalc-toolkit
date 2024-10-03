@@ -53,3 +53,9 @@ def weighted_shares(weights):
     """Fraction of the link each class gets when every queue is backlogged."""
     total = sum(weights.values())
     return {name: w / total for name, w in weights.items()}
+
+
+def dwrr_quanta(weights, mtu_bytes):
+    """DWRR quantum (bytes) per class, the smallest equal to one MTU."""
+    smallest = min(weights.values())
+    return {name: mtu_bytes * w / smallest for name, w in weights.items()}
