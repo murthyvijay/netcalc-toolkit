@@ -59,3 +59,8 @@ def dwrr_quanta(weights, mtu_bytes):
     """DWRR quantum (bytes) per class, the smallest equal to one MTU."""
     smallest = min(weights.values())
     return {name: mtu_bytes * w / smallest for name, w in weights.items()}
+
+
+def round_time(quanta, rate_bps):
+    """Time (s) for one full DWRR round when every queue is backlogged."""
+    return sum(quanta.values()) * 8 / rate_bps
