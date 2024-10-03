@@ -47,3 +47,9 @@ def max_min_fair(capacity, demands, weights=None):
             alloc[n] = float(demands[n])
         active -= satisfied
     return alloc
+
+
+def weighted_shares(weights):
+    """Fraction of the link each class gets when every queue is backlogged."""
+    total = sum(weights.values())
+    return {name: w / total for name, w in weights.items()}
