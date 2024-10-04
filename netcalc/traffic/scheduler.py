@@ -74,3 +74,14 @@ def priority_residual(capacity, priority_load):
 def priority_blocking_delay(max_frame_bytes, rate_bps):
     """Worst-case wait of a priority packet behind one frame already being sent."""
     return max_frame_bytes * 8 / rate_bps
+
+
+def parse_classes(items):
+    """Parse ``["A=2G", "B=8G:3"]`` into demands and weights dictionaries."""
+    demands, weights = {}, {}
+    for item in items:
+        name, spec = item.split("=", 1)
+        rate, _, weight = spec.partition(":")
+        demands[name] = parse_rate(rate)
+        weights[name] = float(weight) if weight else 1.0
+    return demands, weights
