@@ -64,3 +64,8 @@ def dwrr_quanta(weights, mtu_bytes):
 def round_time(quanta, rate_bps):
     """Time (s) for one full DWRR round when every queue is backlogged."""
     return sum(quanta.values()) * 8 / rate_bps
+
+
+def priority_residual(capacity, priority_load):
+    """Capacity left for non-priority classes after a strict-priority queue."""
+    return max(capacity - priority_load, 0.0)
