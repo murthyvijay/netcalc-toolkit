@@ -85,3 +85,37 @@ def parse_classes(items):
         demands[name] = parse_rate(rate)
         weights[name] = float(weight) if weight else 1.0
     return demands, weights
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("fair", help="weighted max-min fair allocation")
+    p.add_argument("--capacity", required=True)
+    p.add_argument("classes", nargs="+", help="name=demand[:weight]")
+    p = sub.add_parser("dwrr", help="DWRR quanta and shares")
+    p.add_argument("--mtu", type=int, default=1500)
+    p.add_argument("--rate", default="10G")
+    p.add_argument("weights", nargs="+", help="name=weight")
+    p = sub.add_parser("blocking", help="priority wait behind a large frame")
+    p.add_argument("--frame", type=int, required=True, help="bytes")
+    p.add_argument("--rate", required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "fair":
+        demands, weights = parse_classes(args.classes)
+        for name, rate in max_min_fair(parse_rate(args.capacity), demands, weights).items():
+            print(f"{name:<10} {fmt_rate(rate)} of {fmt_rate(demands[name])} requested")
+    elif args.cmd == "dwrr":
+        weights = {n: float(w) for n, w in (item.split("=", 1) for item in args.weights)}
+        quanta = dwrr_quanta(weights, args.mtu)
+        for name, share in weighted_shares(weights).items():
+            print(f"{name:<10} {share:6.1%}  quantum {quanta[name]:.0f} B")
+        print(f"round time {fmt_time(round_time(quanta, parse_rate(args.rate)))}")
+    else:
+        print(f"up to {fmt_time(priority_blocking_delay(args.frame, parse_rate(args.rate)))} "
+              f"behind a {args.frame} B frame")
+
+
+if __name__ == "__main__":
+    main()
