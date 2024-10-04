@@ -69,3 +69,8 @@ def round_time(quanta, rate_bps):
 def priority_residual(capacity, priority_load):
     """Capacity left for non-priority classes after a strict-priority queue."""
     return max(capacity - priority_load, 0.0)
+
+
+def priority_blocking_delay(max_frame_bytes, rate_bps):
+    """Worst-case wait of a priority packet behind one frame already being sent."""
+    return max_frame_bytes * 8 / rate_bps
