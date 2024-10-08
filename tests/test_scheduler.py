@@ -14,3 +14,16 @@ class TestMaxMinFair(unittest.TestCase):
 
     def test_undersubscribed(self):
         self.assertEqual(scheduler.max_min_fair(10, {"A": 1, "B": 2}), {"A": 1.0, "B": 2.0})
+
+
+class TestDwrr(unittest.TestCase):
+    def test_shares(self):
+        shares = scheduler.weighted_shares({"g": 5, "s": 3, "b": 2})
+        self.assertAlmostEqual(shares["g"], 0.5)
+
+    def test_quanta_start_at_one_mtu(self):
+        q = scheduler.dwrr_quanta({"g": 5, "s": 3, "b": 1}, 9216)
+        self.assertEqual(q, {"g": 46080.0, "s": 27648.0, "b": 9216.0})
+
+    def test_round_time(self):
+        self.assertAlmostEqual(scheduler.round_time({"a": 1250, "b": 1250}, 10e6), 0.002)
