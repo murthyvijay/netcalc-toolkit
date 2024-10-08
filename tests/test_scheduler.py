@@ -27,3 +27,21 @@ class TestDwrr(unittest.TestCase):
 
     def test_round_time(self):
         self.assertAlmostEqual(scheduler.round_time({"a": 1250, "b": 1250}, 10e6), 0.002)
+
+
+class TestPriority(unittest.TestCase):
+    def test_residual(self):
+        self.assertEqual(scheduler.priority_residual(10, 3), 7)
+        self.assertEqual(scheduler.priority_residual(10, 12), 0.0)
+
+    def test_blocking(self):
+        self.assertAlmostEqual(scheduler.priority_blocking_delay(9216, 10e9), 7.3728e-6)
+
+    def test_parse_classes(self):
+        demands, weights = scheduler.parse_classes(["A=2G", "B=8G:3"])
+        self.assertEqual(demands, {"A": 2e9, "B": 8e9})
+        self.assertEqual(weights, {"A": 1.0, "B": 3.0})
+
+
+if __name__ == "__main__":
+    unittest.main()
