@@ -51,6 +51,7 @@ TOOLS = {
     "dscp": "netcalc.traffic.dscp",
     "marker": "netcalc.traffic.marker",
     "wred": "netcalc.traffic.wred",
+    "scheduler": "netcalc.traffic.scheduler",
 }
 
 
