@@ -633,6 +633,17 @@ probability ramps linearly from 0 at the minimum threshold to 1/MPD at the
 maximum, then jumps to 1. WRED keeps a profile per drop precedence so AFx3
 traffic is dropped first.
 
+### Schedulers (`scheduler`)
+
+Under congestion, WFQ and DWRR converge to a weighted max-min fair
+allocation: a class that asks for less than its share gets all it asks for,
+and the leftover is split among the rest by weight (10 Gb/s between demands
+of 2, 6 and 6 gives 2, 4 and 4). DWRR quanta must be at least one MTU so each
+queue can send a packet per round. Strict priority queues are served first;
+they need a policer so they cannot starve the rest, and even priority packets
+can wait up to one maximum-size frame time (7.4 us for 9216 bytes at 10G)
+behind a frame already on the wire.
+
 ---
 
 ## References
