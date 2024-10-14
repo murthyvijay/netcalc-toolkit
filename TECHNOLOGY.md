@@ -657,3 +657,8 @@ behind a frame already on the wire.
 - A. Gangidi et al., "RDMA over Ethernet for Distributed AI Training at Meta Scale", SIGCOMM 2024
 - Ultra Ethernet Consortium, Ultra Ethernet Specification 1.0, 2025
 - NVIDIA, nccl-tests performance documentation (algbw and busbw)
+- ITU-T G.694.1 (DWDM frequency grid), ITU-T G.652 (single-mode fibre)
+- RFC 2697 (srTCM), RFC 2698 (trTCM), RFC 2474 and RFC 4594 (DSCP and service classes), RFC 8622 (LE PHB)
+- S. Floyd and V. Jacobson, "Random Early Detection Gateways for Congestion Avoidance", 1993
+- L. Kleinrock, "Queueing Systems, Volume 1: Theory", 1975
+- IEEE 802.11-2020 and 802.11ax-2021 (OFDM PHY parameters)
