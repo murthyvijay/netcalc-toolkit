@@ -146,6 +146,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `dscp` | DSCP names and numbers, ToS byte encode/decode, IP precedence, AF drop precedence, RFC 4594 classes | `netcalc dscp lookup AF41` |
 | `marker` | RFC 2697 srTCM and RFC 2698 trTCM colouring of a packet trace, bytes per colour, conforming burst | `netcalc marker srtcm --cir 1M --cbs 3000 --ebs 3000 0:1500 0:1500 0:1500` |
 | `wred` | RED/WRED drop probability, count-spaced drops, EWMA average queue, per-AF profiles | `netcalc wred prob --avg 35 --min 20 --max 40` |
+| `scheduler` | weighted max-min fair shares, DWRR quanta and round time, strict-priority residual and blocking | `netcalc scheduler fair --capacity 10G A=2G B=6G C=6G` |
 
 ## Examples
 
