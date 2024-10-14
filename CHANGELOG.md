@@ -8,6 +8,8 @@
   Shannon capacity, noise floor and SINR, 802.11n/ac/ax PHY rates and channels.
 - Queueing: Little's law and buffer occupancy, Erlang B and C sizing,
   Pollaczek-Khinchine and Kingman waits, M/M/1/K loss and buffer sizing.
+- Traffic management: DSCP/ToS/CoS mapping with RFC 4594 classes, RFC 2697 and
+  RFC 2698 colour markers, RED/WRED, max-min fair and DWRR schedulers.
 
 ## 1.0.0
 
