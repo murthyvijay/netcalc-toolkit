@@ -11,6 +11,7 @@ Subpackages:
 * ``netcalc.wireless``  RF link budget, Shannon capacity and noise, Wi-Fi channels and PHY rates
 * ``netcalc.queueing``  Little's law, Erlang B/C, M/G/1 and Kingman, M/M/1/K buffers
 * ``netcalc.traffic``   DSCP/PHB mapping, srTCM/trTCM policers, WRED, max-min fair schedulers
+* ``netcalc.routing``   BGP, SPF/ECMP/LFA, IS-IS, BFD, VRRP/HSRP, MPLS/SR, EVPN, convergence
 
 Every module is also a command-line tool: ``python -m netcalc.<package>.<module> --help``.
 """
