@@ -30,3 +30,11 @@ ORIGIN_RANK = {"i": 0, "e": 1, "?": 2}
 PRIVATE_ASN_RANGES = ((64512, 65534), (4_200_000_000, 4_294_967_294))
 DEFAULTS = {"weight": 0, "local_pref": 100, "local": False, "as_path": (), "origin": "i",
             "med": 0, "ebgp": True, "igp_metric": 0, "router_id": "0.0.0.0"}
+
+
+def _attr(route, key):
+    return route.get(key, DEFAULTS[key])
+
+
+def _router_id_key(rid):
+    return tuple(int(octet) for octet in str(rid).split("."))
