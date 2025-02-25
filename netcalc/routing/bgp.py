@@ -38,3 +38,27 @@ def _attr(route, key):
 
 def _router_id_key(rid):
     return tuple(int(octet) for octet in str(rid).split("."))
+
+
+def compare(a, b, always_compare_med=False):
+    """Return ``(winner, step)`` for two routes; ``step`` names the deciding rule."""
+    steps = (
+        ("weight", lambda r: -_attr(r, "weight")),
+        ("local_pref", lambda r: -_attr(r, "local_pref")),
+        ("locally originated", lambda r: not _attr(r, "local")),
+        ("as_path length", lambda r: len(_attr(r, "as_path"))),
+        ("origin", lambda r: ORIGIN_RANK[_attr(r, "origin")]),
+    )
+    for name, key in steps:
+        if key(a) != key(b):
+            return (a if key(a) < key(b) else b), name
+    path_a, path_b = _attr(a, "as_path"), _attr(b, "as_path")
+    same_neighbor = path_a[:1] == path_b[:1]
+    if (always_compare_med or same_neighbor) and _attr(a, "med") != _attr(b, "med"):
+        return (a if _attr(a, "med") < _attr(b, "med") else b), "med"
+    if _attr(a, "ebgp") != _attr(b, "ebgp"):
+        return (a if _attr(a, "ebgp") else b), "ebgp over ibgp"
+    if _attr(a, "igp_metric") != _attr(b, "igp_metric"):
+        return (a if _attr(a, "igp_metric") < _attr(b, "igp_metric") else b), "igp metric"
+    ra, rb = _router_id_key(_attr(a, "router_id")), _router_id_key(_attr(b, "router_id"))
+    return (a if ra <= rb else b), "router id"
