@@ -62,3 +62,11 @@ def compare(a, b, always_compare_med=False):
         return (a if _attr(a, "igp_metric") < _attr(b, "igp_metric") else b), "igp metric"
     ra, rb = _router_id_key(_attr(a, "router_id")), _router_id_key(_attr(b, "router_id"))
     return (a if ra <= rb else b), "router id"
+
+
+def best_path(routes, always_compare_med=False):
+    """Best route of a list, with the rule that decided the final comparison."""
+    best, reason = routes[0], "only path"
+    for route in routes[1:]:
+        best, reason = compare(best, route, always_compare_med)
+    return best, reason
