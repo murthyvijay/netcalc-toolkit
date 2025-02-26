@@ -85,3 +85,12 @@ def route_reflector_sessions(routers, reflectors):
     """iBGP sessions when ``reflectors`` (fully meshed) serve every other router."""
     clients = routers - reflectors
     return full_mesh_sessions(reflectors) + clients * reflectors
+
+
+def to_asdot(asn):
+    """asdot notation of a 4-byte ASN (``65536 -> "1.0"``); 2-byte ASNs stay plain.
+
+    >>> to_asdot(4200000001)
+    '64086.59905'
+    """
+    return str(asn) if asn < 65536 else f"{asn >> 16}.{asn & 0xFFFF}"
