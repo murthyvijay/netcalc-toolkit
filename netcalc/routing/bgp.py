@@ -70,3 +70,12 @@ def best_path(routes, always_compare_med=False):
     for route in routes[1:]:
         best, reason = compare(best, route, always_compare_med)
     return best, reason
+
+
+def full_mesh_sessions(routers):
+    """iBGP sessions in a full mesh.
+
+    >>> full_mesh_sessions(50)
+    1225
+    """
+    return routers * (routers - 1) // 2
