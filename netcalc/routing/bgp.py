@@ -79,3 +79,9 @@ def full_mesh_sessions(routers):
     1225
     """
     return routers * (routers - 1) // 2
+
+
+def route_reflector_sessions(routers, reflectors):
+    """iBGP sessions when ``reflectors`` (fully meshed) serve every other router."""
+    clients = routers - reflectors
+    return full_mesh_sessions(reflectors) + clients * reflectors
