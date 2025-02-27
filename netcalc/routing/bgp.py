@@ -113,3 +113,27 @@ def negotiated_timers(local_hold, peer_hold):
     """Hold time both sides use (the lower) and the matching keepalive (hold / 3)."""
     hold = min(local_hold, peer_hold)
     return hold, hold // 3
+
+
+def parse_route(spec):
+    """Parse ``"name:lp=200,path=65001 65002,med=10,ibgp,rid=1.1.1.1"`` into a route dict."""
+    name, _, attrs = spec.partition(":")
+    route = {"name": name}
+    keys = {"w": "weight", "lp": "local_pref", "med": "med", "igp": "igp_metric"}
+    for item in filter(None, attrs.split(",")):
+        key, _, value = item.partition("=")
+        if key in keys:
+            route[keys[key]] = int(value)
+        elif key == "path":
+            route["as_path"] = tuple(int(x) for x in value.split())
+        elif key == "origin":
+            route["origin"] = value
+        elif key == "rid":
+            route["router_id"] = value
+        elif key == "ibgp":
+            route["ebgp"] = False
+        elif key == "local":
+            route["local"] = True
+        else:
+            raise ValueError(f"unknown attribute {key!r}")
+    return route
