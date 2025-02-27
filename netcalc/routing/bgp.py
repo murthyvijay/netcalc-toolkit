@@ -107,3 +107,9 @@ def from_asdot(text):
 def is_private_asn(asn):
     """True for private-use ASNs (RFC 6996)."""
     return any(lo <= asn <= hi for lo, hi in PRIVATE_ASN_RANGES)
+
+
+def negotiated_timers(local_hold, peer_hold):
+    """Hold time both sides use (the lower) and the matching keepalive (hold / 3)."""
+    hold = min(local_hold, peer_hold)
+    return hold, hold // 3
