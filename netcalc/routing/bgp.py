@@ -102,3 +102,8 @@ def from_asdot(text):
         high, low = (int(x) for x in str(text).split("."))
         return (high << 16) | low
     return int(text)
+
+
+def is_private_asn(asn):
+    """True for private-use ASNs (RFC 6996)."""
+    return any(lo <= asn <= hi for lo, hi in PRIVATE_ASN_RANGES)
