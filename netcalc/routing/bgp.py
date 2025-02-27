@@ -94,3 +94,11 @@ def to_asdot(asn):
     '64086.59905'
     """
     return str(asn) if asn < 65536 else f"{asn >> 16}.{asn & 0xFFFF}"
+
+
+def from_asdot(text):
+    """Parse ``"1.10"`` or ``"65546"`` into an integer ASN."""
+    if "." in str(text):
+        high, low = (int(x) for x in str(text).split("."))
+        return (high << 16) | low
+    return int(text)
