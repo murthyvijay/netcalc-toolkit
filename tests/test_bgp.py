@@ -28,3 +28,14 @@ class TestBestPath(unittest.TestCase):
         c = {"name": "c", "as_path": (65002, 8), "med": 10, "router_id": "9.9.9.9"}
         self.assertEqual(bgp.best_path([a, c]), (a, "router id"))
         self.assertEqual(bgp.best_path([a, c], always_compare_med=True), (c, "med"))
+
+    def test_ebgp_igp_and_router_id(self):
+        a = {"name": "a", "ebgp": False}
+        b = {"name": "b"}
+        self.assertEqual(bgp.best_path([a, b]), (b, "ebgp over ibgp"))
+        c = {"name": "c", "igp_metric": 20}
+        d = {"name": "d", "igp_metric": 10}
+        self.assertEqual(bgp.best_path([c, d]), (d, "igp metric"))
+        e = {"name": "e", "router_id": "10.0.0.2"}
+        f = {"name": "f", "router_id": "10.0.0.10"}
+        self.assertEqual(bgp.best_path([f, e]), (e, "router id"))
