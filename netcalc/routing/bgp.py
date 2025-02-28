@@ -137,3 +137,34 @@ def parse_route(spec):
         else:
             raise ValueError(f"unknown attribute {key!r}")
     return route
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("best", help="run best-path selection")
+    p.add_argument("routes", nargs="+",
+                   help="name:lp=..,w=..,path=AS AS,origin=i|e|?,med=..,igp=..,rid=..,ibgp,local")
+    p.add_argument("--always-compare-med", action="store_true")
+    p = sub.add_parser("sessions", help="full-mesh vs route-reflector session count")
+    p.add_argument("--routers", type=int, required=True)
+    p.add_argument("--reflectors", type=int, default=2)
+    p = sub.add_parser("asn", help="convert an ASN between asplain and asdot")
+    p.add_argument("asn")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "best":
+        best, reason = best_path([parse_route(r) for r in args.routes], args.always_compare_med)
+        print(f"best path: {best['name']} (decided by {reason})")
+    elif args.cmd == "sessions":
+        mesh = full_mesh_sessions(args.routers)
+        rr = route_reflector_sessions(args.routers, args.reflectors)
+        print(f"full mesh {mesh} sessions; with {args.reflectors} route reflectors {rr}")
+    else:
+        asn = from_asdot(args.asn)
+        kind = "private" if is_private_asn(asn) else "public"
+        print(f"asplain {asn}, asdot {to_asdot(asn)} ({kind})")
+
+
+if __name__ == "__main__":
+    main()
