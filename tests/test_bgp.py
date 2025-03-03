@@ -48,3 +48,6 @@ class TestSessions(unittest.TestCase):
 
     def test_route_reflectors(self):
         self.assertEqual(bgp.route_reflector_sessions(50, 2), 97)
+
+    def test_timers(self):
+        self.assertEqual(bgp.negotiated_timers(180, 90), (90, 30))
