@@ -64,3 +64,20 @@ class TestAsn(unittest.TestCase):
         self.assertTrue(bgp.is_private_asn(64512))
         self.assertTrue(bgp.is_private_asn(4200000001))
         self.assertFalse(bgp.is_private_asn(13335))
+
+
+class TestParsing(unittest.TestCase):
+    def test_parse_route(self):
+        r = bgp.parse_route("A:lp=200,path=65001 65002,med=5,ibgp,rid=1.1.1.1")
+        self.assertEqual(r["local_pref"], 200)
+        self.assertEqual(r["as_path"], (65001, 65002))
+        self.assertFalse(r["ebgp"])
+        self.assertEqual(r["router_id"], "1.1.1.1")
+
+    def test_unknown_attribute(self):
+        with self.assertRaises(ValueError):
+            bgp.parse_route("A:color=blue")
+
+
+if __name__ == "__main__":
+    unittest.main()
