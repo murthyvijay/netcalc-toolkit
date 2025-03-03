@@ -51,3 +51,16 @@ class TestSessions(unittest.TestCase):
 
     def test_timers(self):
         self.assertEqual(bgp.negotiated_timers(180, 90), (90, 30))
+
+
+class TestAsn(unittest.TestCase):
+    def test_asdot(self):
+        self.assertEqual(bgp.to_asdot(65000), "65000")
+        self.assertEqual(bgp.to_asdot(65536), "1.0")
+        self.assertEqual(bgp.from_asdot("1.10"), 65546)
+        self.assertEqual(bgp.from_asdot(bgp.to_asdot(4200000001)), 4200000001)
+
+    def test_private(self):
+        self.assertTrue(bgp.is_private_asn(64512))
+        self.assertTrue(bgp.is_private_asn(4200000001))
+        self.assertFalse(bgp.is_private_asn(13335))
