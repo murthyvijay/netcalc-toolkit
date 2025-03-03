@@ -39,3 +39,12 @@ class TestBestPath(unittest.TestCase):
         e = {"name": "e", "router_id": "10.0.0.2"}
         f = {"name": "f", "router_id": "10.0.0.10"}
         self.assertEqual(bgp.best_path([f, e]), (e, "router id"))
+
+
+class TestSessions(unittest.TestCase):
+    def test_full_mesh(self):
+        self.assertEqual(bgp.full_mesh_sessions(50), 1225)
+        self.assertEqual(bgp.full_mesh_sessions(1), 0)
+
+    def test_route_reflectors(self):
+        self.assertEqual(bgp.route_reflector_sessions(50, 2), 97)
