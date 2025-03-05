@@ -653,6 +653,16 @@ Beyond CCNA metrics, running a routed network means predicting which path
 BGP will pick, what SPF computes and which backups exist, how fast failures
 are detected, and how long the whole network takes to converge.
 
+### BGP best path (`bgp`)
+
+BGP compares candidate routes one attribute at a time, in a fixed order:
+weight, LOCAL_PREF, locally originated, AS_PATH length, ORIGIN, MED, eBGP over
+iBGP, IGP metric to the next hop, router ID. The first difference decides,
+which is why LOCAL_PREF (set inbound) controls outbound traffic and AS_PATH
+prepending (set outbound) influences inbound traffic. MED is only compared
+between routes from the same neighbouring AS unless `always-compare-med` is
+configured.
+
 ---
 
 ## References
