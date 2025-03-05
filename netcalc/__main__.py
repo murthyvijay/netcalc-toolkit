@@ -52,6 +52,7 @@ TOOLS = {
     "marker": "netcalc.traffic.marker",
     "wred": "netcalc.traffic.wred",
     "scheduler": "netcalc.traffic.scheduler",
+    "bgp": "netcalc.routing.bgp",
 }
 
 
