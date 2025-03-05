@@ -148,6 +148,12 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `wred` | RED/WRED drop probability, count-spaced drops, EWMA average queue, per-AF profiles | `netcalc wred prob --avg 35 --min 20 --max 40` |
 | `scheduler` | weighted max-min fair shares, DWRR quanta and round time, strict-priority residual and blocking | `netcalc scheduler fair --capacity 10G A=2G B=6G C=6G` |
 
+### Routing protocols (`netcalc.routing`)
+
+| tool | what it answers | example |
+|---|---|---|
+| `bgp` | BGP best-path selection with the deciding step, full-mesh vs route-reflector sessions, asdot, private ASNs | `netcalc bgp best "A:lp=200,path=65001 65002" B:path=65003` |
+
 ## Examples
 
 The `examples/` folder combines several tools into small reports:
