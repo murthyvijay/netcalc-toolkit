@@ -13,6 +13,7 @@ time, `p` = probability (loss or error), `log` = log10 unless noted.
 - [7. Wireless](#7-wireless)
 - [8. Queueing theory](#8-queueing-theory)
 - [9. Traffic management (QoS)](#9-traffic-management-qos)
+- [10. Routing protocols](#10-routing-protocols)
 - [References](#references)
 
 ---
@@ -643,6 +644,14 @@ queue can send a packet per round. Strict priority queues are served first;
 they need a policer so they cannot starve the rest, and even priority packets
 can wait up to one maximum-size frame time (7.4 us for 9216 bytes at 10G)
 behind a frame already on the wire.
+
+---
+
+## 10. Routing protocols
+
+Beyond CCNA metrics, running a routed network means predicting which path
+BGP will pick, what SPF computes and which backups exist, how fast failures
+are detected, and how long the whole network takes to converge.
 
 ---
 
