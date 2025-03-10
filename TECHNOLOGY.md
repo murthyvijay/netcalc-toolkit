@@ -663,6 +663,10 @@ prepending (set outbound) influences inbound traffic. MED is only compared
 between routes from the same neighbouring AS unless `always-compare-med` is
 configured.
 
+A full iBGP mesh of n routers needs `n (n - 1) / 2` sessions (1,225 for 50
+routers); two route reflectors cut that to 97. 4-byte ASNs can be written in
+asdot (`65536 = 1.0`); 64512-65534 and 4200000000-4294967294 are private.
+
 ---
 
 ## References
