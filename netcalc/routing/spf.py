@@ -34,3 +34,25 @@ def parse_edges(items, directed=False):
         if not directed:
             graph[b][a] = cost
     return graph
+
+
+def dijkstra(graph, src):
+    """Distances from ``src`` and every equal-cost predecessor of each node."""
+    dist = {src: 0.0}
+    preds = {src: []}
+    heap = [(0.0, src)]
+    done = set()
+    while heap:
+        d, node = heapq.heappop(heap)
+        if node in done:
+            continue
+        done.add(node)
+        for nbr, cost in graph.get(node, {}).items():
+            nd = d + cost
+            if nbr not in dist or nd < dist[nbr] - 1e-12:
+                dist[nbr] = nd
+                preds[nbr] = [node]
+                heapq.heappush(heap, (nd, nbr))
+            elif abs(nd - dist[nbr]) <= 1e-12 and node not in preds[nbr]:
+                preds[nbr].append(node)
+    return dist, preds
