@@ -20,3 +20,17 @@ Usage::
 
 import argparse
 import heapq
+
+
+def parse_edges(items, directed=False):
+    """Build ``{node: {neighbor: cost}}`` from ``["A-B:10", ...]``."""
+    graph = {}
+    for item in items:
+        link, _, cost = item.partition(":")
+        a, b = link.split("-", 1)
+        cost = float(cost) if cost else 1.0
+        graph.setdefault(a, {})[b] = cost
+        graph.setdefault(b, {})
+        if not directed:
+            graph[b][a] = cost
+    return graph
