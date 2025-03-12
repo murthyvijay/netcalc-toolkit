@@ -56,3 +56,12 @@ def dijkstra(graph, src):
             elif abs(nd - dist[nbr]) <= 1e-12 and node not in preds[nbr]:
                 preds[nbr].append(node)
     return dist, preds
+
+
+def all_paths(preds, src, dst):
+    """Every equal-cost shortest path from ``src`` to ``dst`` as node lists."""
+    if dst == src:
+        return [[src]]
+    if dst not in preds:
+        return []
+    return [path + [dst] for p in sorted(preds[dst]) for path in all_paths(preds, src, p)]
