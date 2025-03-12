@@ -76,3 +76,20 @@ def next_hops(graph, src, dst):
     """
     _, preds = dijkstra(graph, src)
     return sorted({path[1] for path in all_paths(preds, src, dst) if len(path) > 1})
+
+
+def loop_free_alternates(graph, src, dst):
+    """Neighbours of ``src`` that are LFAs to ``dst``: ``[(neighbor, node_protecting)]``."""
+    dist_s, _ = dijkstra(graph, src)
+    primary = next_hops(graph, src, dst)
+    result = []
+    for nbr in sorted(graph[src]):
+        if nbr in primary:
+            continue
+        dist_n, _ = dijkstra(graph, nbr)
+        if dist_n.get(dst, float("inf")) < dist_n[src] + dist_s[dst]:
+            protecting = all(
+                dist_n[dst] < dist_n.get(e, float("inf")) + dijkstra(graph, e)[0].get(dst, float("inf"))
+                for e in primary if e != dst)
+            result.append((nbr, protecting))
+    return result
