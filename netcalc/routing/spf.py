@@ -65,3 +65,14 @@ def all_paths(preds, src, dst):
     if dst not in preds:
         return []
     return [path + [dst] for p in sorted(preds[dst]) for path in all_paths(preds, src, p)]
+
+
+def next_hops(graph, src, dst):
+    """ECMP next hops from ``src`` towards ``dst``.
+
+    >>> g = parse_edges(["A-B:10", "B-D:10", "A-C:10", "C-D:10"])
+    >>> next_hops(g, "A", "D")
+    ['B', 'C']
+    """
+    _, preds = dijkstra(graph, src)
+    return sorted({path[1] for path in all_paths(preds, src, dst) if len(path) > 1})
