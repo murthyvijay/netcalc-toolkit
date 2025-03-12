@@ -93,3 +93,35 @@ def loop_free_alternates(graph, src, dst):
                 for e in primary if e != dst)
             result.append((nbr, protecting))
     return result
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("paths", help="shortest paths from a source")
+    p.add_argument("--src", required=True)
+    p.add_argument("edges", nargs="+", help="A-B:cost (bidirectional)")
+    p = sub.add_parser("lfa", help="loop-free alternates for a destination")
+    p.add_argument("--src", required=True)
+    p.add_argument("--dst", required=True)
+    p.add_argument("edges", nargs="+")
+    args = parser.parse_args(argv)
+
+    graph = parse_edges(args.edges)
+    if args.cmd == "paths":
+        dist, preds = dijkstra(graph, args.src)
+        for node in sorted(dist):
+            paths = [" > ".join(p) for p in all_paths(preds, args.src, node)]
+            print(f"{node:<6} cost {dist[node]:<8g} " + " | ".join(paths))
+    else:
+        primary = next_hops(graph, args.src, args.dst)
+        print(f"primary next hop(s): {', '.join(primary)}")
+        lfas = loop_free_alternates(graph, args.src, args.dst)
+        for nbr, protecting in lfas:
+            print(f"LFA via {nbr} ({'node' if protecting else 'link'}-protecting)")
+        if not lfas:
+            print("no loop-free alternate")
+
+
+if __name__ == "__main__":
+    main()
