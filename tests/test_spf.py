@@ -24,3 +24,7 @@ class TestDijkstra(unittest.TestCase):
         _, preds = spf.dijkstra(spf.parse_edges(SQUARE), "A")
         self.assertEqual(spf.all_paths(preds, "A", "D"), [["A", "B", "D"], ["A", "C", "D"]])
         self.assertEqual(spf.next_hops(spf.parse_edges(SQUARE), "A", "D"), ["B", "C"])
+
+    def test_unreachable(self):
+        g = spf.parse_edges(["A-B:1", "C-D:1"])
+        self.assertEqual(spf.next_hops(g, "A", "D"), [])
