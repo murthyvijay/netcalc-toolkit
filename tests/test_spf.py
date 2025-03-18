@@ -13,3 +13,14 @@ class TestGraph(unittest.TestCase):
     def test_directed(self):
         g = spf.parse_edges(["A-B:5"], directed=True)
         self.assertEqual(g["B"], {})
+
+
+class TestDijkstra(unittest.TestCase):
+    def test_distances(self):
+        dist, _ = spf.dijkstra(spf.parse_edges(SQUARE + ["A-D:30"]), "A")
+        self.assertEqual(dist["D"], 20)
+
+    def test_ecmp_paths(self):
+        _, preds = spf.dijkstra(spf.parse_edges(SQUARE), "A")
+        self.assertEqual(spf.all_paths(preds, "A", "D"), [["A", "B", "D"], ["A", "C", "D"]])
+        self.assertEqual(spf.next_hops(spf.parse_edges(SQUARE), "A", "D"), ["B", "C"])
