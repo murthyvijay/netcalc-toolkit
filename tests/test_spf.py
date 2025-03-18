@@ -28,3 +28,13 @@ class TestDijkstra(unittest.TestCase):
     def test_unreachable(self):
         g = spf.parse_edges(["A-B:1", "C-D:1"])
         self.assertEqual(spf.next_hops(g, "A", "D"), [])
+
+
+class TestLfa(unittest.TestCase):
+    def test_node_protecting_lfa(self):
+        g = spf.parse_edges(["S-E:10", "E-D:10", "S-N:10", "N-D:15"])
+        self.assertEqual(spf.loop_free_alternates(g, "S", "D"), [("N", True)])
+
+    def test_link_protecting_only(self):
+        g = spf.parse_edges(["S-E:10", "E-D:10", "S-N:10", "N-E:5"])
+        self.assertEqual(spf.loop_free_alternates(g, "S", "D"), [("N", False)])
