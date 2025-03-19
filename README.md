@@ -153,6 +153,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | tool | what it answers | example |
 |---|---|---|
 | `bgp` | BGP best-path selection with the deciding step, full-mesh vs route-reflector sessions, asdot, private ASNs | `netcalc bgp best "A:lp=200,path=65001 65002" B:path=65003` |
+| `spf` | Dijkstra shortest paths with ECMP next hops, all equal-cost paths, loop-free alternates (link/node protecting) | `netcalc spf lfa --src S --dst D S-E:10 E-D:10 S-N:10 N-D:15` |
 
 ## Examples
 
