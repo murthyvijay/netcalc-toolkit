@@ -53,6 +53,7 @@ TOOLS = {
     "wred": "netcalc.traffic.wred",
     "scheduler": "netcalc.traffic.scheduler",
     "bgp": "netcalc.routing.bgp",
+    "spf": "netcalc.routing.spf",
 }
 
 
