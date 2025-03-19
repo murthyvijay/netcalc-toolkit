@@ -38,3 +38,11 @@ class TestLfa(unittest.TestCase):
     def test_link_protecting_only(self):
         g = spf.parse_edges(["S-E:10", "E-D:10", "S-N:10", "N-E:5"])
         self.assertEqual(spf.loop_free_alternates(g, "S", "D"), [("N", False)])
+
+    def test_no_lfa_when_neighbor_routes_back(self):
+        g = spf.parse_edges(["S-E:10", "E-D:10", "S-N:5", "N-D:30"])
+        self.assertEqual(spf.loop_free_alternates(g, "S", "D"), [])
+
+
+if __name__ == "__main__":
+    unittest.main()
