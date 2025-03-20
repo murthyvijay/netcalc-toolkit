@@ -30,3 +30,12 @@ from netcalc.units import fmt_time, parse_time
 def negotiated_interval(sender_desired_tx, receiver_required_rx):
     """Transmit interval (s) actually used from sender to receiver."""
     return max(sender_desired_tx, receiver_required_rx)
+
+
+def detection_time(sender_detect_mult, sender_desired_tx, receiver_required_rx):
+    """Time (s) for the receiver to declare the session down.
+
+    >>> round(detection_time(3, 0.3, 0.05), 3)
+    0.9
+    """
+    return sender_detect_mult * negotiated_interval(sender_desired_tx, receiver_required_rx)
