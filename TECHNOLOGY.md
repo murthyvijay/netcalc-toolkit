@@ -680,6 +680,9 @@ dist(N, D) < dist(N, S) + dist(S, D)          loop-free
 dist(N, D) < dist(N, E) + dist(E, D)          also protects against failure of node E
 ```
 
+When no neighbour qualifies (common in rings), remote LFA or TI-LFA tunnels
+are needed.
+
 ---
 
 ## References
