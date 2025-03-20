@@ -25,3 +25,8 @@ Usage::
 import argparse
 
 from netcalc.units import fmt_time, parse_time
+
+
+def negotiated_interval(sender_desired_tx, receiver_required_rx):
+    """Transmit interval (s) actually used from sender to receiver."""
+    return max(sender_desired_tx, receiver_required_rx)
