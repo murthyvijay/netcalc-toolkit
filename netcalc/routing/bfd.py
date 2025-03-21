@@ -52,3 +52,8 @@ def packets_per_second(interval_s, sessions=1, both_directions=True):
     """Control packets per second a router sends (and receives, if both directions)."""
     pps = sessions / interval_s
     return pps * 2 if both_directions else pps
+
+
+def false_down_probability(loss, mult):
+    """Probability that ``mult`` consecutive packets are lost on a healthy link."""
+    return loss ** mult
