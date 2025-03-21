@@ -46,3 +46,9 @@ def session_detection_times(local_tx, local_rx, remote_tx, remote_rx, local_mult
     at_local = detection_time(remote_mult, remote_tx, local_rx)
     at_remote = detection_time(local_mult, local_tx, remote_rx)
     return at_local, at_remote
+
+
+def packets_per_second(interval_s, sessions=1, both_directions=True):
+    """Control packets per second a router sends (and receives, if both directions)."""
+    pps = sessions / interval_s
+    return pps * 2 if both_directions else pps
