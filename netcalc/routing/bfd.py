@@ -39,3 +39,10 @@ def detection_time(sender_detect_mult, sender_desired_tx, receiver_required_rx):
     0.9
     """
     return sender_detect_mult * negotiated_interval(sender_desired_tx, receiver_required_rx)
+
+
+def session_detection_times(local_tx, local_rx, remote_tx, remote_rx, local_mult=3, remote_mult=3):
+    """Detection time at the local and at the remote end: ``(local, remote)``."""
+    at_local = detection_time(remote_mult, remote_tx, local_rx)
+    at_remote = detection_time(local_mult, local_tx, remote_rx)
+    return at_local, at_remote
