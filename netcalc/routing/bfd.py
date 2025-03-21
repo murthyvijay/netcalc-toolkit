@@ -57,3 +57,8 @@ def packets_per_second(interval_s, sessions=1, both_directions=True):
 def false_down_probability(loss, mult):
     """Probability that ``mult`` consecutive packets are lost on a healthy link."""
     return loss ** mult
+
+
+def false_downs_per_day(interval_s, mult, loss):
+    """Expected spurious session-downs per day from random packet loss."""
+    return 86400 / interval_s * false_down_probability(loss, mult)
