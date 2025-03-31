@@ -62,3 +62,42 @@ def false_down_probability(loss, mult):
 def false_downs_per_day(interval_s, mult, loss):
     """Expected spurious session-downs per day from random packet loss."""
     return 86400 / interval_s * false_down_probability(loss, mult)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("detect", help="negotiated intervals and detection times")
+    p.add_argument("--local-tx", required=True)
+    p.add_argument("--local-rx", required=True)
+    p.add_argument("--remote-tx", required=True)
+    p.add_argument("--remote-rx", required=True)
+    p.add_argument("--mult", type=int, default=3, help="detect multiplier on both ends")
+    p = sub.add_parser("load", help="packet rate for many sessions")
+    p.add_argument("--interval", required=True)
+    p.add_argument("--sessions", type=int, required=True)
+    p = sub.add_parser("flaps", help="false session-downs caused by random loss")
+    p.add_argument("--interval", required=True)
+    p.add_argument("--mult", type=int, default=3)
+    p.add_argument("--loss", type=float, required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "detect":
+        lt, lr, rt, rr = (parse_time(x) for x in (args.local_tx, args.local_rx,
+                                                  args.remote_tx, args.remote_rx))
+        at_local, at_remote = session_detection_times(lt, lr, rt, rr, args.mult, args.mult)
+        print(f"local -> remote every {fmt_time(negotiated_interval(lt, rr))}, "
+              f"remote detects in {fmt_time(at_remote)}")
+        print(f"remote -> local every {fmt_time(negotiated_interval(rt, lr))}, "
+              f"local detects in {fmt_time(at_local)}")
+    elif args.cmd == "load":
+        print(f"{packets_per_second(parse_time(args.interval), args.sessions):,.0f} packets/s "
+              f"(tx + rx)")
+    else:
+        rate = false_downs_per_day(parse_time(args.interval), args.mult, args.loss)
+        print(f"P(false down per interval) {false_down_probability(args.loss, args.mult):.1e}, "
+              f"~{rate:.3g} false downs per day")
+
+
+if __name__ == "__main__":
+    main()
