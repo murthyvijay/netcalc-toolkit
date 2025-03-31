@@ -15,3 +15,9 @@ class TestNegotiation(unittest.TestCase):
         at_local, at_remote = bfd.session_detection_times(0.05, 0.05, 0.1, 0.05, 3, 3)
         self.assertAlmostEqual(at_local, 0.3)
         self.assertAlmostEqual(at_remote, 0.15)
+
+
+class TestLoad(unittest.TestCase):
+    def test_packets_per_second(self):
+        self.assertAlmostEqual(bfd.packets_per_second(0.05, 400), 16000)
+        self.assertAlmostEqual(bfd.packets_per_second(0.05, 400, both_directions=False), 8000)
