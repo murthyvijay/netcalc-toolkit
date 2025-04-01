@@ -21,3 +21,15 @@ class TestLoad(unittest.TestCase):
     def test_packets_per_second(self):
         self.assertAlmostEqual(bfd.packets_per_second(0.05, 400), 16000)
         self.assertAlmostEqual(bfd.packets_per_second(0.05, 400, both_directions=False), 8000)
+
+
+class TestFalsePositives(unittest.TestCase):
+    def test_probability(self):
+        self.assertAlmostEqual(bfd.false_down_probability(1e-3, 3), 1e-9)
+
+    def test_per_day(self):
+        self.assertAlmostEqual(bfd.false_downs_per_day(0.01, 3, 1e-3), 8.64e-3)
+
+
+if __name__ == "__main__":
+    unittest.main()
