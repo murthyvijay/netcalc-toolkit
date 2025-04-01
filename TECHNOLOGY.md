@@ -683,6 +683,16 @@ dist(N, D) < dist(N, E) + dist(E, D)          also protects against failure of n
 When no neighbour qualifies (common in rings), remote LFA or TI-LFA tunnels
 are needed.
 
+### BFD (`bfd`)
+
+Each direction of a BFD session runs at the slower of the sender's desired
+transmit interval and the receiver's required receive interval, and the
+receiver declares the session down after the sender's detect multiplier of
+missed packets: 50 ms x 3 detects failures in 150 ms. Aggressive timers cost
+packets per second (400 sessions at 50 ms is 16,000 pps in and out) and
+false positives: with 0.1 % random loss, 10 ms x 3 expects a spurious down
+every few months per session, and a fleet has many sessions.
+
 ---
 
 ## References
