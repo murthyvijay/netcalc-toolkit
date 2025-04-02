@@ -50,3 +50,8 @@ def system_id_from_ipv4(address):
     """System ID from an IPv4 loopback by padding each octet to three digits."""
     digits = "".join(f"{int(o):03d}" for o in str(ipaddress.IPv4Address(address)).split("."))
     return ".".join(digits[i:i + 4] for i in range(0, 12, 4))
+
+
+def make_net(area, system_id, nsel="00"):
+    """Assemble a NET from its parts."""
+    return f"{area}.{system_id}.{nsel}"
