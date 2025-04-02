@@ -44,3 +44,9 @@ def parse_net(net):
     if len(parts) < 5 or len(parts[-1]) != 2 or any(len(p) != 4 for p in parts[-4:-1]):
         raise ValueError(f"not a NET: {net!r}")
     return {"area": ".".join(parts[:-4]), "system_id": ".".join(parts[-4:-1]), "nsel": parts[-1]}
+
+
+def system_id_from_ipv4(address):
+    """System ID from an IPv4 loopback by padding each octet to three digits."""
+    digits = "".join(f"{int(o):03d}" for o in str(ipaddress.IPv4Address(address)).split("."))
+    return ".".join(digits[i:i + 4] for i in range(0, 12, 4))
