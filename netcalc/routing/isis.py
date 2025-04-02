@@ -32,3 +32,15 @@ NARROW_PATH_MAX = 1023
 WIDE_INTERFACE_MAX = 2 ** 24 - 1
 DEFAULT_MAX_AGE_S = 1200
 DEFAULT_REFRESH_S = 900
+
+
+def parse_net(net):
+    """Split a NET into area, system ID and selector.
+
+    >>> parse_net("49.0001.1921.6800.1001.00")
+    {'area': '49.0001', 'system_id': '1921.6800.1001', 'nsel': '00'}
+    """
+    parts = net.lower().split(".")
+    if len(parts) < 5 or len(parts[-1]) != 2 or any(len(p) != 4 for p in parts[-4:-1]):
+        raise ValueError(f"not a NET: {net!r}")
+    return {"area": ".".join(parts[:-4]), "system_id": ".".join(parts[-4:-1]), "nsel": parts[-1]}
