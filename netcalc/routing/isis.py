@@ -70,3 +70,8 @@ def metric_from_bandwidth(rate_bps, reference_bps=1e12, style="wide"):
 def narrow_path_ok(metrics):
     """True if a path of narrow interface metrics stays within the 1023 path limit."""
     return sum(metrics) <= NARROW_PATH_MAX
+
+
+def lsp_refresh_rate(lsps, refresh_s=DEFAULT_REFRESH_S):
+    """Background LSP regenerations per second across the domain."""
+    return lsps / refresh_s
