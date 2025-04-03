@@ -65,3 +65,8 @@ def metric_from_bandwidth(rate_bps, reference_bps=1e12, style="wide"):
     """
     limit = WIDE_INTERFACE_MAX if style == "wide" else NARROW_INTERFACE_MAX
     return min(max(1, math.ceil(reference_bps / rate_bps)), limit)
+
+
+def narrow_path_ok(metrics):
+    """True if a path of narrow interface metrics stays within the 1023 path limit."""
+    return sum(metrics) <= NARROW_PATH_MAX
