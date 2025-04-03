@@ -55,3 +55,13 @@ def system_id_from_ipv4(address):
 def make_net(area, system_id, nsel="00"):
     """Assemble a NET from its parts."""
     return f"{area}.{system_id}.{nsel}"
+
+
+def metric_from_bandwidth(rate_bps, reference_bps=1e12, style="wide"):
+    """Interface metric ``ceil(reference / bandwidth)``, clamped to the metric style.
+
+    >>> metric_from_bandwidth(100e9, 1e12), metric_from_bandwidth(1e9, 1e12, "narrow")
+    (10, 63)
+    """
+    limit = WIDE_INTERFACE_MAX if style == "wide" else NARROW_INTERFACE_MAX
+    return min(max(1, math.ceil(reference_bps / rate_bps)), limit)
