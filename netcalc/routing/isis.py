@@ -75,3 +75,8 @@ def narrow_path_ok(metrics):
 def lsp_refresh_rate(lsps, refresh_s=DEFAULT_REFRESH_S):
     """Background LSP regenerations per second across the domain."""
     return lsps / refresh_s
+
+
+def refresh_is_safe(max_age_s, refresh_s, margin_s=300):
+    """True if LSPs are refreshed at least ``margin_s`` before they would age out."""
+    return refresh_s <= max_age_s - margin_s
