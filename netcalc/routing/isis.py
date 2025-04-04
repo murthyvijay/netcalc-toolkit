@@ -80,3 +80,41 @@ def lsp_refresh_rate(lsps, refresh_s=DEFAULT_REFRESH_S):
 def refresh_is_safe(max_age_s, refresh_s, margin_s=300):
     """True if LSPs are refreshed at least ``margin_s`` before they would age out."""
     return refresh_s <= max_age_s - margin_s
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("net", help="decode a NET")
+    p.add_argument("net")
+    p = sub.add_parser("sysid", help="system ID and NET from a loopback address")
+    p.add_argument("address")
+    p.add_argument("--area", default="49.0001")
+    p = sub.add_parser("metric", help="interface metric from bandwidth")
+    p.add_argument("--rate", required=True)
+    p.add_argument("--reference", default="1T")
+    p.add_argument("--style", choices=("wide", "narrow"), default="wide")
+    p = sub.add_parser("refresh", help="background LSP refresh load")
+    p.add_argument("--lsps", type=int, required=True)
+    p.add_argument("--refresh", type=float, default=DEFAULT_REFRESH_S)
+    p.add_argument("--max-age", type=float, default=DEFAULT_MAX_AGE_S)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "net":
+        for key, value in parse_net(args.net).items():
+            print(f"{key:>10}: {value}")
+    elif args.cmd == "sysid":
+        sysid = system_id_from_ipv4(args.address)
+        print(f"system ID {sysid}, NET {make_net(args.area, sysid)}")
+    elif args.cmd == "metric":
+        m = metric_from_bandwidth(parse_rate(args.rate), parse_rate(args.reference), args.style)
+        print(f"{args.style} metric = {m}")
+    else:
+        rate = lsp_refresh_rate(args.lsps, args.refresh)
+        safe = "safe" if refresh_is_safe(args.max_age, args.refresh) else "too close to MaxAge"
+        print(f"{rate:.2f} LSP refreshes/s; refresh {args.refresh:g} s vs MaxAge "
+              f"{args.max_age:g} s is {safe}")
+
+
+if __name__ == "__main__":
+    main()
