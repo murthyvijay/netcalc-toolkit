@@ -36,3 +36,16 @@ class TestMetrics(unittest.TestCase):
         self.assertEqual(isis.metric_from_bandwidth(1e9, 1e12, "narrow"), 63)
         self.assertTrue(isis.narrow_path_ok([63] * 16))
         self.assertFalse(isis.narrow_path_ok([63] * 17))
+
+
+class TestRefresh(unittest.TestCase):
+    def test_rate(self):
+        self.assertAlmostEqual(isis.lsp_refresh_rate(9000, 900), 10.0)
+
+    def test_safety(self):
+        self.assertTrue(isis.refresh_is_safe(1200, 900))
+        self.assertFalse(isis.refresh_is_safe(1200, 1000))
+
+
+if __name__ == "__main__":
+    unittest.main()
