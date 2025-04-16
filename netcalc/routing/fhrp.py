@@ -33,3 +33,12 @@ def vrrp_skew_time(priority, interval_s=VRRP_DEFAULT_INTERVAL_S):
     if not 1 <= priority <= 255:
         raise ValueError("VRRP priority must be 1..255")
     return (256 - priority) * interval_s / 256
+
+
+def vrrp_master_down_interval(priority, interval_s=VRRP_DEFAULT_INTERVAL_S):
+    """Time (s) a VRRPv3 backup waits before taking over.
+
+    >>> vrrp_master_down_interval(100, 1.0)
+    3.609375
+    """
+    return 3 * interval_s + vrrp_skew_time(priority, interval_s)
