@@ -1,0 +1,28 @@
+"""First-hop redundancy: VRRP and HSRP timers, virtual MACs and failover time.
+
+* **VRRPv3** (RFC 5798): the master advertises every ``Advertisement_Interval``
+  (default 1 s). A backup takes over after the master down interval::
+
+      Master_Down_Interval = 3 * Advertisement_Interval + Skew_Time
+      Skew_Time = ((256 - priority) * Advertisement_Interval) / 256
+
+  so higher-priority backups react first. The virtual MAC is
+  ``00:00:5e:00:01:<VRID>`` (``00:00:5e:00:02:<VRID>`` for IPv6).
+* **HSRP** (Cisco): hello 3 s and hold 10 s by default; version 1 uses
+  ``00:00:0c:07:ac:<group>`` and version 2 ``00:00:0c:9f:f<group>`` (12-bit
+  group).
+
+Failover time is roughly the down/hold interval plus the time for the new
+master's gratuitous ARP to update the switches.
+
+Usage::
+
+    python -m netcalc.routing.fhrp vrrp --interval 1 --priority 100
+    python -m netcalc.routing.fhrp mac --protocol hsrp2 --group 300
+"""
+
+import argparse
+
+VRRP_DEFAULT_INTERVAL_S = 1.0
+HSRP_DEFAULT_HELLO_S = 3.0
+HSRP_DEFAULT_HOLD_S = 10.0
