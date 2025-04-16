@@ -693,6 +693,16 @@ packets per second (400 sessions at 50 ms is 16,000 pps in and out) and
 false positives: with 0.1 % random loss, 10 ms x 3 expects a spurious down
 every few months per session, and a fleet has many sessions.
 
+### IS-IS (`isis`)
+
+IS-IS routers are named by a NET such as `49.0001.1921.6800.1001.00`: area,
+6-byte system ID, and selector 00. Deriving the system ID from the loopback
+(192.168.1.1 to 1921.6800.1001) keeps it unique and readable. Original narrow
+metrics allow only 63 per interface and 1023 per path, so modern networks use
+wide metrics (24-bit interface, RFC 5305) with a reference-bandwidth
+convention. LSPs are refreshed every 900 s before their 1200 s lifetime runs
+out, so large domains carry a constant trickle of refresh flooding.
+
 ---
 
 ## References
