@@ -26,3 +26,10 @@ import argparse
 VRRP_DEFAULT_INTERVAL_S = 1.0
 HSRP_DEFAULT_HELLO_S = 3.0
 HSRP_DEFAULT_HOLD_S = 10.0
+
+
+def vrrp_skew_time(priority, interval_s=VRRP_DEFAULT_INTERVAL_S):
+    """VRRPv3 skew time (s) for a backup of ``priority`` (1..254)."""
+    if not 1 <= priority <= 255:
+        raise ValueError("VRRP priority must be 1..255")
+    return (256 - priority) * interval_s / 256
