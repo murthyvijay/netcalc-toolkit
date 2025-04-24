@@ -65,3 +65,8 @@ def virtual_mac(protocol, group):
     if protocol == "hsrp1":
         return f"00:00:0c:07:ac:{group:02x}"
     return f"00:00:0c:9f:f{group >> 8:x}:{group & 0xFF:02x}"
+
+
+def failover_time(detect_s, arp_update_s=0.05):
+    """Approximate outage (s) seen by hosts: detection plus gratuitous-ARP propagation."""
+    return detect_s + arp_update_s
