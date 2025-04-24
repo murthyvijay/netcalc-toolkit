@@ -47,3 +47,21 @@ def vrrp_master_down_interval(priority, interval_s=VRRP_DEFAULT_INTERVAL_S):
 def hsrp_hold_ok(hello_s, hold_s):
     """True if the HSRP hold time is at least three hellos, as recommended."""
     return hold_s >= 3 * hello_s
+
+
+def virtual_mac(protocol, group):
+    """Virtual MAC address for ``vrrp``, ``vrrp6``, ``hsrp1`` or ``hsrp2`` and a group/VRID.
+
+    >>> virtual_mac("vrrp", 10), virtual_mac("hsrp2", 300)
+    ('00:00:5e:00:01:0a', '00:00:0c:9f:f1:2c')
+    """
+    limits = {"vrrp": 255, "vrrp6": 255, "hsrp1": 255, "hsrp2": 4095}
+    if protocol not in limits or not 0 <= group <= limits[protocol]:
+        raise ValueError(f"invalid group {group} for {protocol}")
+    if protocol == "vrrp":
+        return f"00:00:5e:00:01:{group:02x}"
+    if protocol == "vrrp6":
+        return f"00:00:5e:00:02:{group:02x}"
+    if protocol == "hsrp1":
+        return f"00:00:0c:07:ac:{group:02x}"
+    return f"00:00:0c:9f:f{group >> 8:x}:{group & 0xFF:02x}"
