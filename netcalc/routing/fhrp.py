@@ -42,3 +42,8 @@ def vrrp_master_down_interval(priority, interval_s=VRRP_DEFAULT_INTERVAL_S):
     3.609375
     """
     return 3 * interval_s + vrrp_skew_time(priority, interval_s)
+
+
+def hsrp_hold_ok(hello_s, hold_s):
+    """True if the HSRP hold time is at least three hellos, as recommended."""
+    return hold_s >= 3 * hello_s
