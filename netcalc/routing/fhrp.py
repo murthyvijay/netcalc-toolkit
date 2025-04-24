@@ -70,3 +70,33 @@ def virtual_mac(protocol, group):
 def failover_time(detect_s, arp_update_s=0.05):
     """Approximate outage (s) seen by hosts: detection plus gratuitous-ARP propagation."""
     return detect_s + arp_update_s
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("vrrp", help="VRRPv3 master down interval")
+    p.add_argument("--interval", type=float, default=VRRP_DEFAULT_INTERVAL_S, help="seconds")
+    p.add_argument("--priority", type=int, default=100)
+    p = sub.add_parser("hsrp", help="check HSRP hello/hold timers")
+    p.add_argument("--hello", type=float, default=HSRP_DEFAULT_HELLO_S)
+    p.add_argument("--hold", type=float, default=HSRP_DEFAULT_HOLD_S)
+    p = sub.add_parser("mac", help="virtual MAC address")
+    p.add_argument("--protocol", choices=("vrrp", "vrrp6", "hsrp1", "hsrp2"), default="vrrp")
+    p.add_argument("--group", type=int, required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "vrrp":
+        down = vrrp_master_down_interval(args.priority, args.interval)
+        print(f"skew {vrrp_skew_time(args.priority, args.interval):.4f} s, master down interval "
+              f"{down:.4f} s, host outage ~{failover_time(down):.2f} s")
+    elif args.cmd == "hsrp":
+        ok = "OK" if hsrp_hold_ok(args.hello, args.hold) else "hold should be >= 3 x hello"
+        print(f"hello {args.hello:g} s, hold {args.hold:g} s: {ok}; "
+              f"host outage ~{failover_time(args.hold):.2f} s")
+    else:
+        print(virtual_mac(args.protocol, args.group))
+
+
+if __name__ == "__main__":
+    main()
