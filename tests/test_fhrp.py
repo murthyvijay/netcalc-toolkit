@@ -11,3 +11,7 @@ class TestVrrpTimers(unittest.TestCase):
     def test_master_down_interval(self):
         self.assertAlmostEqual(fhrp.vrrp_master_down_interval(100), 3.609375)
         self.assertLess(fhrp.vrrp_master_down_interval(200), fhrp.vrrp_master_down_interval(100))
+
+    def test_priority_range(self):
+        with self.assertRaises(ValueError):
+            fhrp.vrrp_skew_time(0)
