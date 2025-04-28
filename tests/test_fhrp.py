@@ -21,3 +21,13 @@ class TestHsrp(unittest.TestCase):
     def test_hold_rule(self):
         self.assertTrue(fhrp.hsrp_hold_ok(3, 10))
         self.assertFalse(fhrp.hsrp_hold_ok(1, 2))
+
+
+class TestVirtualMac(unittest.TestCase):
+    def test_vrrp(self):
+        self.assertEqual(fhrp.virtual_mac("vrrp", 10), "00:00:5e:00:01:0a")
+        self.assertEqual(fhrp.virtual_mac("vrrp6", 1), "00:00:5e:00:02:01")
+
+    def test_hsrp(self):
+        self.assertEqual(fhrp.virtual_mac("hsrp1", 1), "00:00:0c:07:ac:01")
+        self.assertEqual(fhrp.virtual_mac("hsrp2", 300), "00:00:0c:9f:f1:2c")
