@@ -15,3 +15,9 @@ class TestVrrpTimers(unittest.TestCase):
     def test_priority_range(self):
         with self.assertRaises(ValueError):
             fhrp.vrrp_skew_time(0)
+
+
+class TestHsrp(unittest.TestCase):
+    def test_hold_rule(self):
+        self.assertTrue(fhrp.hsrp_hold_ok(3, 10))
+        self.assertFalse(fhrp.hsrp_hold_ok(1, 2))
