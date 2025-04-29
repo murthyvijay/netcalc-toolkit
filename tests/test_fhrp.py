@@ -37,3 +37,12 @@ class TestVirtualMac(unittest.TestCase):
             fhrp.virtual_mac("hsrp1", 300)
         with self.assertRaises(ValueError):
             fhrp.virtual_mac("glbp", 1)
+
+
+class TestFailover(unittest.TestCase):
+    def test_failover_time(self):
+        self.assertAlmostEqual(fhrp.failover_time(3.6), 3.65)
+
+
+if __name__ == "__main__":
+    unittest.main()
