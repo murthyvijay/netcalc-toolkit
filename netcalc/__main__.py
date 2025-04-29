@@ -56,6 +56,7 @@ TOOLS = {
     "spf": "netcalc.routing.spf",
     "bfd": "netcalc.routing.bfd",
     "isis": "netcalc.routing.isis",
+    "fhrp": "netcalc.routing.fhrp",
 }
 
 
