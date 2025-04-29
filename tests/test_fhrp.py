@@ -31,3 +31,9 @@ class TestVirtualMac(unittest.TestCase):
     def test_hsrp(self):
         self.assertEqual(fhrp.virtual_mac("hsrp1", 1), "00:00:0c:07:ac:01")
         self.assertEqual(fhrp.virtual_mac("hsrp2", 300), "00:00:0c:9f:f1:2c")
+
+    def test_group_range(self):
+        with self.assertRaises(ValueError):
+            fhrp.virtual_mac("hsrp1", 300)
+        with self.assertRaises(ValueError):
+            fhrp.virtual_mac("glbp", 1)
