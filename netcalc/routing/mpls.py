@@ -22,3 +22,8 @@ import argparse
 LABEL_BYTES = 4
 RESERVED_LABELS = 16
 LABEL_SPACE = 2 ** 20
+
+
+def stack_overhead(labels):
+    """Bytes added by a label stack of ``labels`` entries."""
+    return labels * LABEL_BYTES
