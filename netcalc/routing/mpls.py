@@ -27,3 +27,12 @@ LABEL_SPACE = 2 ** 20
 def stack_overhead(labels):
     """Bytes added by a label stack of ``labels`` entries."""
     return labels * LABEL_BYTES
+
+
+def required_mtu(payload_mtu, labels, l2_overhead=0):
+    """Core MTU needed to carry ``payload_mtu`` under ``labels`` labels without fragmentation.
+
+    >>> required_mtu(1500, 3)
+    1512
+    """
+    return payload_mtu + stack_overhead(labels) + l2_overhead
