@@ -703,6 +703,16 @@ wide metrics (24-bit interface, RFC 5305) with a reference-bandwidth
 convention. LSPs are refreshed every 900 s before their 1200 s lifetime runs
 out, so large domains carry a constant trickle of refresh flooding.
 
+### First-hop redundancy (`fhrp`)
+
+VRRP and HSRP give hosts one default-gateway address backed by several
+routers. A VRRPv3 backup takes over after `3 * Advertisement_Interval +
+Skew_Time`, where `Skew_Time = (256 - priority) * interval / 256`, so with the
+default 1 s interval a priority-100 backup waits 3.61 s. HSRP defaults to 3 s
+hellos and a 10 s hold. Each protocol uses a well-known virtual MAC
+(`00:00:5e:00:01:<VRID>` for VRRP, `00:00:0c:07:ac:<group>` for HSRPv1) so the
+new master only needs a gratuitous ARP to move traffic.
+
 ---
 
 ## References
