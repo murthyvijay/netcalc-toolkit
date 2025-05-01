@@ -46,3 +46,8 @@ def usable_labels(reserved=RESERVED_LABELS):
 def rsvp_full_mesh_lsps(pes):
     """Unidirectional RSVP-TE LSPs for a full mesh of ``pes`` routers."""
     return pes * (pes - 1)
+
+
+def sr_path_fits(segments, msd):
+    """True if an SR-TE path of ``segments`` SIDs fits the head-end's maximum SID depth."""
+    return segments <= msd
