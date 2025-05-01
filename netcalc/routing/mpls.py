@@ -51,3 +51,14 @@ def rsvp_full_mesh_lsps(pes):
 def sr_path_fits(segments, msd):
     """True if an SR-TE path of ``segments`` SIDs fits the head-end's maximum SID depth."""
     return segments <= msd
+
+
+def encode_label(label, tc=0, bos=False, ttl=64):
+    """32-bit label stack entry for the given fields.
+
+    >>> hex(encode_label(16005, tc=5, bos=True, ttl=64))
+    '0x3e85b40'
+    """
+    if not 0 <= label < LABEL_SPACE:
+        raise ValueError("label must fit in 20 bits")
+    return (label << 12) | ((tc & 0x7) << 9) | (int(bos) << 8) | (ttl & 0xFF)
