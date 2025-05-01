@@ -41,3 +41,8 @@ def required_mtu(payload_mtu, labels, l2_overhead=0):
 def usable_labels(reserved=RESERVED_LABELS):
     """Usable label values in one 20-bit label space."""
     return LABEL_SPACE - reserved
+
+
+def rsvp_full_mesh_lsps(pes):
+    """Unidirectional RSVP-TE LSPs for a full mesh of ``pes`` routers."""
+    return pes * (pes - 1)
