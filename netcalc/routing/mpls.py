@@ -36,3 +36,8 @@ def required_mtu(payload_mtu, labels, l2_overhead=0):
     1512
     """
     return payload_mtu + stack_overhead(labels) + l2_overhead
+
+
+def usable_labels(reserved=RESERVED_LABELS):
+    """Usable label values in one 20-bit label space."""
+    return LABEL_SPACE - reserved
