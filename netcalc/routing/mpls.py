@@ -68,3 +68,35 @@ def decode_label(entry):
     """Split a 32-bit label stack entry into its fields."""
     return {"label": entry >> 12, "tc": (entry >> 9) & 0x7, "bos": bool((entry >> 8) & 1),
             "ttl": entry & 0xFF}
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("stack", help="label stack overhead and core MTU")
+    p.add_argument("--labels", type=int, required=True)
+    p.add_argument("--payload-mtu", type=int, default=1500)
+    p.add_argument("--msd", type=int, default=None, help="head-end maximum SID depth")
+    p = sub.add_parser("mesh", help="RSVP-TE full-mesh LSP count")
+    p.add_argument("--pes", type=int, required=True)
+    p = sub.add_parser("label", help="encode a label stack entry")
+    p.add_argument("label", type=int)
+    p.add_argument("--tc", type=int, default=0)
+    p.add_argument("--bos", action="store_true")
+    p.add_argument("--ttl", type=int, default=64)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "stack":
+        print(f"{stack_overhead(args.labels)} B of labels; core MTU >= "
+              f"{required_mtu(args.payload_mtu, args.labels)} B")
+        if args.msd is not None:
+            print("fits the MSD" if sr_path_fits(args.labels, args.msd) else "exceeds the MSD")
+    elif args.cmd == "mesh":
+        print(f"{rsvp_full_mesh_lsps(args.pes):,} RSVP-TE LSPs (SR-MPLS: none in the core)")
+    else:
+        entry = encode_label(args.label, args.tc, args.bos, args.ttl)
+        print(f"0x{entry:08x} {decode_label(entry)}")
+
+
+if __name__ == "__main__":
+    main()
