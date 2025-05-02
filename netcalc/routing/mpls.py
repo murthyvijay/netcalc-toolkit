@@ -62,3 +62,9 @@ def encode_label(label, tc=0, bos=False, ttl=64):
     if not 0 <= label < LABEL_SPACE:
         raise ValueError("label must fit in 20 bits")
     return (label << 12) | ((tc & 0x7) << 9) | (int(bos) << 8) | (ttl & 0xFF)
+
+
+def decode_label(entry):
+    """Split a 32-bit label stack entry into its fields."""
+    return {"label": entry >> 12, "tc": (entry >> 9) & 0x7, "bos": bool((entry >> 8) & 1),
+            "ttl": entry & 0xFF}
