@@ -18,3 +18,7 @@ class TestScale(unittest.TestCase):
 
     def test_rsvp_mesh(self):
         self.assertEqual(mpls.rsvp_full_mesh_lsps(200), 39_800)
+
+    def test_msd(self):
+        self.assertTrue(mpls.sr_path_fits(5, 10))
+        self.assertFalse(mpls.sr_path_fits(12, 10))
