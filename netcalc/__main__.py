@@ -57,6 +57,7 @@ TOOLS = {
     "bfd": "netcalc.routing.bfd",
     "isis": "netcalc.routing.isis",
     "fhrp": "netcalc.routing.fhrp",
+    "mpls": "netcalc.routing.mpls",
 }
 
 
