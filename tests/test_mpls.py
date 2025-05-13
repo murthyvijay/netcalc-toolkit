@@ -32,3 +32,11 @@ class TestLabelEntry(unittest.TestCase):
         entry = mpls.encode_label(1048575, tc=7, bos=False, ttl=255)
         self.assertEqual(mpls.decode_label(entry),
                          {"label": 1048575, "tc": 7, "bos": False, "ttl": 255})
+
+    def test_label_range(self):
+        with self.assertRaises(ValueError):
+            mpls.encode_label(2 ** 20)
+
+
+if __name__ == "__main__":
+    unittest.main()
