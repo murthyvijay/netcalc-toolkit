@@ -713,6 +713,16 @@ hellos and a 10 s hold. Each protocol uses a well-known virtual MAC
 (`00:00:5e:00:01:<VRID>` for VRRP, `00:00:0c:07:ac:<group>` for HSRPv1) so the
 new master only needs a gratuitous ARP to move traffic.
 
+### MPLS and segment routing (`mpls`)
+
+An MPLS label stack entry is 4 bytes (20-bit label, 3-bit traffic class,
+bottom-of-stack bit, 8-bit TTL), so a core carrying 1500-byte customer
+packets under 3 labels needs at least a 1512-byte MPLS MTU. RSVP-TE keeps
+per-LSP state in every transit router and a full mesh of n PEs needs
+`n (n - 1)` LSPs (39,800 for 200 PEs); segment routing encodes the path as a
+label stack at the head-end instead, limited by the hardware's maximum SID
+depth.
+
 ---
 
 ## References
