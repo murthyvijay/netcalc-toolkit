@@ -157,6 +157,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `bfd` | negotiated BFD intervals, detection time at each end, packet load, false session-downs from random loss | `netcalc bfd flaps --interval 10ms --mult 3 --loss 1e-3` |
 | `isis` | decode NETs, system ID from a loopback, wide/narrow metric from bandwidth, LSP refresh load | `netcalc isis sysid 192.168.1.1 --area 49.0001` |
 | `fhrp` | VRRPv3 skew and master down interval, HSRP timer check, VRRP/HSRP virtual MACs, host failover time | `netcalc fhrp vrrp --interval 1 --priority 100` |
+| `mpls` | label stack overhead and core MTU, usable label space, RSVP-TE full-mesh LSPs, SR MSD check, label entry encode/decode | `netcalc mpls stack --labels 3 --payload-mtu 1500` |
 
 ## Examples
 
