@@ -26,3 +26,8 @@ from netcalc.units import fmt_rate, parse_rate
 
 VNI_SPACE = 2 ** 24
 USABLE_VLANS = 4094
+
+
+def type2_routes(hosts, ip_per_mac=1):
+    """MAC and MAC+IP type-2 routes for ``hosts`` endpoints."""
+    return hosts * (1 + ip_per_mac)
