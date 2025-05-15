@@ -41,3 +41,12 @@ def type3_routes(vteps, vnis_per_vtep):
 def total_routes(vteps, vnis_per_vtep, hosts, ip_per_mac=1, prefixes=0):
     """EVPN routes a route reflector carries (type-2 + type-3 + type-5)."""
     return type2_routes(hosts, ip_per_mac) + type3_routes(vteps, vnis_per_vtep) + prefixes
+
+
+def ingress_replication_bps(bum_bps, vteps_in_vni):
+    """Uplink load (b/s) of head-end replicating ``bum_bps`` to every other VTEP.
+
+    >>> ingress_replication_bps(100e6, 64)
+    6300000000.0
+    """
+    return bum_bps * (vteps_in_vni - 1)
