@@ -50,3 +50,8 @@ def ingress_replication_bps(bum_bps, vteps_in_vni):
     6300000000.0
     """
     return bum_bps * (vteps_in_vni - 1)
+
+
+def fits_local_vlans(vnis_per_switch):
+    """True if a switch can map this many L2 VNIs to local VLAN IDs."""
+    return vnis_per_switch <= USABLE_VLANS
