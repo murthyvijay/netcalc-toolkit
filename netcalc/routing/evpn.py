@@ -31,3 +31,8 @@ USABLE_VLANS = 4094
 def type2_routes(hosts, ip_per_mac=1):
     """MAC and MAC+IP type-2 routes for ``hosts`` endpoints."""
     return hosts * (1 + ip_per_mac)
+
+
+def type3_routes(vteps, vnis_per_vtep):
+    """Inclusive-multicast type-3 routes: one per VNI per VTEP."""
+    return vteps * vnis_per_vtep
