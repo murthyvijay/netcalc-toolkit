@@ -10,3 +10,6 @@ class TestRoutes(unittest.TestCase):
 
     def test_type3(self):
         self.assertEqual(evpn.type3_routes(64, 500), 32000)
+
+    def test_total(self):
+        self.assertEqual(evpn.total_routes(64, 500, 40000, 1, prefixes=1000), 113000)
