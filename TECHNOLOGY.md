@@ -723,6 +723,16 @@ per-LSP state in every transit router and a full mesh of n PEs needs
 label stack at the head-end instead, limited by the hardware's maximum SID
 depth.
 
+### VXLAN EVPN scale (`evpn`)
+
+In a BGP EVPN fabric each host contributes a MAC route and a MAC+IP route
+(type 2), and each VTEP a type-3 route per VNI to build BUM flood lists, so a
+64-VTEP fabric with 500 VNIs and 40,000 hosts has about 112,000 routes on its
+route reflectors. Ingress replication copies each BUM frame to every other
+VTEP in the VNI: 100 Mb/s of broadcast from one VTEP becomes 6.3 Gb/s on its
+uplinks with 64 VTEPs, which is why ARP suppression and multicast underlays
+exist. VNIs are 24-bit, but each switch still maps them into 4094 local VLANs.
+
 ---
 
 ## References
