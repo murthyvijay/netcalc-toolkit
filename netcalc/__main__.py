@@ -58,6 +58,7 @@ TOOLS = {
     "isis": "netcalc.routing.isis",
     "fhrp": "netcalc.routing.fhrp",
     "mpls": "netcalc.routing.mpls",
+    "evpn": "netcalc.routing.evpn",
 }
 
 
