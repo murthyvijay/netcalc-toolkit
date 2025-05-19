@@ -19,3 +19,14 @@ class TestReplication(unittest.TestCase):
     def test_ingress_replication(self):
         self.assertEqual(evpn.ingress_replication_bps(100e6, 64), 6.3e9)
         self.assertEqual(evpn.ingress_replication_bps(100e6, 1), 0)
+
+
+class TestLimits(unittest.TestCase):
+    def test_vlan_mapping(self):
+        self.assertTrue(evpn.fits_local_vlans(4000))
+        self.assertFalse(evpn.fits_local_vlans(5000))
+        self.assertEqual(evpn.VNI_SPACE, 16_777_216)
+
+
+if __name__ == "__main__":
+    unittest.main()
