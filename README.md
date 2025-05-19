@@ -158,6 +158,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `isis` | decode NETs, system ID from a loopback, wide/narrow metric from bandwidth, LSP refresh load | `netcalc isis sysid 192.168.1.1 --area 49.0001` |
 | `fhrp` | VRRPv3 skew and master down interval, HSRP timer check, VRRP/HSRP virtual MACs, host failover time | `netcalc fhrp vrrp --interval 1 --priority 100` |
 | `mpls` | label stack overhead and core MTU, usable label space, RSVP-TE full-mesh LSPs, SR MSD check, label entry encode/decode | `netcalc mpls stack --labels 3 --payload-mtu 1500` |
+| `evpn` | EVPN type-2/3/5 route counts, ingress replication load for BUM traffic, VNI and local VLAN limits | `netcalc evpn routes --vteps 64 --vnis 500 --hosts 40000` |
 
 ## Examples
 
