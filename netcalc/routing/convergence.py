@@ -26,3 +26,8 @@ from netcalc.units import fmt_size, fmt_time, parse_rate, parse_time
 def flooding_delay(hops, per_hop_s=0.01, origination_s=0.05):
     """Time (s) for the failure news to reach the router ``hops`` away."""
     return origination_s + hops * per_hop_s
+
+
+def fib_update_time(prefixes, per_prefix_s=20e-6, pic=False, next_hops=1):
+    """Time (s) to reprogram the FIB; with PIC only the shared next hops change."""
+    return (next_hops if pic else prefixes) * per_prefix_s
