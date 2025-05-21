@@ -31,3 +31,16 @@ def flooding_delay(hops, per_hop_s=0.01, origination_s=0.05):
 def fib_update_time(prefixes, per_prefix_s=20e-6, pic=False, next_hops=1):
     """Time (s) to reprogram the FIB; with PIC only the shared next hops change."""
     return (next_hops if pic else prefixes) * per_prefix_s
+
+
+def convergence_budget(detect_s, hops=3, per_hop_s=0.01, origination_s=0.05, spf_delay_s=0.05,
+                       spf_run_s=0.01, prefixes=1000, per_prefix_s=20e-6, pic=False):
+    """Each convergence component and their total, as a dict of seconds."""
+    parts = {
+        "detection": detect_s,
+        "flooding": flooding_delay(hops, per_hop_s, origination_s),
+        "spf": spf_delay_s + spf_run_s,
+        "fib": fib_update_time(prefixes, per_prefix_s, pic),
+    }
+    parts["total"] = sum(parts.values())
+    return parts
