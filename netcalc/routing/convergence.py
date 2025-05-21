@@ -21,3 +21,8 @@ Usage::
 import argparse
 
 from netcalc.units import fmt_size, fmt_time, parse_rate, parse_time
+
+
+def flooding_delay(hops, per_hop_s=0.01, origination_s=0.05):
+    """Time (s) for the failure news to reach the router ``hops`` away."""
+    return origination_s + hops * per_hop_s
