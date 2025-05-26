@@ -58,3 +58,36 @@ def traffic_lost(outage_s, rate_bps):
     3750000000.0
     """
     return outage_s * rate_bps / 8
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("budget", help="convergence time budget")
+    p.add_argument("--detect", default="150ms")
+    p.add_argument("--hops", type=int, default=3)
+    p.add_argument("--per-hop", default="10ms")
+    p.add_argument("--origination", default="50ms")
+    p.add_argument("--spf-delay", default="50ms")
+    p.add_argument("--spf-run", default="10ms")
+    p.add_argument("--prefixes", type=int, default=1000)
+    p.add_argument("--per-prefix", default="20us")
+    p.add_argument("--pic", action="store_true", help="prefix-independent convergence")
+    p = sub.add_parser("loss", help="traffic lost during an outage")
+    p.add_argument("--outage", required=True)
+    p.add_argument("--rate", required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "budget":
+        parts = convergence_budget(
+            parse_time(args.detect), args.hops, parse_time(args.per_hop), parse_time(args.origination),
+            parse_time(args.spf_delay), parse_time(args.spf_run), args.prefixes,
+            parse_time(args.per_prefix), args.pic)
+        for name, seconds in parts.items():
+            print(f"{name:>10}: {fmt_time(seconds)}")
+    else:
+        print(f"{fmt_size(traffic_lost(parse_time(args.outage), parse_rate(args.rate)))} lost")
+
+
+if __name__ == "__main__":
+    main()
