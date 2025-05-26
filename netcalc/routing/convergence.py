@@ -49,3 +49,12 @@ def convergence_budget(detect_s, hops=3, per_hop_s=0.01, origination_s=0.05, spf
 def prefixes_within(budget_s, per_prefix_s=20e-6):
     """How many prefixes can be reprogrammed within ``budget_s``."""
     return int(budget_s / per_prefix_s)
+
+
+def traffic_lost(outage_s, rate_bps):
+    """Bytes black-holed while a path carrying ``rate_bps`` is converging.
+
+    >>> traffic_lost(0.3, 100e9)
+    3750000000.0
+    """
+    return outage_s * rate_bps / 8
