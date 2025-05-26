@@ -44,3 +44,8 @@ def convergence_budget(detect_s, hops=3, per_hop_s=0.01, origination_s=0.05, spf
     }
     parts["total"] = sum(parts.values())
     return parts
+
+
+def prefixes_within(budget_s, per_prefix_s=20e-6):
+    """How many prefixes can be reprogrammed within ``budget_s``."""
+    return int(budget_s / per_prefix_s)
