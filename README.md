@@ -159,6 +159,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `fhrp` | VRRPv3 skew and master down interval, HSRP timer check, VRRP/HSRP virtual MACs, host failover time | `netcalc fhrp vrrp --interval 1 --priority 100` |
 | `mpls` | label stack overhead and core MTU, usable label space, RSVP-TE full-mesh LSPs, SR MSD check, label entry encode/decode | `netcalc mpls stack --labels 3 --payload-mtu 1500` |
 | `evpn` | EVPN type-2/3/5 route counts, ingress replication load for BUM traffic, VNI and local VLAN limits | `netcalc evpn routes --vteps 64 --vnis 500 --hosts 40000` |
+| `convergence` | IGP convergence budget (detect, flood, SPF, FIB), effect of prefix-independent convergence, traffic lost | `netcalc convergence budget --detect 150ms --prefixes 20000 --per-prefix 20us` |
 
 ## Examples
 
