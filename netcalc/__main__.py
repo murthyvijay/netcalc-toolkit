@@ -59,6 +59,7 @@ TOOLS = {
     "fhrp": "netcalc.routing.fhrp",
     "mpls": "netcalc.routing.mpls",
     "evpn": "netcalc.routing.evpn",
+    "convergence": "netcalc.routing.convergence",
 }
 
 
