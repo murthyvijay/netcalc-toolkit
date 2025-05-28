@@ -21,3 +21,15 @@ class TestBudget(unittest.TestCase):
     def test_pic_removes_fib_term(self):
         parts = convergence.convergence_budget(0.15, hops=4, prefixes=20000, pic=True)
         self.assertLess(parts["total"], 0.31)
+
+
+class TestImpact(unittest.TestCase):
+    def test_prefixes_within(self):
+        self.assertEqual(convergence.prefixes_within(0.05, 20e-6), 2500)
+
+    def test_traffic_lost(self):
+        self.assertAlmostEqual(convergence.traffic_lost(0.3, 100e9), 3.75e9)
+
+
+if __name__ == "__main__":
+    unittest.main()
