@@ -733,6 +733,16 @@ VTEP in the VNI: 100 Mb/s of broadcast from one VTEP becomes 6.3 Gb/s on its
 uplinks with 64 VTEPs, which is why ARP suppression and multicast underlays
 exist. VNIs are 24-bit, but each switch still maps them into 4094 local VLANs.
 
+### Convergence budget (`convergence`)
+
+Convergence time is detection + LSA/LSP origination and flooding + SPF
+throttle and run time + FIB programming. With BFD the first three terms are
+tens of milliseconds each, but rewriting 20,000 prefixes at 20 us each takes
+400 ms, so FIB programming dominates. Prefix-independent convergence (BGP PIC,
+hierarchical FIB, pre-computed LFA backups) updates one shared next-hop
+object instead, making the FIB term independent of table size. Traffic lost
+is rate times outage: 300 ms on a 100G path is 3.75 GB.
+
 ---
 
 ## References
