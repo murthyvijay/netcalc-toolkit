@@ -10,6 +10,9 @@
   Pollaczek-Khinchine and Kingman waits, M/M/1/K loss and buffer sizing.
 - Traffic management: DSCP/ToS/CoS mapping with RFC 4594 classes, RFC 2697 and
   RFC 2698 colour markers, RED/WRED, max-min fair and DWRR schedulers.
+- Routing: BGP best-path selection, iBGP mesh vs route reflectors and ASN
+  formats, Dijkstra with ECMP and loop-free alternates, IS-IS NETs and metrics,
+  BFD timers, VRRP/HSRP, MPLS and SR label math, EVPN scale, convergence budgets.
 
 ## 1.0.0
 
