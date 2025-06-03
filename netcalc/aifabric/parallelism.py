@@ -25,3 +25,8 @@ Usage::
 import argparse
 
 from netcalc.units import fmt_size, fmt_time, parse_rate
+
+
+def allreduce_bytes_per_rank(message_bytes, ranks):
+    """Bytes each rank sends in a bandwidth-optimal all-reduce."""
+    return 2 * (ranks - 1) / ranks * message_bytes
