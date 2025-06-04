@@ -51,3 +51,12 @@ def tp_bytes_per_step(tokens, hidden, layers, tp, bytes_per_value=2):
 def pp_bytes_per_microbatch(tokens, hidden, bytes_per_value=2):
     """Bytes crossing one pipeline stage boundary per micro-batch (forward + backward)."""
     return 2 * tokens * hidden * bytes_per_value
+
+
+def pipeline_bubble(stages, microbatches):
+    """Idle fraction of a GPipe / 1F1B pipeline step.
+
+    >>> round(pipeline_bubble(8, 32), 4)
+    0.1795
+    """
+    return (stages - 1) / (microbatches + stages - 1)
