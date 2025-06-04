@@ -30,3 +30,12 @@ from netcalc.units import fmt_size, fmt_time, parse_rate
 def allreduce_bytes_per_rank(message_bytes, ranks):
     """Bytes each rank sends in a bandwidth-optimal all-reduce."""
     return 2 * (ranks - 1) / ranks * message_bytes
+
+
+def dp_bytes_per_step(params, bytes_per_param, ranks):
+    """Gradient all-reduce bytes sent per rank per optimizer step.
+
+    >>> dp_bytes_per_step(1e9, 2, 2)
+    2000000000.0
+    """
+    return allreduce_bytes_per_rank(params * bytes_per_param, ranks)
