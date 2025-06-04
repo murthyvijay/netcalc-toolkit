@@ -46,3 +46,8 @@ def tp_bytes_per_step(tokens, hidden, layers, tp, bytes_per_value=2):
     if tp <= 1:
         return 0.0
     return 4 * layers * allreduce_bytes_per_rank(tokens * hidden * bytes_per_value, tp)
+
+
+def pp_bytes_per_microbatch(tokens, hidden, bytes_per_value=2):
+    """Bytes crossing one pipeline stage boundary per micro-batch (forward + backward)."""
+    return 2 * tokens * hidden * bytes_per_value
