@@ -39,3 +39,10 @@ def dp_bytes_per_step(params, bytes_per_param, ranks):
     2000000000.0
     """
     return allreduce_bytes_per_rank(params * bytes_per_param, ranks)
+
+
+def tp_bytes_per_step(tokens, hidden, layers, tp, bytes_per_value=2):
+    """Activation all-reduce bytes per rank per step inside a TP group (4 per layer)."""
+    if tp <= 1:
+        return 0.0
+    return 4 * layers * allreduce_bytes_per_rank(tokens * hidden * bytes_per_value, tp)
