@@ -71,3 +71,46 @@ def step_time(compute_s, comm_s, overlap=0.0):
     """Step time when a fraction ``overlap`` of communication hides behind compute."""
     exposed = comm_s * (1 - overlap)
     return compute_s + exposed
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("dp", help="data-parallel gradient traffic")
+    p.add_argument("--params", type=float, required=True)
+    p.add_argument("--bytes", type=float, default=2, help="bytes per gradient value")
+    p.add_argument("--ranks", type=int, required=True)
+    p.add_argument("--bw", default="400G", help="per-rank network bandwidth")
+    p = sub.add_parser("tp", help="tensor-parallel activation traffic")
+    p.add_argument("--tokens", type=int, required=True, help="tokens per micro-batch")
+    p.add_argument("--hidden", type=int, required=True)
+    p.add_argument("--layers", type=int, required=True)
+    p.add_argument("--tp", type=int, required=True)
+    p.add_argument("--bytes", type=float, default=2)
+    p.add_argument("--bw", default="3.6T", help="per-GPU scale-up bandwidth")
+    p = sub.add_parser("pp", help="pipeline-parallel boundary traffic")
+    p.add_argument("--tokens", type=int, required=True)
+    p.add_argument("--hidden", type=int, required=True)
+    p.add_argument("--bytes", type=float, default=2)
+    p = sub.add_parser("bubble", help="pipeline bubble fraction")
+    p.add_argument("--stages", type=int, required=True)
+    p.add_argument("--microbatches", type=int, required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "dp":
+        b = dp_bytes_per_step(args.params, args.bytes, args.ranks)
+        print(f"{fmt_size(b)} per rank per step, {fmt_time(comm_time(b, parse_rate(args.bw)))} "
+              f"at {args.bw}")
+    elif args.cmd == "tp":
+        b = tp_bytes_per_step(args.tokens, args.hidden, args.layers, args.tp, args.bytes)
+        print(f"{fmt_size(b)} per rank per micro-batch, "
+              f"{fmt_time(comm_time(b, parse_rate(args.bw)))} at {args.bw}")
+    elif args.cmd == "pp":
+        print(f"{fmt_size(pp_bytes_per_microbatch(args.tokens, args.hidden, args.bytes))} "
+              f"per boundary per micro-batch")
+    else:
+        print(f"bubble = {pipeline_bubble(args.stages, args.microbatches):.1%} of each step")
+
+
+if __name__ == "__main__":
+    main()
