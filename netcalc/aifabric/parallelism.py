@@ -65,3 +65,9 @@ def pipeline_bubble(stages, microbatches):
 def comm_time(nbytes, bw_bps, efficiency=1.0):
     """Seconds to move ``nbytes`` at ``bw_bps`` with a link efficiency factor."""
     return nbytes * 8 / (bw_bps * efficiency)
+
+
+def step_time(compute_s, comm_s, overlap=0.0):
+    """Step time when a fraction ``overlap`` of communication hides behind compute."""
+    exposed = comm_s * (1 - overlap)
+    return compute_s + exposed
