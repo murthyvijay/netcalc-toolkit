@@ -60,3 +60,8 @@ def pipeline_bubble(stages, microbatches):
     0.1795
     """
     return (stages - 1) / (microbatches + stages - 1)
+
+
+def comm_time(nbytes, bw_bps, efficiency=1.0):
+    """Seconds to move ``nbytes`` at ``bw_bps`` with a link efficiency factor."""
+    return nbytes * 8 / (bw_bps * efficiency)
