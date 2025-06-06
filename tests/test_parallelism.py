@@ -20,3 +20,7 @@ class TestModelParallel(unittest.TestCase):
 
     def test_pipeline_boundary(self):
         self.assertEqual(parallelism.pp_bytes_per_microbatch(4096, 8192), 2 * 4096 * 8192 * 2)
+
+    def test_bubble(self):
+        self.assertAlmostEqual(parallelism.pipeline_bubble(8, 32), 7 / 39)
+        self.assertEqual(parallelism.pipeline_bubble(1, 4), 0.0)
