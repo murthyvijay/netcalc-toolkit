@@ -24,3 +24,17 @@ class TestModelParallel(unittest.TestCase):
     def test_bubble(self):
         self.assertAlmostEqual(parallelism.pipeline_bubble(8, 32), 7 / 39)
         self.assertEqual(parallelism.pipeline_bubble(1, 4), 0.0)
+
+
+class TestTiming(unittest.TestCase):
+    def test_comm_time(self):
+        self.assertAlmostEqual(parallelism.comm_time(50e9, 400e9), 1.0)
+        self.assertAlmostEqual(parallelism.comm_time(50e9, 400e9, efficiency=0.8), 1.25)
+
+    def test_overlap(self):
+        self.assertAlmostEqual(parallelism.step_time(1.0, 0.5), 1.5)
+        self.assertAlmostEqual(parallelism.step_time(1.0, 0.5, overlap=0.8), 1.1)
+
+
+if __name__ == "__main__":
+    unittest.main()
