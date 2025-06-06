@@ -10,3 +10,13 @@ class TestDataParallel(unittest.TestCase):
     def test_gradient_bytes(self):
         self.assertAlmostEqual(parallelism.dp_bytes_per_step(1e9, 2, 2), 2e9)
         self.assertAlmostEqual(parallelism.dp_bytes_per_step(70e9, 2, 64), 2 * 63 / 64 * 140e9)
+
+
+class TestModelParallel(unittest.TestCase):
+    def test_tensor_parallel(self):
+        self.assertEqual(parallelism.tp_bytes_per_step(1024, 4096, 2, 1), 0.0)
+        expected = 4 * 2 * (2 * 7 / 8) * 1024 * 4096 * 2
+        self.assertAlmostEqual(parallelism.tp_bytes_per_step(1024, 4096, 2, 8), expected)
+
+    def test_pipeline_boundary(self):
+        self.assertEqual(parallelism.pp_bytes_per_microbatch(4096, 8192), 2 * 4096 * 8192 * 2)
