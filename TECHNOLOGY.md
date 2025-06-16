@@ -416,6 +416,16 @@ T = 2 (n - 1) alpha + 2 (n - 1) / n * S / B
 The first term (latency) grows with ranks, which is why large jobs switch to
 tree or hierarchical algorithms for small messages.
 
+### Parallelism traffic (`parallelism`)
+
+Each form of parallelism loads the network differently. Data parallelism
+all-reduces every gradient once per step, `2 (N - 1) / N * params * bytes` per
+rank: bandwidth-heavy but overlappable with the backward pass. Tensor
+parallelism all-reduces activations four times per layer per step, far more
+bytes and on the critical path, so it stays inside the NVLink domain.
+Pipeline parallelism only sends activations across stage boundaries but idles
+`(p - 1) / (m + p - 1)` of each step (18 % for 8 stages and 32 micro-batches).
+
 ---
 
 ## 6. Optics and DWDM
