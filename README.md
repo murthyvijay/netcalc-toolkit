@@ -111,6 +111,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `roce` | PFC headroom, pause quanta, ECN marking curve, DCQCN rate trace | `netcalc roce headroom --rate 400G --cable 100m` |
 | `buffer` | incast peak queue, absorb time, shared-buffer dynamic thresholds | `netcalc buffer dt --buffer 64MB --queues 8` |
 | `collectives` | NCCL algbw/busbw, ring all-reduce time (alpha-beta model) | `netcalc collectives busbw --size 1GB --time 25ms --ranks 64` |
+| `parallelism` | data/tensor/pipeline-parallel bytes per step, pipeline bubble, exposed communication time | `netcalc parallelism dp --params 70e9 --ranks 64 --bw 400G` |
 
 ### Optics and DWDM (`netcalc.optics`)
 
