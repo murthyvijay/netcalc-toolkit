@@ -29,3 +29,8 @@ import argparse
 import math
 
 from netcalc.units import fmt_size, fmt_time, parse_rate, parse_size, parse_time
+
+
+def ring_time(size_bytes, ranks, bw_bps, alpha_s=0.0):
+    """Ring all-reduce time (s)."""
+    return 2 * (ranks - 1) * alpha_s + 2 * (ranks - 1) / ranks * size_bytes * 8 / bw_bps
