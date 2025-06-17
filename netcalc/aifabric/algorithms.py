@@ -60,3 +60,14 @@ def hierarchical_time(size_bytes, servers, gpus_per_server, inter_bps, intra_bps
     intra = 2 * ((g - 1) * intra_alpha_s + (g - 1) / g * size_bytes * 8 / intra_bps)
     inter = ring_time(size_bytes / g, servers, inter_bps, alpha_s) if servers > 1 else 0.0
     return intra + inter
+
+
+def best_algorithm(size_bytes, ranks, bw_bps, alpha_s, tree_efficiency=1.0):
+    """Name and time of the fastest flat algorithm for this message size."""
+    times = {
+        "ring": ring_time(size_bytes, ranks, bw_bps, alpha_s),
+        "tree": tree_time(size_bytes, ranks, bw_bps, alpha_s, tree_efficiency),
+        "halving-doubling": halving_doubling_time(size_bytes, ranks, bw_bps, alpha_s),
+    }
+    name = min(times, key=times.get)
+    return name, times[name]
