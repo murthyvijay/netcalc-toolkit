@@ -51,3 +51,12 @@ def halving_doubling_time(size_bytes, ranks, bw_bps, alpha_s=0.0):
     1.0
     """
     return 2 * math.log2(ranks) * alpha_s + 2 * (ranks - 1) / ranks * size_bytes * 8 / bw_bps
+
+
+def hierarchical_time(size_bytes, servers, gpus_per_server, inter_bps, intra_bps, alpha_s=0.0,
+                      intra_alpha_s=0.0):
+    """Hierarchical all-reduce: intra reduce-scatter, inter ring on shards, intra all-gather."""
+    g = gpus_per_server
+    intra = 2 * ((g - 1) * intra_alpha_s + (g - 1) / g * size_bytes * 8 / intra_bps)
+    inter = ring_time(size_bytes / g, servers, inter_bps, alpha_s) if servers > 1 else 0.0
+    return intra + inter
