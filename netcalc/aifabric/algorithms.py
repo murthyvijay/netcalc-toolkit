@@ -34,3 +34,11 @@ from netcalc.units import fmt_size, fmt_time, parse_rate, parse_size, parse_time
 def ring_time(size_bytes, ranks, bw_bps, alpha_s=0.0):
     """Ring all-reduce time (s)."""
     return 2 * (ranks - 1) * alpha_s + 2 * (ranks - 1) / ranks * size_bytes * 8 / bw_bps
+
+
+def tree_time(size_bytes, ranks, bw_bps, alpha_s=0.0, efficiency=1.0):
+    """Pipelined double-binary-tree all-reduce time (s), first-order model.
+
+    ``efficiency`` is the fraction of link bandwidth the pipelined tree achieves.
+    """
+    return 2 * math.log2(ranks) * alpha_s + 2 * size_bytes * 8 / (bw_bps * efficiency)
