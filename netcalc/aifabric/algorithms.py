@@ -42,3 +42,12 @@ def tree_time(size_bytes, ranks, bw_bps, alpha_s=0.0, efficiency=1.0):
     ``efficiency`` is the fraction of link bandwidth the pipelined tree achieves.
     """
     return 2 * math.log2(ranks) * alpha_s + 2 * size_bytes * 8 / (bw_bps * efficiency)
+
+
+def halving_doubling_time(size_bytes, ranks, bw_bps, alpha_s=0.0):
+    """Recursive halving-doubling (Rabenseifner) all-reduce time (s).
+
+    >>> halving_doubling_time(1e6, 2, 8e6, 0.0)
+    1.0
+    """
+    return 2 * math.log2(ranks) * alpha_s + 2 * (ranks - 1) / ranks * size_bytes * 8 / bw_bps
