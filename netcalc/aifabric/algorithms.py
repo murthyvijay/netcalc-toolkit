@@ -82,3 +82,49 @@ def ring_tree_crossover(ranks, bw_bps, alpha_s, tree_efficiency=1.0):
     latency_gap = 2 * (ranks - 1 - math.log2(ranks)) * alpha_s
     bw_gap_per_byte = 2 * (1 / tree_efficiency - (ranks - 1) / ranks) * 8 / bw_bps
     return latency_gap / bw_gap_per_byte
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("compare", help="time of each algorithm for one message")
+    p.add_argument("--size", required=True)
+    p.add_argument("--ranks", type=int, required=True)
+    p.add_argument("--bw", required=True)
+    p.add_argument("--alpha", default="5us")
+    p.add_argument("--tree-eff", type=float, default=1.0, help="tree bandwidth efficiency")
+    p = sub.add_parser("crossover", help="message size where ring overtakes tree")
+    p.add_argument("--ranks", type=int, required=True)
+    p.add_argument("--bw", required=True)
+    p.add_argument("--alpha", default="5us")
+    p.add_argument("--tree-eff", type=float, default=1.0)
+    p = sub.add_parser("hierarchical", help="two-level all-reduce vs flat ring")
+    p.add_argument("--size", required=True)
+    p.add_argument("--servers", type=int, required=True)
+    p.add_argument("--gpus", type=int, default=8)
+    p.add_argument("--bw", required=True, help="per-GPU scale-out bandwidth")
+    p.add_argument("--intra-bw", required=True, help="per-GPU scale-up bandwidth")
+    p.add_argument("--alpha", default="5us")
+    args = parser.parse_args(argv)
+
+    alpha = parse_time(args.alpha)
+    bw = parse_rate(args.bw)
+    if args.cmd == "compare":
+        size = parse_size(args.size)
+        print(f"{'ring':<17} {fmt_time(ring_time(size, args.ranks, bw, alpha))}")
+        print(f"{'tree':<17} {fmt_time(tree_time(size, args.ranks, bw, alpha, args.tree_eff))}")
+        print(f"{'halving-doubling':<17} "
+              f"{fmt_time(halving_doubling_time(size, args.ranks, bw, alpha))}")
+        print(f"fastest: {best_algorithm(size, args.ranks, bw, alpha, args.tree_eff)[0]}")
+    elif args.cmd == "crossover":
+        s = ring_tree_crossover(args.ranks, bw, alpha, args.tree_eff)
+        print(f"ring beats tree above {fmt_size(s)}")
+    else:
+        size = parse_size(args.size)
+        h = hierarchical_time(size, args.servers, args.gpus, bw, parse_rate(args.intra_bw), alpha)
+        flat = ring_time(size, args.servers * args.gpus, bw, alpha)
+        print(f"hierarchical {fmt_time(h)} vs flat ring {fmt_time(flat)}")
+
+
+if __name__ == "__main__":
+    main()
