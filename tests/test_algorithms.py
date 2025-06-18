@@ -11,3 +11,10 @@ class TestFlatAlgorithms(unittest.TestCase):
     def test_tree_latency_grows_with_log(self):
         t = algorithms.tree_time(0, 1024, 400e9, 1e-6)
         self.assertAlmostEqual(t, 20e-6)
+
+    def test_halving_doubling(self):
+        self.assertAlmostEqual(algorithms.halving_doubling_time(1e6, 2, 8e6), 1.0)
+        self.assertAlmostEqual(algorithms.halving_doubling_time(0, 8, 1e9, 1e-6), 6e-6)
+
+    def test_tree_efficiency(self):
+        self.assertAlmostEqual(algorithms.tree_time(1e6, 2, 8e6, efficiency=0.5), 4.0)
