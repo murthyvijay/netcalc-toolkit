@@ -71,3 +71,14 @@ def best_algorithm(size_bytes, ranks, bw_bps, alpha_s, tree_efficiency=1.0):
     }
     name = min(times, key=times.get)
     return name, times[name]
+
+
+def ring_tree_crossover(ranks, bw_bps, alpha_s, tree_efficiency=1.0):
+    """Message size (bytes) above which ring beats tree.
+
+    Setting the two times equal gives
+    ``S = (n - 1 - log2 n) alpha B / (8 (1 / e - (n - 1) / n))``.
+    """
+    latency_gap = 2 * (ranks - 1 - math.log2(ranks)) * alpha_s
+    bw_gap_per_byte = 2 * (1 / tree_efficiency - (ranks - 1) / ranks) * 8 / bw_bps
+    return latency_gap / bw_gap_per_byte
