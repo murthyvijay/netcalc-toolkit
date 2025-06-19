@@ -18,3 +18,14 @@ class TestFlatAlgorithms(unittest.TestCase):
 
     def test_tree_efficiency(self):
         self.assertAlmostEqual(algorithms.tree_time(1e6, 2, 8e6, efficiency=0.5), 4.0)
+
+
+class TestChoice(unittest.TestCase):
+    def test_small_messages_avoid_ring(self):
+        name, _ = algorithms.best_algorithm(1e3, 512, 400e9, 5e-6)
+        self.assertNotEqual(name, "ring")
+
+    def test_crossover_is_where_times_meet(self):
+        s = algorithms.ring_tree_crossover(64, 400e9, 5e-6, tree_efficiency=0.7)
+        self.assertAlmostEqual(algorithms.ring_time(s, 64, 400e9, 5e-6),
+                               algorithms.tree_time(s, 64, 400e9, 5e-6, 0.7))
