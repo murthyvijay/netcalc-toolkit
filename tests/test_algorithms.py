@@ -29,3 +29,18 @@ class TestChoice(unittest.TestCase):
         s = algorithms.ring_tree_crossover(64, 400e9, 5e-6, tree_efficiency=0.7)
         self.assertAlmostEqual(algorithms.ring_time(s, 64, 400e9, 5e-6),
                                algorithms.tree_time(s, 64, 400e9, 5e-6, 0.7))
+
+
+class TestHierarchical(unittest.TestCase):
+    def test_beats_flat_ring_at_scale(self):
+        h = algorithms.hierarchical_time(1e9, 64, 8, 400e9, 3.6e12, 5e-6)
+        flat = algorithms.ring_time(1e9, 512, 400e9, 5e-6)
+        self.assertLess(h, flat)
+
+    def test_single_server_is_intra_only(self):
+        t = algorithms.hierarchical_time(8e9, 1, 8, 400e9, 8e9 * 8)
+        self.assertAlmostEqual(t, 2 * 7 / 8)
+
+
+if __name__ == "__main__":
+    unittest.main()
