@@ -61,6 +61,7 @@ TOOLS = {
     "evpn": "netcalc.routing.evpn",
     "convergence": "netcalc.routing.convergence",
     "parallelism": "netcalc.aifabric.parallelism",
+    "algorithms": "netcalc.aifabric.algorithms",
 }
 
 
