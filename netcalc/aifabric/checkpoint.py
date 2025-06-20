@@ -33,3 +33,8 @@ def checkpoint_bytes(params, bytes_per_param=ADAM_MIXED_BYTES_PER_PARAM):
     980000000000.0
     """
     return params * bytes_per_param
+
+
+def write_time(nbytes, storage_bps):
+    """Seconds to write a checkpoint at an aggregate storage bandwidth."""
+    return nbytes * 8 / storage_bps
