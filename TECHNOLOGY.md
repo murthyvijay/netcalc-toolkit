@@ -426,6 +426,18 @@ bytes and on the critical path, so it stays inside the NVLink domain.
 Pipeline parallelism only sends activations across stage boundaries but idles
 `(p - 1) / (m + p - 1)` of each step (18 % for 8 stages and 32 micro-batches).
 
+### Collective algorithms (`algorithms`)
+
+The alpha-beta model separates latency (alpha per message step) from
+bandwidth (S/B). Ring all-reduce has the best bandwidth term,
+`2 (n - 1) / n * S / B`, but `2 (n - 1)` latency steps; trees and recursive
+halving-doubling need only `2 log2 n` steps. At 512 ranks and 5 us per step a
+ring spends over 5 ms on latency alone, so libraries switch algorithms by
+message size. Hierarchical all-reduce reduce-scatters over the fast
+scale-up domain first, so only `1/g` of the data crosses the scale-out
+network: for 1 GB on 64 servers of 8 GPUs it is several times faster than a
+flat 512-rank ring.
+
 ---
 
 ## 6. Optics and DWDM
