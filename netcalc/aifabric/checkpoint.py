@@ -24,3 +24,12 @@ import math
 from netcalc.units import fmt_size, fmt_time, parse_rate, parse_time
 
 ADAM_MIXED_BYTES_PER_PARAM = 14
+
+
+def checkpoint_bytes(params, bytes_per_param=ADAM_MIXED_BYTES_PER_PARAM):
+    """Checkpoint size in bytes.
+
+    >>> checkpoint_bytes(70e9)
+    980000000000.0
+    """
+    return params * bytes_per_param
