@@ -43,3 +43,8 @@ def write_time(nbytes, storage_bps):
 def job_mtbf_hours(component_mtbf_hours, components):
     """Mean time between failures (h) of a job spanning ``components`` parts."""
     return component_mtbf_hours / components
+
+
+def interruption_probability(components, component_mtbf_hours, duration_hours):
+    """Probability that at least one component fails during ``duration_hours``."""
+    return 1 - math.exp(-components * duration_hours / component_mtbf_hours)
