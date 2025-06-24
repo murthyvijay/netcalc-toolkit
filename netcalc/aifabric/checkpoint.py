@@ -48,3 +48,8 @@ def job_mtbf_hours(component_mtbf_hours, components):
 def interruption_probability(components, component_mtbf_hours, duration_hours):
     """Probability that at least one component fails during ``duration_hours``."""
     return 1 - math.exp(-components * duration_hours / component_mtbf_hours)
+
+
+def optimal_interval(checkpoint_s, job_mtbf_s):
+    """Young/Daly checkpoint interval (s): ``sqrt(2 * delta * MTBF)``."""
+    return math.sqrt(2 * checkpoint_s * job_mtbf_s)
