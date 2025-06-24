@@ -53,3 +53,8 @@ def interruption_probability(components, component_mtbf_hours, duration_hours):
 def optimal_interval(checkpoint_s, job_mtbf_s):
     """Young/Daly checkpoint interval (s): ``sqrt(2 * delta * MTBF)``."""
     return math.sqrt(2 * checkpoint_s * job_mtbf_s)
+
+
+def wasted_fraction(interval_s, checkpoint_s, job_mtbf_s, restart_s=0.0):
+    """Approximate fraction of wall-clock time lost to checkpoints, rework and restarts."""
+    return checkpoint_s / interval_s + (interval_s / 2 + restart_s) / job_mtbf_s
