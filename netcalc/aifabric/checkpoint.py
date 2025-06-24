@@ -38,3 +38,8 @@ def checkpoint_bytes(params, bytes_per_param=ADAM_MIXED_BYTES_PER_PARAM):
 def write_time(nbytes, storage_bps):
     """Seconds to write a checkpoint at an aggregate storage bandwidth."""
     return nbytes * 8 / storage_bps
+
+
+def job_mtbf_hours(component_mtbf_hours, components):
+    """Mean time between failures (h) of a job spanning ``components`` parts."""
+    return component_mtbf_hours / components
