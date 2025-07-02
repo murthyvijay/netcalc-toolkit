@@ -58,3 +58,39 @@ def optimal_interval(checkpoint_s, job_mtbf_s):
 def wasted_fraction(interval_s, checkpoint_s, job_mtbf_s, restart_s=0.0):
     """Approximate fraction of wall-clock time lost to checkpoints, rework and restarts."""
     return checkpoint_s / interval_s + (interval_s / 2 + restart_s) / job_mtbf_s
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("size", help="checkpoint size and write time")
+    p.add_argument("--params", type=float, required=True)
+    p.add_argument("--bytes-per-param", type=float, default=ADAM_MIXED_BYTES_PER_PARAM)
+    p.add_argument("--bw", default="200G", help="aggregate storage write bandwidth")
+    p = sub.add_parser("interval", help="Young/Daly checkpoint interval")
+    p.add_argument("--write", required=True, help="checkpoint write time, e.g. 60s")
+    p.add_argument("--gpus", type=int, required=True)
+    p.add_argument("--mtbf", type=float, required=True, help="per-GPU (or per-node) MTBF in hours")
+    p.add_argument("--restart", default="600s", help="restart time")
+    p = sub.add_parser("interruption", help="chance of a failure during a run")
+    p.add_argument("--gpus", type=int, required=True)
+    p.add_argument("--mtbf", type=float, required=True)
+    p.add_argument("--hours", type=float, required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "size":
+        b = checkpoint_bytes(args.params, args.bytes_per_param)
+        print(f"checkpoint {fmt_size(b)}, written in {fmt_time(write_time(b, parse_rate(args.bw)))}")
+    elif args.cmd == "interval":
+        delta = parse_time(args.write)
+        mtbf_s = job_mtbf_hours(args.mtbf, args.gpus) * 3600
+        tau = optimal_interval(delta, mtbf_s)
+        waste = wasted_fraction(tau, delta, mtbf_s, parse_time(args.restart))
+        print(f"job MTBF {fmt_time(mtbf_s)}; checkpoint every {fmt_time(tau)}; ~{waste:.1%} wasted")
+    else:
+        p = interruption_probability(args.gpus, args.mtbf, args.hours)
+        print(f"P(at least one failure in {args.hours:g} h) = {p:.1%}")
+
+
+if __name__ == "__main__":
+    main()
