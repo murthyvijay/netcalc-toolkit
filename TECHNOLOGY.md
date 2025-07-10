@@ -438,6 +438,16 @@ scale-up domain first, so only `1/g` of the data crosses the scale-out
 network: for 1 GB on 64 servers of 8 GPUs it is several times faster than a
 flat 512-rank ring.
 
+### Checkpoints and failures (`checkpoint`)
+
+At scale, failures are routine: 16,384 GPUs with a 50,000-hour MTBF each fail
+about every three hours as a job. Mixed-precision Adam checkpoints about 14
+bytes per parameter (a 70B model is about 1 TB). The Young/Daly interval
+`sqrt(2 * write_time * MTBF)` balances time spent writing checkpoints against
+work redone after a failure; faster storage (or asynchronous, in-memory
+checkpoints) shortens the interval and the waste, which is part of why
+front-end and storage networks matter for training efficiency.
+
 ---
 
 ## 6. Optics and DWDM
