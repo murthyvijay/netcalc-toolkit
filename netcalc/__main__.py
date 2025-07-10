@@ -62,6 +62,7 @@ TOOLS = {
     "convergence": "netcalc.routing.convergence",
     "parallelism": "netcalc.aifabric.parallelism",
     "algorithms": "netcalc.aifabric.algorithms",
+    "checkpoint": "netcalc.aifabric.checkpoint",
 }
 
 
