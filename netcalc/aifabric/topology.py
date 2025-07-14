@@ -22,3 +22,12 @@ Usage::
 
 import argparse
 import math
+
+
+def two_tier_max_hosts(radix):
+    """Largest non-blocking leaf-spine: ``k^2 / 2`` hosts.
+
+    >>> two_tier_max_hosts(64)
+    2048
+    """
+    return radix * radix // 2
