@@ -31,3 +31,8 @@ def two_tier_max_hosts(radix):
     2048
     """
     return radix * radix // 2
+
+
+def three_tier_max_hosts(radix):
+    """Largest non-blocking three-tier fat tree: ``k^3 / 4`` hosts."""
+    return radix ** 3 // 4
