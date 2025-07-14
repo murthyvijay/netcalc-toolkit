@@ -36,3 +36,8 @@ def two_tier_max_hosts(radix):
 def three_tier_max_hosts(radix):
     """Largest non-blocking three-tier fat tree: ``k^3 / 4`` hosts."""
     return radix ** 3 // 4
+
+
+def three_tier_switches(radix):
+    """Switches in a full k-ary fat tree: ``5 k^2 / 4``."""
+    return 5 * radix * radix // 4
