@@ -41,3 +41,8 @@ def three_tier_max_hosts(radix):
 def three_tier_switches(radix):
     """Switches in a full k-ary fat tree: ``5 k^2 / 4``."""
     return 5 * radix * radix // 4
+
+
+def oversubscription(down_ports, up_ports, down_rate=1.0, up_rate=1.0):
+    """Downlink to uplink capacity ratio of a leaf."""
+    return (down_ports * down_rate) / (up_ports * up_rate)
