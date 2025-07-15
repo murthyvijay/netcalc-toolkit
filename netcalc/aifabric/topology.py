@@ -72,3 +72,8 @@ def rail_plan(servers, gpus_per_server, radix):
     groups = math.ceil(servers / servers_per_group)
     return {"rails": gpus_per_server, "servers_per_group": servers_per_group,
             "groups": groups, "leaves": groups * gpus_per_server}
+
+
+def bisection_bandwidth(hosts, host_rate_bps, oversub=1.0):
+    """Bisection bandwidth (b/s) of a Clos fabric."""
+    return hosts * host_rate_bps / 2 / oversub
