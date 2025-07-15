@@ -59,3 +59,8 @@ def leaf_spine_plan(hosts, radix, oversub=1.0):
     return {"leaves": leaves, "spines": spines, "host_ports_per_leaf": down,
             "uplinks_per_leaf": up, "leaf_spine_links": leaves * up,
             "switches": leaves + spines}
+
+
+def optics_count(links, transceivers_per_link=2):
+    """Transceivers needed for ``links`` switch-to-switch links."""
+    return links * transceivers_per_link
