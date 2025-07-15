@@ -64,3 +64,11 @@ def leaf_spine_plan(hosts, radix, oversub=1.0):
 def optics_count(links, transceivers_per_link=2):
     """Transceivers needed for ``links`` switch-to-switch links."""
     return links * transceivers_per_link
+
+
+def rail_plan(servers, gpus_per_server, radix):
+    """Rail-optimised layout: servers per rail group and leaves needed (one per rail per group)."""
+    servers_per_group = radix // 2
+    groups = math.ceil(servers / servers_per_group)
+    return {"rails": gpus_per_server, "servers_per_group": servers_per_group,
+            "groups": groups, "leaves": groups * gpus_per_server}
