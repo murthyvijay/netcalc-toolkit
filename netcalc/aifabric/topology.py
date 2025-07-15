@@ -46,3 +46,16 @@ def three_tier_switches(radix):
 def oversubscription(down_ports, up_ports, down_rate=1.0, up_rate=1.0):
     """Downlink to uplink capacity ratio of a leaf."""
     return (down_ports * down_rate) / (up_ports * up_rate)
+
+
+def leaf_spine_plan(hosts, radix, oversub=1.0):
+    """Leaves, spines and links for a two-tier fabric with a leaf oversubscription ratio."""
+    down = math.floor(radix * oversub / (1 + oversub))
+    up = radix - down
+    leaves = math.ceil(hosts / down)
+    if leaves > radix:
+        raise ValueError(f"{hosts} hosts need {leaves} leaves; more than radix {radix}: use 3 tiers")
+    spines = up
+    return {"leaves": leaves, "spines": spines, "host_ports_per_leaf": down,
+            "uplinks_per_leaf": up, "leaf_spine_links": leaves * up,
+            "switches": leaves + spines}
