@@ -77,3 +77,36 @@ def rail_plan(servers, gpus_per_server, radix):
 def bisection_bandwidth(hosts, host_rate_bps, oversub=1.0):
     """Bisection bandwidth (b/s) of a Clos fabric."""
     return hosts * host_rate_bps / 2 / oversub
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("max", help="largest fabric for a switch radix")
+    p.add_argument("--radix", type=int, required=True)
+    p = sub.add_parser("plan", help="two-tier leaf-spine plan")
+    p.add_argument("--hosts", type=int, required=True)
+    p.add_argument("--radix", type=int, required=True)
+    p.add_argument("--oversub", type=float, default=1.0)
+    p = sub.add_parser("rails", help="rail-optimised leaf count")
+    p.add_argument("--servers", type=int, required=True)
+    p.add_argument("--gpus", type=int, default=8)
+    p.add_argument("--radix", type=int, required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "max":
+        k = args.radix
+        print(f"two tiers: {two_tier_max_hosts(k)} hosts with {k + k // 2} switches")
+        print(f"three tiers: {three_tier_max_hosts(k)} hosts with {three_tier_switches(k)} switches")
+    elif args.cmd == "plan":
+        plan = leaf_spine_plan(args.hosts, args.radix, args.oversub)
+        for key, value in plan.items():
+            print(f"{key:>20}: {value}")
+        print(f"{'optics':>20}: {optics_count(plan['leaf_spine_links'])}")
+    else:
+        for key, value in rail_plan(args.servers, args.gpus, args.radix).items():
+            print(f"{key:>18}: {value}")
+
+
+if __name__ == "__main__":
+    main()
