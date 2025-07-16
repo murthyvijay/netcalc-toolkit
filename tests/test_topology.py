@@ -24,3 +24,11 @@ class TestPlan(unittest.TestCase):
         self.assertEqual(plan["host_ports_per_leaf"], 48)
         self.assertEqual(plan["uplinks_per_leaf"], 16)
         self.assertEqual(plan["leaves"], 10)
+
+    def test_too_big_for_two_tiers(self):
+        with self.assertRaises(ValueError):
+            topology.leaf_spine_plan(4096, 64)
+
+    def test_ratio_and_optics(self):
+        self.assertEqual(topology.oversubscription(48, 8, 100, 400), 1.5)
+        self.assertEqual(topology.optics_count(2048), 4096)
