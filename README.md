@@ -114,6 +114,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `parallelism` | data/tensor/pipeline-parallel bytes per step, pipeline bubble, exposed communication time | `netcalc parallelism dp --params 70e9 --ranks 64 --bw 400G` |
 | `algorithms` | ring vs tree vs halving-doubling all-reduce, ring/tree crossover size, hierarchical (scale-up + scale-out) all-reduce | `netcalc algorithms compare --size 64MB --ranks 512 --bw 400G --alpha 5us` |
 | `checkpoint` | checkpoint size and write time, job MTBF, interruption probability, Young/Daly interval and wasted time | `netcalc checkpoint interval --write 60s --gpus 16384 --mtbf 50000` |
+| `topology` | two- and three-tier Clos limits, leaf-spine plan with oversubscription, rail-optimised leaves, optics, bisection | `netcalc topology plan --hosts 2048 --radix 64` |
 
 ### Optics and DWDM (`netcalc.optics`)
 
