@@ -63,6 +63,7 @@ TOOLS = {
     "parallelism": "netcalc.aifabric.parallelism",
     "algorithms": "netcalc.aifabric.algorithms",
     "checkpoint": "netcalc.aifabric.checkpoint",
+    "topology": "netcalc.aifabric.topology",
 }
 
 
