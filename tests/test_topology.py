@@ -32,3 +32,17 @@ class TestPlan(unittest.TestCase):
     def test_ratio_and_optics(self):
         self.assertEqual(topology.oversubscription(48, 8, 100, 400), 1.5)
         self.assertEqual(topology.optics_count(2048), 4096)
+
+
+class TestRails(unittest.TestCase):
+    def test_rail_plan(self):
+        plan = topology.rail_plan(128, 8, 64)
+        self.assertEqual(plan["groups"], 4)
+        self.assertEqual(plan["leaves"], 32)
+
+    def test_bisection(self):
+        self.assertEqual(topology.bisection_bandwidth(1024, 400e9), 204.8e12)
+
+
+if __name__ == "__main__":
+    unittest.main()
