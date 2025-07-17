@@ -448,6 +448,15 @@ work redone after a failure; faster storage (or asynchronous, in-memory
 checkpoints) shortens the interval and the waste, which is part of why
 front-end and storage networks matter for training efficiency.
 
+### Fabric topology (`topology`)
+
+A non-blocking two-tier leaf-spine of radix-k switches reaches `k^2 / 2`
+hosts (2,048 with 64-port switches) and a three-tier fat tree `k^3 / 4`
+(65,536). Oversubscribing leaves (more host ports than uplinks) saves spines
+and optics but adds contention, so AI back-end fabrics are built 1:1.
+Rail-optimised designs wire GPU i of every server to leaf i, so the dominant
+same-rank traffic of collectives crosses a single switch.
+
 ---
 
 ## 6. Optics and DWDM
