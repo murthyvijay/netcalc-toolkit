@@ -25,3 +25,12 @@ Usage::
 import argparse
 
 from netcalc.units import fmt_size, fmt_time, parse_rate, parse_size, parse_time
+
+
+def kv_bytes_per_token(layers, kv_heads, head_dim, bytes_per_value=2):
+    """KV-cache bytes per token.
+
+    >>> kv_bytes_per_token(80, 8, 128)
+    327680
+    """
+    return 2 * layers * kv_heads * head_dim * bytes_per_value
