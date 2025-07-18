@@ -34,3 +34,8 @@ def kv_bytes_per_token(layers, kv_heads, head_dim, bytes_per_value=2):
     327680
     """
     return 2 * layers * kv_heads * head_dim * bytes_per_value
+
+
+def kv_cache_bytes(tokens, layers, kv_heads, head_dim, bytes_per_value=2, batch=1):
+    """KV-cache bytes for ``batch`` sequences of ``tokens`` tokens."""
+    return batch * tokens * kv_bytes_per_token(layers, kv_heads, head_dim, bytes_per_value)
