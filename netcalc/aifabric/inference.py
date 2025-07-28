@@ -57,3 +57,48 @@ def max_batch_for_memory(hbm_capacity_bytes, weight_bytes, kv_bytes_per_seq):
     """Most sequences whose KV cache fits next to the weights in HBM."""
     free = hbm_capacity_bytes - weight_bytes
     return max(int(free // kv_bytes_per_seq), 0)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+
+    def model_args(p):
+        p.add_argument("--layers", type=int, required=True)
+        p.add_argument("--kv-heads", type=int, required=True)
+        p.add_argument("--head-dim", type=int, required=True)
+        p.add_argument("--kv-bytes", type=float, default=2, help="bytes per cached value")
+
+    p = sub.add_parser("kv", help="KV-cache size")
+    model_args(p)
+    p.add_argument("--tokens", type=int, required=True)
+    p.add_argument("--batch", type=int, default=1)
+    p = sub.add_parser("transfer", help="prefill to decode KV transfer time")
+    model_args(p)
+    p.add_argument("--tokens", type=int, required=True)
+    p.add_argument("--bw", required=True)
+    p.add_argument("--latency", default="10us")
+    p = sub.add_parser("decode", help="memory-bound decode throughput")
+    model_args(p)
+    p.add_argument("--params", type=float, required=True)
+    p.add_argument("--bytes", type=float, default=2, help="bytes per weight")
+    p.add_argument("--hbm", required=True, help="HBM bandwidth in bytes/s, e.g. 3.35T")
+    p.add_argument("--batch", type=int, default=1)
+    p.add_argument("--context", type=int, default=0, help="tokens of context per sequence")
+    args = parser.parse_args(argv)
+
+    per_token = kv_bytes_per_token(args.layers, args.kv_heads, args.head_dim, args.kv_bytes)
+    if args.cmd == "kv":
+        total = args.batch * args.tokens * per_token
+        print(f"{fmt_size(per_token)} per token; {fmt_size(total)} for {args.batch} x {args.tokens} tokens")
+    elif args.cmd == "transfer":
+        t = kv_transfer_time(args.tokens, per_token, parse_rate(args.bw), parse_time(args.latency))
+        print(f"{fmt_size(args.tokens * per_token)} of KV cache moves in {fmt_time(t)}")
+    else:
+        per_seq, total = decode_tokens_per_second(args.params * args.bytes, parse_size(args.hbm),
+                                                  args.batch, args.context * per_token)
+        print(f"{per_seq:.1f} tokens/s per sequence, {total:.0f} tokens/s aggregate")
+
+
+if __name__ == "__main__":
+    main()
