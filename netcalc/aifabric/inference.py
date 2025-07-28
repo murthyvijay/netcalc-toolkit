@@ -44,3 +44,10 @@ def kv_cache_bytes(tokens, layers, kv_heads, head_dim, bytes_per_value=2, batch=
 def kv_transfer_time(prompt_tokens, bytes_per_token, bw_bps, latency_s=0.0):
     """Seconds to ship a prompt's KV cache from a prefill GPU to a decode GPU."""
     return latency_s + prompt_tokens * bytes_per_token * 8 / bw_bps
+
+
+def decode_tokens_per_second(weight_bytes, hbm_Bps, batch=1, kv_bytes_per_seq=0.0):
+    """Memory-bound decode rate: ``(per sequence, aggregate)`` tokens per second."""
+    per_step = weight_bytes + batch * kv_bytes_per_seq
+    per_seq = hbm_Bps / per_step
+    return per_seq, per_seq * batch
