@@ -51,3 +51,9 @@ def decode_tokens_per_second(weight_bytes, hbm_Bps, batch=1, kv_bytes_per_seq=0.
     per_step = weight_bytes + batch * kv_bytes_per_seq
     per_seq = hbm_Bps / per_step
     return per_seq, per_seq * batch
+
+
+def max_batch_for_memory(hbm_capacity_bytes, weight_bytes, kv_bytes_per_seq):
+    """Most sequences whose KV cache fits next to the weights in HBM."""
+    free = hbm_capacity_bytes - weight_bytes
+    return max(int(free // kv_bytes_per_seq), 0)
