@@ -17,3 +17,10 @@ class TestTransfer(unittest.TestCase):
     def test_prefill_to_decode(self):
         t = inference.kv_transfer_time(8192, 327680, 400e9, latency_s=10e-6)
         self.assertAlmostEqual(t, 10e-6 + 8192 * 327680 * 8 / 400e9)
+
+
+class TestDecode(unittest.TestCase):
+    def test_memory_bound_rate(self):
+        per_seq, total = inference.decode_tokens_per_second(140e9, 3.35e12)
+        self.assertAlmostEqual(per_seq, 23.93, places=2)
+        self.assertEqual(per_seq, total)
