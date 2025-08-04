@@ -30,3 +30,11 @@ class TestDecode(unittest.TestCase):
         per_seq, total = inference.decode_tokens_per_second(140e9, 3.35e12, 16, 1e9)
         self.assertLess(per_seq, one)
         self.assertGreater(total, one)
+
+    def test_max_batch(self):
+        self.assertEqual(inference.max_batch_for_memory(192e9, 140e9, 1.3e9), 40)
+        self.assertEqual(inference.max_batch_for_memory(80e9, 140e9, 1e9), 0)
+
+
+if __name__ == "__main__":
+    unittest.main()
