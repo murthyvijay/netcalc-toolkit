@@ -13,6 +13,9 @@
 - Routing: BGP best-path selection, iBGP mesh vs route reflectors and ASN
   formats, Dijkstra with ECMP and loop-free alternates, IS-IS NETs and metrics,
   BFD timers, VRRP/HSRP, MPLS and SR label math, EVPN scale, convergence budgets.
+- AI fabric: 3D-parallelism traffic and pipeline bubble, ring/tree/hierarchical
+  all-reduce algorithms, checkpoint sizing and Young/Daly interval, leaf-spine
+  and rail-optimised topology sizing, LLM inference KV-cache and decode math.
 
 ## 1.0.0
 
