@@ -457,6 +457,17 @@ and optics but adds contention, so AI back-end fabrics are built 1:1.
 Rail-optimised designs wire GPU i of every server to leaf i, so the dominant
 same-rank traffic of collectives crosses a single switch.
 
+### Inference traffic (`inference`)
+
+LLM inference keeps a key and a value vector per layer, per KV head and per
+token: `2 * layers * kv_heads * head_dim * bytes`. For an 80-layer model with
+8 KV heads of dimension 128 in 16-bit that is 320 KiB per token and 10 GiB for
+a 32k context. Disaggregated serving moves this cache from prefill GPUs to
+decode GPUs over the fabric before the first output token, so fabric bandwidth
+shows up directly in time-to-first-token. Decode itself is bound by HBM
+bandwidth: each step reads all weights plus the KV cache of every sequence in
+the batch.
+
 ---
 
 ## 6. Optics and DWDM
