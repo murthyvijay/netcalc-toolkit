@@ -64,6 +64,7 @@ TOOLS = {
     "algorithms": "netcalc.aifabric.algorithms",
     "checkpoint": "netcalc.aifabric.checkpoint",
     "topology": "netcalc.aifabric.topology",
+    "inference": "netcalc.aifabric.inference",
 }
 
 
