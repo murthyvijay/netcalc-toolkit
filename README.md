@@ -115,6 +115,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `algorithms` | ring vs tree vs halving-doubling all-reduce, ring/tree crossover size, hierarchical (scale-up + scale-out) all-reduce | `netcalc algorithms compare --size 64MB --ranks 512 --bw 400G --alpha 5us` |
 | `checkpoint` | checkpoint size and write time, job MTBF, interruption probability, Young/Daly interval and wasted time | `netcalc checkpoint interval --write 60s --gpus 16384 --mtbf 50000` |
 | `topology` | two- and three-tier Clos limits, leaf-spine plan with oversubscription, rail-optimised leaves, optics, bisection | `netcalc topology plan --hosts 2048 --radix 64` |
+| `inference` | KV-cache bytes per token and per context, prefill-to-decode transfer time, memory-bound decode rate, max batch | `netcalc inference kv --layers 80 --kv-heads 8 --head-dim 128 --tokens 32768` |
 
 ### Optics and DWDM (`netcalc.optics`)
 
