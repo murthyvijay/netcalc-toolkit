@@ -25,3 +25,10 @@ def _mac_bytes(mac):
     if len(digits) != 12:
         raise ValueError(f"not a MAC address: {mac!r}")
     return bytes.fromhex(digits)
+
+
+def eui64_interface_id(mac):
+    """Modified EUI-64 interface identifier (64-bit int) from a MAC address."""
+    b = bytearray(_mac_bytes(mac))
+    b[0] ^= 0x02
+    return int.from_bytes(bytes(b[:3]) + b"\xff\xfe" + bytes(b[3:]), "big")
