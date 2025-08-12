@@ -18,3 +18,10 @@ Usage::
 
 import argparse
 import ipaddress
+
+
+def _mac_bytes(mac):
+    digits = "".join(c for c in mac if c.isalnum())
+    if len(digits) != 12:
+        raise ValueError(f"not a MAC address: {mac!r}")
+    return bytes.fromhex(digits)
