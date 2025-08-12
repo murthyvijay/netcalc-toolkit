@@ -32,3 +32,15 @@ def eui64_interface_id(mac):
     b = bytearray(_mac_bytes(mac))
     b[0] ^= 0x02
     return int.from_bytes(bytes(b[:3]) + b"\xff\xfe" + bytes(b[3:]), "big")
+
+
+def eui64_address(prefix, mac):
+    """SLAAC address of ``mac`` in a /64 ``prefix``.
+
+    >>> str(eui64_address("2001:db8:1:1::/64", "00:1b:44:11:3a:b7"))
+    '2001:db8:1:1:21b:44ff:fe11:3ab7'
+    """
+    net = ipaddress.IPv6Network(prefix)
+    if net.prefixlen != 64:
+        raise ValueError("EUI-64 needs a /64 prefix")
+    return net.network_address + eui64_interface_id(mac)
