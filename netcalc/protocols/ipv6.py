@@ -59,3 +59,9 @@ def solicited_node(address):
     """
     low24 = int(ipaddress.IPv6Address(address)) & 0xFFFFFF
     return ipaddress.IPv6Address(int(ipaddress.IPv6Address("ff02::1:ff00:0")) | low24)
+
+
+def multicast_mac(group):
+    """Ethernet MAC for an IPv6 multicast group: ``33:33`` + low 32 bits."""
+    low32 = int(ipaddress.IPv6Address(group)) & 0xFFFFFFFF
+    return "33:33:" + ":".join(f"{b:02x}" for b in low32.to_bytes(4, "big"))
