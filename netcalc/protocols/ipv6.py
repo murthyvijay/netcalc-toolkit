@@ -65,3 +65,11 @@ def multicast_mac(group):
     """Ethernet MAC for an IPv6 multicast group: ``33:33`` + low 32 bits."""
     low32 = int(ipaddress.IPv6Address(group)) & 0xFFFFFFFF
     return "33:33:" + ":".join(f"{b:02x}" for b in low32.to_bytes(4, "big"))
+
+
+def subnet_count(prefix, new_prefix):
+    """How many subnets of length ``new_prefix`` fit in ``prefix``."""
+    net = ipaddress.IPv6Network(prefix)
+    if new_prefix < net.prefixlen:
+        raise ValueError("new prefix must be longer")
+    return 2 ** (new_prefix - net.prefixlen)
