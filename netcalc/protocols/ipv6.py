@@ -49,3 +49,13 @@ def eui64_address(prefix, mac):
 def link_local(mac):
     """fe80::/64 link-local address derived from a MAC address."""
     return eui64_address("fe80::/64", mac)
+
+
+def solicited_node(address):
+    """Solicited-node multicast group of an IPv6 address.
+
+    >>> str(solicited_node("2001:db8::1:2:3"))
+    'ff02::1:ff02:3'
+    """
+    low24 = int(ipaddress.IPv6Address(address)) & 0xFFFFFF
+    return ipaddress.IPv6Address(int(ipaddress.IPv6Address("ff02::1:ff00:0")) | low24)
