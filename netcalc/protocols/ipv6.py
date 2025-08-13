@@ -44,3 +44,8 @@ def eui64_address(prefix, mac):
     if net.prefixlen != 64:
         raise ValueError("EUI-64 needs a /64 prefix")
     return net.network_address + eui64_interface_id(mac)
+
+
+def link_local(mac):
+    """fe80::/64 link-local address derived from a MAC address."""
+    return eui64_address("fe80::/64", mac)
