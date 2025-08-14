@@ -73,3 +73,10 @@ def subnet_count(prefix, new_prefix):
     if new_prefix < net.prefixlen:
         raise ValueError("new prefix must be longer")
     return 2 ** (new_prefix - net.prefixlen)
+
+
+def nth_subnet(prefix, new_prefix, n):
+    """The ``n``-th (0-based) subnet of length ``new_prefix`` inside ``prefix``."""
+    net = ipaddress.IPv6Network(prefix)
+    size = 2 ** (128 - new_prefix)
+    return ipaddress.IPv6Network((int(net.network_address) + n * size, new_prefix))
