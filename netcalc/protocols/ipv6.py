@@ -80,3 +80,38 @@ def nth_subnet(prefix, new_prefix, n):
     net = ipaddress.IPv6Network(prefix)
     size = 2 ** (128 - new_prefix)
     return ipaddress.IPv6Network((int(net.network_address) + n * size, new_prefix))
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("eui64", help="EUI-64 interface ID, SLAAC and link-local address")
+    p.add_argument("mac")
+    p.add_argument("--prefix", default=None, help="a /64 to build the SLAAC address in")
+    p = sub.add_parser("nd", help="solicited-node group and multicast MAC")
+    p.add_argument("address")
+    p = sub.add_parser("subnets", help="count and list subnets")
+    p.add_argument("prefix")
+    p.add_argument("--new-prefix", type=int, default=64)
+    p.add_argument("--show", type=int, default=4, help="how many to list")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "eui64":
+        iid = eui64_interface_id(args.mac)
+        groups = [f"{(iid >> s) & 0xFFFF:04x}" for s in (48, 32, 16, 0)]
+        print(f"interface ID {':'.join(groups)}")
+        print(f"link-local   {link_local(args.mac)}")
+        if args.prefix:
+            print(f"SLAAC        {eui64_address(args.prefix, args.mac)}")
+    elif args.cmd == "nd":
+        group = solicited_node(args.address)
+        print(f"solicited-node {group}, MAC {multicast_mac(group)}")
+    else:
+        count = subnet_count(args.prefix, args.new_prefix)
+        print(f"{count:,} /{args.new_prefix} subnets in {args.prefix}")
+        for i in range(min(args.show, count)):
+            print(f"  {nth_subnet(args.prefix, args.new_prefix, i)}")
+
+
+if __name__ == "__main__":
+    main()
