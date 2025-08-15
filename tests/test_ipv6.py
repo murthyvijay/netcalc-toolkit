@@ -27,3 +27,10 @@ class TestNeighborDiscovery(unittest.TestCase):
     def test_multicast_mac(self):
         self.assertEqual(ipv6.multicast_mac("ff02::1:ff02:3"), "33:33:ff:02:00:03")
         self.assertEqual(ipv6.multicast_mac("ff02::1"), "33:33:00:00:00:01")
+
+
+class TestSubnets(unittest.TestCase):
+    def test_count(self):
+        self.assertEqual(ipv6.subnet_count("2001:db8::/48", 64), 65536)
+        with self.assertRaises(ValueError):
+            ipv6.subnet_count("2001:db8::/48", 32)
