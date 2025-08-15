@@ -18,3 +18,8 @@ class TestEui64(unittest.TestCase):
             ipv6.eui64_address("2001:db8::/48", "00:1b:44:11:3a:b7")
         with self.assertRaises(ValueError):
             ipv6.eui64_interface_id("00:1b:44")
+
+
+class TestNeighborDiscovery(unittest.TestCase):
+    def test_solicited_node(self):
+        self.assertEqual(str(ipv6.solicited_node("2001:db8::1:2:3")), "ff02::1:ff02:3")
