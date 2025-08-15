@@ -23,3 +23,7 @@ class TestEui64(unittest.TestCase):
 class TestNeighborDiscovery(unittest.TestCase):
     def test_solicited_node(self):
         self.assertEqual(str(ipv6.solicited_node("2001:db8::1:2:3")), "ff02::1:ff02:3")
+
+    def test_multicast_mac(self):
+        self.assertEqual(ipv6.multicast_mac("ff02::1:ff02:3"), "33:33:ff:02:00:03")
+        self.assertEqual(ipv6.multicast_mac("ff02::1"), "33:33:00:00:00:01")
