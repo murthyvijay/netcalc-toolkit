@@ -289,6 +289,15 @@ the underlay, and data-centre fabrics usually run 9216. RoCEv2 picks its path
 MTU from 256 to 4096 bytes; with a 1500-byte Ethernet MTU only 1024 fits,
 which is why RDMA fabrics run jumbo frames.
 
+### IPv6 addressing (`ipv6`)
+
+Modified EUI-64 builds a 64-bit interface ID from a MAC by inserting `ff:fe`
+in the middle and flipping the universal/local bit, which is how SLAAC and
+link-local (`fe80::/64`) addresses are formed when privacy extensions are off.
+Neighbour discovery replaces ARP broadcast with the solicited-node multicast
+group `ff02::1:ffXX:XXXX` (the low 24 bits of the address), sent to Ethernet
+MAC `33:33` plus the group's low 32 bits. A /48 site holds 65,536 /64s.
+
 ---
 
 ## 5. AI/ML fabrics
