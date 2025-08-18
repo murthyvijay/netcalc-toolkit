@@ -65,6 +65,7 @@ TOOLS = {
     "checkpoint": "netcalc.aifabric.checkpoint",
     "topology": "netcalc.aifabric.topology",
     "inference": "netcalc.aifabric.inference",
+    "ipv6": "netcalc.protocols.ipv6",
 }
 
 
