@@ -34,3 +34,11 @@ class TestSubnets(unittest.TestCase):
         self.assertEqual(ipv6.subnet_count("2001:db8::/48", 64), 65536)
         with self.assertRaises(ValueError):
             ipv6.subnet_count("2001:db8::/48", 32)
+
+    def test_nth(self):
+        self.assertEqual(ipv6.nth_subnet("2001:db8::/48", 64, 255),
+                         ipaddress.IPv6Network("2001:db8:0:ff::/64"))
+
+
+if __name__ == "__main__":
+    unittest.main()
