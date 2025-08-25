@@ -32,3 +32,8 @@ ESP_HEADER = 8
 ESP_TRAILER = 2
 UDP_HEADER = 8
 IP_HEADER = {4: 20, 6: 40}
+
+
+def padding(payload_bytes, block):
+    """Pad bytes so ``payload + padding + 2`` is a multiple of ``block``."""
+    return (-(payload_bytes + ESP_TRAILER)) % block
