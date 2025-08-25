@@ -37,3 +37,20 @@ IP_HEADER = {4: 20, 6: 40}
 def padding(payload_bytes, block):
     """Pad bytes so ``payload + padding + 2`` is a multiple of ``block``."""
     return (-(payload_bytes + ESP_TRAILER)) % block
+
+
+def esp_packet_size(inner_bytes, cipher="aes-gcm", tunnel=True, nat_t=False, outer_ip=4,
+                    inner_ip_header=20):
+    """Size on the wire (IP packet bytes) of an ESP-protected packet.
+
+    ``inner_bytes`` is the full inner IP packet; in transport mode its own
+    IP header is kept outside ESP.
+
+    >>> esp_packet_size(1400, "aes-gcm")
+    1456
+    """
+    iv, block, icv = CIPHERS[cipher]
+    payload = inner_bytes if tunnel else inner_bytes - inner_ip_header
+    outer = IP_HEADER[outer_ip] if tunnel else inner_ip_header
+    size = outer + ESP_HEADER + iv + payload + padding(payload, block) + ESP_TRAILER + icv
+    return size + (UDP_HEADER if nat_t else 0)
