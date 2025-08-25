@@ -54,3 +54,8 @@ def esp_packet_size(inner_bytes, cipher="aes-gcm", tunnel=True, nat_t=False, out
     outer = IP_HEADER[outer_ip] if tunnel else inner_ip_header
     size = outer + ESP_HEADER + iv + payload + padding(payload, block) + ESP_TRAILER + icv
     return size + (UDP_HEADER if nat_t else 0)
+
+
+def esp_overhead(inner_bytes, cipher="aes-gcm", tunnel=True, nat_t=False, outer_ip=4):
+    """Bytes ESP adds to an inner packet of ``inner_bytes``."""
+    return esp_packet_size(inner_bytes, cipher, tunnel, nat_t, outer_ip) - inner_bytes
