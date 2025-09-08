@@ -67,3 +67,8 @@ def max_inner_mtu(path_mtu, cipher="aes-gcm", tunnel=True, nat_t=False, outer_ip
     while inner > 0 and esp_packet_size(inner, cipher, tunnel, nat_t, outer_ip) > path_mtu:
         inner -= 1
     return inner
+
+
+def tcp_mss(path_mtu, cipher="aes-gcm", nat_t=False, inner_ip=4):
+    """TCP MSS to clamp on a tunnel so encrypted packets avoid fragmentation."""
+    return max_inner_mtu(path_mtu, cipher, True, nat_t) - IP_HEADER[inner_ip] - 20
