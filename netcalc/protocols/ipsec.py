@@ -59,3 +59,11 @@ def esp_packet_size(inner_bytes, cipher="aes-gcm", tunnel=True, nat_t=False, out
 def esp_overhead(inner_bytes, cipher="aes-gcm", tunnel=True, nat_t=False, outer_ip=4):
     """Bytes ESP adds to an inner packet of ``inner_bytes``."""
     return esp_packet_size(inner_bytes, cipher, tunnel, nat_t, outer_ip) - inner_bytes
+
+
+def max_inner_mtu(path_mtu, cipher="aes-gcm", tunnel=True, nat_t=False, outer_ip=4):
+    """Largest inner packet that still fits ``path_mtu`` after encryption."""
+    inner = path_mtu
+    while inner > 0 and esp_packet_size(inner, cipher, tunnel, nat_t, outer_ip) > path_mtu:
+        inner -= 1
+    return inner
