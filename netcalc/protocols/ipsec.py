@@ -72,3 +72,32 @@ def max_inner_mtu(path_mtu, cipher="aes-gcm", tunnel=True, nat_t=False, outer_ip
 def tcp_mss(path_mtu, cipher="aes-gcm", nat_t=False, inner_ip=4):
     """TCP MSS to clamp on a tunnel so encrypted packets avoid fragmentation."""
     return max_inner_mtu(path_mtu, cipher, True, nat_t) - IP_HEADER[inner_ip] - 20
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    for name, help_text in (("size", "encrypted size of one packet"),
+                            ("mtu", "largest inner packet for a path MTU")):
+        p = sub.add_parser(name, help=help_text)
+        p.add_argument("--cipher", choices=sorted(CIPHERS), default="aes-gcm")
+        p.add_argument("--transport", action="store_true", help="transport instead of tunnel mode")
+        p.add_argument("--nat-t", action="store_true", help="UDP 4500 encapsulation")
+        p.add_argument("--outer-ip", type=int, choices=(4, 6), default=4)
+        if name == "size":
+            p.add_argument("--inner", type=int, required=True, help="inner IP packet bytes")
+        else:
+            p.add_argument("--path-mtu", type=int, default=1500)
+    args = parser.parse_args(argv)
+
+    tunnel = not args.transport
+    if args.cmd == "size":
+        size = esp_packet_size(args.inner, args.cipher, tunnel, args.nat_t, args.outer_ip)
+        print(f"{args.inner} B -> {size} B on the wire (+{size - args.inner} B)")
+    else:
+        inner = max_inner_mtu(args.path_mtu, args.cipher, tunnel, args.nat_t, args.outer_ip)
+        print(f"inner MTU {inner} B; clamp TCP MSS to {inner - 40} B (IPv4)")
+
+
+if __name__ == "__main__":
+    main()
