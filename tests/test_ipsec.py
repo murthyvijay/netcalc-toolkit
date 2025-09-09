@@ -14,3 +14,6 @@ class TestPacketSize(unittest.TestCase):
     def test_tunnel_gcm(self):
         self.assertEqual(ipsec.esp_packet_size(1400, "aes-gcm"), 1456)
         self.assertEqual(ipsec.esp_overhead(1400, "aes-gcm"), 56)
+
+    def test_nat_t_and_cbc(self):
+        self.assertEqual(ipsec.esp_packet_size(1400, "aes-cbc-sha1", nat_t=True), 1472)
