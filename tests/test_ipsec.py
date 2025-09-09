@@ -8,3 +8,9 @@ class TestPadding(unittest.TestCase):
         self.assertEqual(ipsec.padding(14, 16), 0)
         self.assertEqual(ipsec.padding(1400, 16), 6)
         self.assertEqual(ipsec.padding(1400, 4), 2)
+
+
+class TestPacketSize(unittest.TestCase):
+    def test_tunnel_gcm(self):
+        self.assertEqual(ipsec.esp_packet_size(1400, "aes-gcm"), 1456)
+        self.assertEqual(ipsec.esp_overhead(1400, "aes-gcm"), 56)
