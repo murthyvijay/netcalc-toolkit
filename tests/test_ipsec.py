@@ -17,3 +17,6 @@ class TestPacketSize(unittest.TestCase):
 
     def test_nat_t_and_cbc(self):
         self.assertEqual(ipsec.esp_packet_size(1400, "aes-cbc-sha1", nat_t=True), 1472)
+
+    def test_transport_mode_is_smaller(self):
+        self.assertEqual(ipsec.esp_packet_size(1400, "aes-gcm", tunnel=False), 1436)
