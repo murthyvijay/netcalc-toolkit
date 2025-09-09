@@ -20,3 +20,6 @@ class TestPacketSize(unittest.TestCase):
 
     def test_transport_mode_is_smaller(self):
         self.assertEqual(ipsec.esp_packet_size(1400, "aes-gcm", tunnel=False), 1436)
+
+    def test_ipv6_outer(self):
+        self.assertEqual(ipsec.esp_packet_size(1400, "aes-gcm", outer_ip=6), 1476)
