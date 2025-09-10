@@ -101,6 +101,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `overhead` | header bytes, wire efficiency, goodput and pps for Ethernet/IP/TCP/UDP/VXLAN/RoCEv2 stacks | `netcalc overhead goodput --payload 4096 --stack roce --rate 400G` |
 | `mtu` | TCP MSS, overlay underlay MTU (VXLAN, GRE, IPsec, ...), RoCE path MTU | `netcalc mtu overlay --inner-mtu 1500 vxlan` |
 | `ipv6` | EUI-64 interface ID, SLAAC and link-local addresses, solicited-node group and MAC, subnet counts | `netcalc ipv6 eui64 00:1b:44:11:3a:b7 --prefix 2001:db8:1:1::/64` |
+| `ipsec` | ESP packet size and overhead (tunnel/transport, NAT-T, GCM/CBC), largest inner MTU and MSS clamp | `netcalc ipsec mtu --path-mtu 1500 --nat-t` |
 
 ### AI fabric (`netcalc.aifabric`)
 
