@@ -23,3 +23,11 @@ class TestPacketSize(unittest.TestCase):
 
     def test_ipv6_outer(self):
         self.assertEqual(ipsec.esp_packet_size(1400, "aes-gcm", outer_ip=6), 1476)
+
+
+class TestMtu(unittest.TestCase):
+    def test_largest_inner_fits(self):
+        inner = ipsec.max_inner_mtu(1500, "aes-gcm", nat_t=True)
+        self.assertEqual(inner, 1438)
+        self.assertLessEqual(ipsec.esp_packet_size(inner, "aes-gcm", nat_t=True), 1500)
+        self.assertGreater(ipsec.esp_packet_size(inner + 1, "aes-gcm", nat_t=True), 1500)
