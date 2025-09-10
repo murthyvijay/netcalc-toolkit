@@ -31,3 +31,10 @@ class TestMtu(unittest.TestCase):
         self.assertEqual(inner, 1438)
         self.assertLessEqual(ipsec.esp_packet_size(inner, "aes-gcm", nat_t=True), 1500)
         self.assertGreater(ipsec.esp_packet_size(inner + 1, "aes-gcm", nat_t=True), 1500)
+
+    def test_mss(self):
+        self.assertEqual(ipsec.tcp_mss(1500), ipsec.max_inner_mtu(1500) - 40)
+
+
+if __name__ == "__main__":
+    unittest.main()
