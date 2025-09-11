@@ -298,6 +298,15 @@ Neighbour discovery replaces ARP broadcast with the solicited-node multicast
 group `ff02::1:ffXX:XXXX` (the low 24 bits of the address), sent to Ethernet
 MAC `33:33` plus the group's low 32 bits. A /48 site holds 65,536 /64s.
 
+### IPsec ESP overhead (`ipsec`)
+
+ESP adds an 8-byte header (SPI and sequence), an IV, padding to the cipher
+block, a 2-byte trailer and an ICV; tunnel mode adds a new outer IP header and
+NAT traversal a UDP header. AES-GCM (8-byte IV, 4-byte alignment, 16-byte ICV)
+adds 56 bytes to a 1400-byte packet in IPv4 tunnel mode, while AES-CBC with
+HMAC-SHA1 pads to 16 bytes. On a 1500-byte path with NAT-T and GCM the inner
+MTU is 1438, so TCP MSS should be clamped to 1398 to avoid fragmentation.
+
 ---
 
 ## 5. AI/ML fabrics
