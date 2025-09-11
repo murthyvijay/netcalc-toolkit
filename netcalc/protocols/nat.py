@@ -35,3 +35,8 @@ def subscribers_per_address(ports_per_subscriber):
     63
     """
     return PORTS_PER_ADDRESS // ports_per_subscriber
+
+
+def addresses_needed(subscribers, ports_per_subscriber):
+    """Public addresses for ``subscribers`` with fixed port blocks."""
+    return math.ceil(subscribers / subscribers_per_address(ports_per_subscriber))
