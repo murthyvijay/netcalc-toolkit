@@ -26,3 +26,12 @@ import math
 
 FIRST_DYNAMIC_PORT = 1024
 PORTS_PER_ADDRESS = 65536 - FIRST_DYNAMIC_PORT
+
+
+def subscribers_per_address(ports_per_subscriber):
+    """Subscribers that share one public address.
+
+    >>> subscribers_per_address(1024)
+    63
+    """
+    return PORTS_PER_ADDRESS // ports_per_subscriber
