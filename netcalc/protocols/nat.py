@@ -56,3 +56,8 @@ def deterministic_mapping(index, ports_per_subscriber, pool):
         raise ValueError("pool too small for this subscriber index")
     first = FIRST_DYNAMIC_PORT + slot * ports_per_subscriber
     return net.network_address + addr_index, first, first + ports_per_subscriber - 1
+
+
+def log_lines_per_day(subscribers, block_allocations_per_day=2):
+    """Log records per day with port-block logging (one per allocation and release)."""
+    return subscribers * block_allocations_per_day * 2
