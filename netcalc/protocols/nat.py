@@ -61,3 +61,34 @@ def deterministic_mapping(index, ports_per_subscriber, pool):
 def log_lines_per_day(subscribers, block_allocations_per_day=2):
     """Log records per day with port-block logging (one per allocation and release)."""
     return subscribers * block_allocations_per_day * 2
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("pool", help="public addresses needed")
+    p.add_argument("--subscribers", type=int, required=True)
+    p.add_argument("--ports", type=int, required=True, help="ports per subscriber")
+    p = sub.add_parser("block", help="port block size from peak sessions")
+    p.add_argument("--sessions", type=int, required=True)
+    p.add_argument("--headroom", type=float, default=1.5)
+    p = sub.add_parser("deterministic", help="deterministic NAT mapping for a subscriber")
+    p.add_argument("--index", type=int, required=True)
+    p.add_argument("--ports", type=int, required=True)
+    p.add_argument("--base", required=True, help="public pool, e.g. 203.0.113.0/24")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "pool":
+        per = subscribers_per_address(args.ports)
+        print(f"{per} subscribers per address; {addresses_needed(args.subscribers, args.ports):,} "
+              f"addresses for {args.subscribers:,} subscribers")
+    elif args.cmd == "block":
+        size = block_size(args.sessions, args.headroom)
+        print(f"block of {size} ports ({subscribers_per_address(size)} subscribers per address)")
+    else:
+        addr, first, last = deterministic_mapping(args.index, args.ports, args.base)
+        print(f"subscriber {args.index} -> {addr} ports {first}-{last}")
+
+
+if __name__ == "__main__":
+    main()
