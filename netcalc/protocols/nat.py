@@ -45,3 +45,14 @@ def addresses_needed(subscribers, ports_per_subscriber):
 def block_size(peak_sessions, headroom=1.5, granularity=64):
     """Port block that covers ``peak_sessions`` with headroom, rounded up to ``granularity``."""
     return math.ceil(peak_sessions * headroom / granularity) * granularity
+
+
+def deterministic_mapping(index, ports_per_subscriber, pool):
+    """Public address and port range of subscriber ``index`` in deterministic NAT (RFC 7422)."""
+    net = ipaddress.ip_network(pool)
+    per_addr = subscribers_per_address(ports_per_subscriber)
+    addr_index, slot = divmod(index, per_addr)
+    if addr_index >= net.num_addresses:
+        raise ValueError("pool too small for this subscriber index")
+    first = FIRST_DYNAMIC_PORT + slot * ports_per_subscriber
+    return net.network_address + addr_index, first, first + ports_per_subscriber - 1
