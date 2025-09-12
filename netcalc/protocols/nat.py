@@ -40,3 +40,8 @@ def subscribers_per_address(ports_per_subscriber):
 def addresses_needed(subscribers, ports_per_subscriber):
     """Public addresses for ``subscribers`` with fixed port blocks."""
     return math.ceil(subscribers / subscribers_per_address(ports_per_subscriber))
+
+
+def block_size(peak_sessions, headroom=1.5, granularity=64):
+    """Port block that covers ``peak_sessions`` with headroom, rounded up to ``granularity``."""
+    return math.ceil(peak_sessions * headroom / granularity) * granularity
