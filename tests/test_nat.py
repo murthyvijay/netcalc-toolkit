@@ -15,3 +15,10 @@ class TestPortBlocks(unittest.TestCase):
     def test_block_size(self):
         self.assertEqual(nat.block_size(900), 1408)
         self.assertEqual(nat.block_size(100, headroom=1.0), 128)
+
+
+class TestDeterministic(unittest.TestCase):
+    def test_first_subscriber(self):
+        addr, first, last = nat.deterministic_mapping(0, 2048, "203.0.113.0/24")
+        self.assertEqual(addr, ipaddress.ip_address("203.0.113.0"))
+        self.assertEqual((first, last), (1024, 3071))
