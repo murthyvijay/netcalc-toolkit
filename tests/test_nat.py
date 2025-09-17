@@ -11,3 +11,7 @@ class TestPortBlocks(unittest.TestCase):
 
     def test_addresses_needed(self):
         self.assertEqual(nat.addresses_needed(100000, 1024), 1588)
+
+    def test_block_size(self):
+        self.assertEqual(nat.block_size(900), 1408)
+        self.assertEqual(nat.block_size(100, headroom=1.0), 128)
