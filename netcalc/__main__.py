@@ -67,6 +67,7 @@ TOOLS = {
     "inference": "netcalc.aifabric.inference",
     "ipv6": "netcalc.protocols.ipv6",
     "ipsec": "netcalc.protocols.ipsec",
+    "nat": "netcalc.protocols.nat",
 }
 
 
