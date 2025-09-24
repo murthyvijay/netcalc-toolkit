@@ -22,3 +22,8 @@ class TestDeterministic(unittest.TestCase):
         addr, first, last = nat.deterministic_mapping(0, 2048, "203.0.113.0/24")
         self.assertEqual(addr, ipaddress.ip_address("203.0.113.0"))
         self.assertEqual((first, last), (1024, 3071))
+
+    def test_wraps_to_next_address(self):
+        addr, first, _ = nat.deterministic_mapping(31, 2048, "203.0.113.0/24")
+        self.assertEqual(addr, ipaddress.ip_address("203.0.113.1"))
+        self.assertEqual(first, 1024)
