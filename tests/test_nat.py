@@ -31,3 +31,12 @@ class TestDeterministic(unittest.TestCase):
     def test_pool_exhausted(self):
         with self.assertRaises(ValueError):
             nat.deterministic_mapping(31 * 4, 2048, "203.0.113.0/30")
+
+
+class TestLogging(unittest.TestCase):
+    def test_log_lines(self):
+        self.assertEqual(nat.log_lines_per_day(100000), 400000)
+
+
+if __name__ == "__main__":
+    unittest.main()
