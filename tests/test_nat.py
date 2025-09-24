@@ -27,3 +27,7 @@ class TestDeterministic(unittest.TestCase):
         addr, first, _ = nat.deterministic_mapping(31, 2048, "203.0.113.0/24")
         self.assertEqual(addr, ipaddress.ip_address("203.0.113.1"))
         self.assertEqual(first, 1024)
+
+    def test_pool_exhausted(self):
+        with self.assertRaises(ValueError):
+            nat.deterministic_mapping(31 * 4, 2048, "203.0.113.0/30")
