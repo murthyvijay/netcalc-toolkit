@@ -307,6 +307,16 @@ adds 56 bytes to a 1400-byte packet in IPv4 tunnel mode, while AES-CBC with
 HMAC-SHA1 pads to 16 bytes. On a 1500-byte path with NAT-T and GCM the inner
 MTU is 1438, so TCP MSS should be clamped to 1398 to avoid fragmentation.
 
+### NAT and CGNAT port planning (`nat`)
+
+Each public IPv4 address offers 64,512 translatable ports (1024-65535) per
+protocol. Carrier-grade NAT hands each subscriber a port block, so 1024-port
+blocks put 63 subscribers on an address and 100,000 subscribers need 1,588
+addresses. Deterministic NAT (RFC 7422) computes the address and port range
+from the subscriber's index, so no per-session logs are needed to answer
+"who had this address and port"; bulk port allocation logs one line per block
+instead of per session.
+
 ---
 
 ## 5. AI/ML fabrics
