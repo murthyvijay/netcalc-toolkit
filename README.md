@@ -102,6 +102,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `mtu` | TCP MSS, overlay underlay MTU (VXLAN, GRE, IPsec, ...), RoCE path MTU | `netcalc mtu overlay --inner-mtu 1500 vxlan` |
 | `ipv6` | EUI-64 interface ID, SLAAC and link-local addresses, solicited-node group and MAC, subnet counts | `netcalc ipv6 eui64 00:1b:44:11:3a:b7 --prefix 2001:db8:1:1::/64` |
 | `ipsec` | ESP packet size and overhead (tunnel/transport, NAT-T, GCM/CBC), largest inner MTU and MSS clamp | `netcalc ipsec mtu --path-mtu 1500 --nat-t` |
+| `nat` | CGNAT subscribers per address, public pool size, port block size from peak sessions, deterministic NAT mapping | `netcalc nat pool --subscribers 100000 --ports 1024` |
 
 ### AI fabric (`netcalc.aifabric`)
 
