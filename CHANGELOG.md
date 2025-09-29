@@ -16,6 +16,8 @@
 - AI fabric: 3D-parallelism traffic and pipeline bubble, ring/tree/hierarchical
   all-reduce algorithms, checkpoint sizing and Young/Daly interval, leaf-spine
   and rail-optimised topology sizing, LLM inference KV-cache and decode math.
+- Protocols: IPv6 EUI-64, solicited-node and subnet math, IPsec ESP overhead
+  and inner MTU, CGNAT port blocks and deterministic NAT.
 
 ## 1.0.0
 
