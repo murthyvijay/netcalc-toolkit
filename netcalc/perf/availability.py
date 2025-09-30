@@ -25,3 +25,12 @@ HOURS_PER_YEAR = 8766.0
 def from_mtbf(mtbf, mttr):
     """Availability from mean time between failures and mean time to repair."""
     return mtbf / (mtbf + mttr)
+
+
+def series(*availabilities):
+    """Availability of components that must all work.
+
+    >>> round(series(0.999, 0.999), 6)
+    0.998001
+    """
+    return math.prod(availabilities)
