@@ -20,3 +20,8 @@ import argparse
 import math
 
 HOURS_PER_YEAR = 8766.0
+
+
+def from_mtbf(mtbf, mttr):
+    """Availability from mean time between failures and mean time to repair."""
+    return mtbf / (mtbf + mttr)
