@@ -34,3 +34,12 @@ def series(*availabilities):
     0.998001
     """
     return math.prod(availabilities)
+
+
+def parallel(*availabilities):
+    """Availability of redundant components where one is enough.
+
+    >>> round(parallel(0.99, 0.99), 6)
+    0.9999
+    """
+    return 1 - math.prod(1 - a for a in availabilities)
