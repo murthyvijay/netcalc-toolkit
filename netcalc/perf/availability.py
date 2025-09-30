@@ -43,3 +43,9 @@ def parallel(*availabilities):
     0.9999
     """
     return 1 - math.prod(1 - a for a in availabilities)
+
+
+def k_of_n(k, n, availability):
+    """Availability when at least ``k`` of ``n`` identical components must be up."""
+    return sum(math.comb(n, i) * availability ** i * (1 - availability) ** (n - i)
+               for i in range(k, n + 1))
