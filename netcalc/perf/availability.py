@@ -49,3 +49,8 @@ def k_of_n(k, n, availability):
     """Availability when at least ``k`` of ``n`` identical components must be up."""
     return sum(math.comb(n, i) * availability ** i * (1 - availability) ** (n - i)
                for i in range(k, n + 1))
+
+
+def downtime_per_year(availability):
+    """Expected downtime in minutes per year."""
+    return (1 - availability) * HOURS_PER_YEAR * 60
