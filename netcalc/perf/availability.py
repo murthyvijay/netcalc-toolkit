@@ -64,3 +64,12 @@ def nines(availability):
 def from_nines(n):
     """Availability from a number of nines (4 -> 0.9999)."""
     return 1 - 10 ** -n
+
+
+def parse_hours(text):
+    """Parse ``"50000h"``, ``"30d"`` or ``"45m"`` into hours."""
+    text = str(text).strip().lower()
+    scale = {"h": 1.0, "d": 24.0, "m": 1 / 60, "y": HOURS_PER_YEAR}
+    if text[-1] in scale:
+        return float(text[:-1]) * scale[text[-1]]
+    return float(text)
