@@ -54,3 +54,8 @@ def k_of_n(k, n, availability):
 def downtime_per_year(availability):
     """Expected downtime in minutes per year."""
     return (1 - availability) * HOURS_PER_YEAR * 60
+
+
+def nines(availability):
+    """Number of nines, e.g. 0.9995 -> 3.3."""
+    return -math.log10(1 - availability)
