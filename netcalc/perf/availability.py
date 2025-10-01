@@ -59,3 +59,8 @@ def downtime_per_year(availability):
 def nines(availability):
     """Number of nines, e.g. 0.9995 -> 3.3."""
     return -math.log10(1 - availability)
+
+
+def from_nines(n):
+    """Availability from a number of nines (4 -> 0.9999)."""
+    return 1 - 10 ** -n
