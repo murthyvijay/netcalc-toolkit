@@ -73,3 +73,38 @@ def parse_hours(text):
     if text[-1] in scale:
         return float(text[:-1]) * scale[text[-1]]
     return float(text)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    for name in ("series", "parallel"):
+        p = sub.add_parser(name, help=f"availability of components in {name}")
+        p.add_argument("availability", type=float, nargs="+")
+    p = sub.add_parser("kofn", help="at least k of n identical components")
+    p.add_argument("--k", type=int, required=True)
+    p.add_argument("--n", type=int, required=True)
+    p.add_argument("--availability", type=float, required=True)
+    p = sub.add_parser("mtbf", help="availability from MTBF and MTTR")
+    p.add_argument("--mtbf", required=True, help="e.g. 50000h or 2y")
+    p.add_argument("--mttr", required=True, help="e.g. 4h")
+    p = sub.add_parser("nines", help="downtime for an availability")
+    p.add_argument("availability", type=float)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "series":
+        a = series(*args.availability)
+    elif args.cmd == "parallel":
+        a = parallel(*args.availability)
+    elif args.cmd == "kofn":
+        a = k_of_n(args.k, args.n, args.availability)
+    elif args.cmd == "mtbf":
+        a = from_mtbf(parse_hours(args.mtbf), parse_hours(args.mttr))
+    else:
+        a = args.availability
+    print(f"availability {a:.6%} ({nines(a):.2f} nines), "
+          f"{downtime_per_year(a):.1f} min/year downtime")
+
+
+if __name__ == "__main__":
+    main()
