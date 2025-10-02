@@ -9,3 +9,8 @@ class TestCombinations(unittest.TestCase):
 
     def test_parallel(self):
         self.assertAlmostEqual(availability.parallel(0.99, 0.99), 0.9999)
+
+    def test_k_of_n(self):
+        self.assertAlmostEqual(availability.k_of_n(1, 2, 0.99), availability.parallel(0.99, 0.99))
+        self.assertAlmostEqual(availability.k_of_n(2, 2, 0.99), availability.series(0.99, 0.99))
+        self.assertAlmostEqual(availability.k_of_n(2, 3, 0.9), 0.972)
