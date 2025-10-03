@@ -19,3 +19,8 @@ class TestCombinations(unittest.TestCase):
 class TestMtbf(unittest.TestCase):
     def test_from_mtbf(self):
         self.assertAlmostEqual(availability.from_mtbf(9999, 1), 0.9999)
+
+    def test_parse_hours(self):
+        self.assertEqual(availability.parse_hours("50000h"), 50000)
+        self.assertEqual(availability.parse_hours("2d"), 48)
+        self.assertEqual(availability.parse_hours("30m"), 0.5)
