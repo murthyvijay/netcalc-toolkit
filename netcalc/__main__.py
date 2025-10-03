@@ -68,6 +68,7 @@ TOOLS = {
     "ipv6": "netcalc.protocols.ipv6",
     "ipsec": "netcalc.protocols.ipsec",
     "nat": "netcalc.protocols.nat",
+    "availability": "netcalc.perf.availability",
 }
 
 
