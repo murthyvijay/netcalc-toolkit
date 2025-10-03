@@ -24,3 +24,14 @@ class TestMtbf(unittest.TestCase):
         self.assertEqual(availability.parse_hours("50000h"), 50000)
         self.assertEqual(availability.parse_hours("2d"), 48)
         self.assertEqual(availability.parse_hours("30m"), 0.5)
+
+
+class TestNines(unittest.TestCase):
+    def test_four_nines(self):
+        self.assertAlmostEqual(availability.downtime_per_year(0.9999), 52.596, places=3)
+        self.assertAlmostEqual(availability.nines(0.9999), 4.0)
+        self.assertAlmostEqual(availability.from_nines(5), 0.99999)
+
+
+if __name__ == "__main__":
+    unittest.main()
