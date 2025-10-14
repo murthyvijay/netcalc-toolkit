@@ -80,6 +80,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `loss` | loss ratio, multi-hop loss, burst/duplicate/reorder analysis | `netcalc loss seq 1 2 3 6 7 7 5 8 12` |
 | `throughput` | BDP, window-limited throughput, window scaling, transfer time | `netcalc throughput bdp --rate 10G --rtt 80ms` |
 | `tcp` | Mathis and Padhye TCP throughput models, max tolerable loss | `netcalc tcp mathis --rtt 50ms --loss 1e-4` |
+| `availability` | availability from MTBF/MTTR, series, parallel and k-of-n systems, nines and downtime per year | `netcalc availability parallel 0.99 0.99` |
 
 ### CCNA / CCNP (`netcalc.ccna`)
 
