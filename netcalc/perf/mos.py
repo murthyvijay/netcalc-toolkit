@@ -27,3 +27,9 @@ import argparse
 from netcalc.units import parse_time
 
 CODECS = {"g711": (0.0, 25.1), "g729": (11.0, 19.0), "g722": (0.0, 25.1), "opus": (0.0, 30.0)}
+
+
+def delay_impairment(one_way_ms):
+    """Id: delay impairment for a one-way mouth-to-ear delay in ms."""
+    excess = max(one_way_ms - 177.3, 0.0)
+    return 0.024 * one_way_ms + 0.11 * excess
