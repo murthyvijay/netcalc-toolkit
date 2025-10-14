@@ -191,6 +191,14 @@ B = MSS / ( RTT sqrt(2bp/3) + RTO min(1, 3 sqrt(3bp/8)) p (1 + 32 p^2) )
 Both show why long-RTT paths are so sensitive to loss: throughput falls as
 `1 / (RTT * sqrt(p))`.
 
+### Availability (`availability`)
+
+Availability is `MTBF / (MTBF + MTTR)`. Components in series multiply (two
+99.9 % boxes in a row give 99.8 %); redundant components fail only together
+(two 99 % links in parallel give 99.99 %, assuming independent failures).
+k-of-n redundancy follows the binomial distribution. Each extra nine divides
+downtime by ten: 99.99 % is 52.6 minutes per year.
+
 ---
 
 ## 3. CCNA / CCNP calculations
