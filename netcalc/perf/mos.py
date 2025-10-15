@@ -50,3 +50,16 @@ def r_factor(one_way_ms, jitter_ms=0.0, loss_pct=0.0, codec="g711"):
     """E-model R-factor (0..100)."""
     d = effective_delay_ms(one_way_ms, jitter_ms)
     return max(0.0, min(100.0, 93.2 - delay_impairment(d) - loss_impairment(loss_pct, codec)))
+
+
+def r_to_mos(r):
+    """Mean opinion score (1..4.5) for an R-factor.
+
+    >>> round(r_to_mos(93.2), 2)
+    4.41
+    """
+    if r <= 0:
+        return 1.0
+    if r >= 100:
+        return 4.5
+    return 1 + 0.035 * r + 7e-6 * r * (r - 60) * (100 - r)
