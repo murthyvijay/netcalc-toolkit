@@ -39,3 +39,8 @@ def loss_impairment(loss_pct, codec="g711"):
     """Ie_eff: codec impairment under ``loss_pct`` percent random packet loss."""
     ie, bpl = CODECS[codec]
     return ie + (95 - ie) * loss_pct / (loss_pct + bpl)
+
+
+def effective_delay_ms(one_way_ms, jitter_ms, buffer_factor=2.0, codec_delay_ms=0.0):
+    """Mouth-to-ear delay including the jitter buffer and codec delay."""
+    return one_way_ms + buffer_factor * jitter_ms + codec_delay_ms
