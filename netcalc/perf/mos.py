@@ -44,3 +44,9 @@ def loss_impairment(loss_pct, codec="g711"):
 def effective_delay_ms(one_way_ms, jitter_ms, buffer_factor=2.0, codec_delay_ms=0.0):
     """Mouth-to-ear delay including the jitter buffer and codec delay."""
     return one_way_ms + buffer_factor * jitter_ms + codec_delay_ms
+
+
+def r_factor(one_way_ms, jitter_ms=0.0, loss_pct=0.0, codec="g711"):
+    """E-model R-factor (0..100)."""
+    d = effective_delay_ms(one_way_ms, jitter_ms)
+    return max(0.0, min(100.0, 93.2 - delay_impairment(d) - loss_impairment(loss_pct, codec)))
