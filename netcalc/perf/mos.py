@@ -33,3 +33,9 @@ def delay_impairment(one_way_ms):
     """Id: delay impairment for a one-way mouth-to-ear delay in ms."""
     excess = max(one_way_ms - 177.3, 0.0)
     return 0.024 * one_way_ms + 0.11 * excess
+
+
+def loss_impairment(loss_pct, codec="g711"):
+    """Ie_eff: codec impairment under ``loss_pct`` percent random packet loss."""
+    ie, bpl = CODECS[codec]
+    return ie + (95 - ie) * loss_pct / (loss_pct + bpl)
