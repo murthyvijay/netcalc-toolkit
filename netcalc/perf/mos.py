@@ -77,3 +77,30 @@ def max_delay_for_mos(target_mos, loss_pct=0.0, codec="g711"):
         else:
             hi = mid
     return lo
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("score", help="R-factor and MOS for measured conditions")
+    p.add_argument("--delay", required=True, help="one-way network delay")
+    p.add_argument("--jitter", default="0ms")
+    p.add_argument("--loss", type=float, default=0.0, help="percent")
+    p.add_argument("--codec", choices=sorted(CODECS), default="g711")
+    p = sub.add_parser("budget", help="delay budget for a target MOS")
+    p.add_argument("--target-mos", type=float, default=4.0)
+    p.add_argument("--loss", type=float, default=0.0)
+    p.add_argument("--codec", choices=sorted(CODECS), default="g711")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "score":
+        r = r_factor(parse_time(args.delay) * 1e3, parse_time(args.jitter) * 1e3, args.loss, args.codec)
+        print(f"R = {r:.1f}, MOS = {r_to_mos(r):.2f}")
+    else:
+        d = max_delay_for_mos(args.target_mos, args.loss, args.codec)
+        print(f"MOS {args.target_mos:g} with {args.codec} at {args.loss:g} % loss allows "
+              f"{d:.0f} ms one-way (including jitter buffer)")
+
+
+if __name__ == "__main__":
+    main()
