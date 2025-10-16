@@ -63,3 +63,17 @@ def r_to_mos(r):
     if r >= 100:
         return 4.5
     return 1 + 0.035 * r + 7e-6 * r * (r - 60) * (100 - r)
+
+
+def max_delay_for_mos(target_mos, loss_pct=0.0, codec="g711"):
+    """Largest one-way delay (ms, jitter included) that still reaches ``target_mos``."""
+    lo, hi = 0.0, 1000.0
+    if r_to_mos(r_factor(0, 0, loss_pct, codec)) < target_mos:
+        return 0.0
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        if r_to_mos(r_factor(mid, 0, loss_pct, codec)) >= target_mos:
+            lo = mid
+        else:
+            hi = mid
+    return lo
