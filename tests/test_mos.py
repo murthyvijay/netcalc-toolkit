@@ -12,3 +12,6 @@ class TestImpairments(unittest.TestCase):
         self.assertEqual(mos.loss_impairment(0, "g711"), 0.0)
         self.assertEqual(mos.loss_impairment(0, "g729"), 11.0)
         self.assertAlmostEqual(mos.loss_impairment(1, "g711"), 95 / 26.1)
+
+    def test_jitter_buffer(self):
+        self.assertEqual(mos.effective_delay_ms(80, 10), 100)
