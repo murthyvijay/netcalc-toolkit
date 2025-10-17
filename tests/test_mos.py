@@ -15,3 +15,9 @@ class TestImpairments(unittest.TestCase):
 
     def test_jitter_buffer(self):
         self.assertEqual(mos.effective_delay_ms(80, 10), 100)
+
+
+class TestScores(unittest.TestCase):
+    def test_best_case(self):
+        self.assertAlmostEqual(mos.r_factor(0), 93.2)
+        self.assertAlmostEqual(mos.r_to_mos(93.2), 4.41, places=2)
