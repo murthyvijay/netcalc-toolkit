@@ -21,3 +21,8 @@ class TestScores(unittest.TestCase):
     def test_best_case(self):
         self.assertAlmostEqual(mos.r_factor(0), 93.2)
         self.assertAlmostEqual(mos.r_to_mos(93.2), 4.41, places=2)
+
+    def test_typical_call(self):
+        r = mos.r_factor(80, 10, 0.5)
+        self.assertAlmostEqual(r, 88.94, places=2)
+        self.assertGreater(mos.r_to_mos(r), 4.3)
