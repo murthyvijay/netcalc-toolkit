@@ -26,3 +26,7 @@ class TestScores(unittest.TestCase):
         r = mos.r_factor(80, 10, 0.5)
         self.assertAlmostEqual(r, 88.94, places=2)
         self.assertGreater(mos.r_to_mos(r), 4.3)
+
+    def test_mos_bounds(self):
+        self.assertEqual(mos.r_to_mos(-5), 1.0)
+        self.assertEqual(mos.r_to_mos(120), 4.5)
