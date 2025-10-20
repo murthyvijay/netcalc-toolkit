@@ -36,3 +36,10 @@ class TestBudget(unittest.TestCase):
     def test_delay_budget(self):
         d = mos.max_delay_for_mos(4.0)
         self.assertAlmostEqual(mos.r_to_mos(mos.r_factor(d)), 4.0, places=3)
+
+    def test_unreachable_target(self):
+        self.assertEqual(mos.max_delay_for_mos(4.4, loss_pct=5, codec="g729"), 0.0)
+
+
+if __name__ == "__main__":
+    unittest.main()
