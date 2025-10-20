@@ -81,6 +81,7 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `throughput` | BDP, window-limited throughput, window scaling, transfer time | `netcalc throughput bdp --rate 10G --rtt 80ms` |
 | `tcp` | Mathis and Padhye TCP throughput models, max tolerable loss | `netcalc tcp mathis --rtt 50ms --loss 1e-4` |
 | `availability` | availability from MTBF/MTTR, series, parallel and k-of-n systems, nines and downtime per year | `netcalc availability parallel 0.99 0.99` |
+| `mos` | E-model R-factor and MOS from delay, jitter and loss per codec, delay budget for a target MOS | `netcalc mos score --delay 80ms --jitter 10ms --loss 0.5` |
 
 ### CCNA / CCNP (`netcalc.ccna`)
 
