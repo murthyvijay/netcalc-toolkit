@@ -30,3 +30,9 @@ class TestScores(unittest.TestCase):
     def test_mos_bounds(self):
         self.assertEqual(mos.r_to_mos(-5), 1.0)
         self.assertEqual(mos.r_to_mos(120), 4.5)
+
+
+class TestBudget(unittest.TestCase):
+    def test_delay_budget(self):
+        d = mos.max_delay_for_mos(4.0)
+        self.assertAlmostEqual(mos.r_to_mos(mos.r_factor(d)), 4.0, places=3)
