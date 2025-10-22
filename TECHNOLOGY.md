@@ -199,6 +199,16 @@ Availability is `MTBF / (MTBF + MTTR)`. Components in series multiply (two
 k-of-n redundancy follows the binomial distribution. Each extra nine divides
 downtime by ten: 99.99 % is 52.6 minutes per year.
 
+### Voice quality (`mos`)
+
+The ITU-T G.107 E-model scores a call as `R = 93.2 - Id - Ie_eff`. The delay
+impairment Id is small up to about 177 ms one-way and grows quickly after it;
+jitter matters because the jitter buffer (about twice the jitter) adds delay.
+The loss impairment depends on the codec's robustness: G.711 with packet loss
+concealment loses about 3.6 R points per 1 % random loss, while G.729 starts
+11 points down. R maps to MOS; R 80 (MOS 4.0) is the usual target and below
+R 60 (MOS 3.1) users complain.
+
 ---
 
 ## 3. CCNA / CCNP calculations
