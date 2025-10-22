@@ -18,6 +18,8 @@
   and rail-optimised topology sizing, LLM inference KV-cache and decode math.
 - Protocols: IPv6 EUI-64, solicited-node and subnet math, IPsec ESP overhead
   and inner MTU, CGNAT port blocks and deterministic NAT.
+- Performance: availability for series, parallel and k-of-n systems, E-model
+  R-factor and MOS.
 
 ## 1.0.0
 
