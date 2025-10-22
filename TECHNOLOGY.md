@@ -859,3 +859,10 @@ is rate times outage: 300 ms on a 100G path is 3.75 GB.
 - S. Floyd and V. Jacobson, "Random Early Detection Gateways for Congestion Avoidance", 1993
 - L. Kleinrock, "Queueing Systems, Volume 1: Theory", 1975
 - IEEE 802.11-2020 and 802.11ax-2021 (OFDM PHY parameters)
+- RFC 4271 (BGP-4), RFC 4456 (route reflection), RFC 6793 and RFC 5396 (4-byte ASNs), RFC 6996 (private ASNs)
+- RFC 5286 (loop-free alternates), RFC 5880 (BFD), RFC 5305 (IS-IS wide metrics)
+- RFC 4291 (IPv6 addressing), RFC 4303 (ESP), RFC 3948 (ESP in UDP), RFC 6888 and RFC 7422 (CGNAT)
+- RFC 5798 (VRRPv3), RFC 3031 and RFC 8402 (MPLS and segment routing), RFC 7432 and RFC 8365 (EVPN, VXLAN EVPN)
+- ITU-T G.107 (E-model); R. Cole and J. Rosenbluth, "Voice over IP Performance Monitoring", 2001
+- J. Daly, "A higher order estimate of the optimum checkpoint interval for restart dumps", 2006
+- D. Narayanan et al., "Efficient Large-Scale Language Model Training on GPU Clusters Using Megatron-LM", SC 2021
