@@ -33,3 +33,25 @@ def carrier_summary(baud_g, modulation, fec_overhead=0.15, rolloff=0.1):
     net = coherent.net_rate_gbps(baud_g, modulation, fec_overhead=fec_overhead)
     m, slot = dwdm.flex_slot(baud_g, rolloff)
     return {"net_gbps": net, "slot_ghz": slot, "slot_m": m}
+
+
+def route_report(km, channels, baud_g, modulation, cd_tolerance_ps_nm=50000, required_snr_db=16.0):
+    """Return the report lines for an amplified route."""
+    route = plan_route(km, channels=channels)
+    carrier = carrier_summary(baud_g, modulation)
+    snr = osnr.osnr_to_snr_db(route["osnr_db"], baud_g)
+    cd = dispersion.accumulated_cd(km)
+    fit, capacity = coherent.fiber_capacity_tbps(carrier["net_gbps"], carrier["slot_ghz"])
+    lit = min(fit, channels)
+    return [
+        f"route              {km:g} km in {route['spans']} spans of {route['span_km']:.1f} km "
+        f"({route['span_loss_db']:.1f} dB each)",
+        f"launch power       {route['launch_dbm']:.2f} dBm per channel ({channels} channels)",
+        f"end-of-line OSNR   {route['osnr_db']:.2f} dB (0.1 nm) -> SNR {snr:.2f} dB at "
+        f"{baud_g:g} GBd: {'PASS' if snr >= required_snr_db else 'FAIL'} vs {required_snr_db:g} dB",
+        f"chromatic disp.    {cd:,.0f} ps/nm: "
+        f"{'within' if cd <= cd_tolerance_ps_nm else 'beyond'} DSP tolerance",
+        f"carrier            {carrier['net_gbps']:.0f} Gb/s net in a {carrier['slot_ghz']:g} GHz slot",
+        f"capacity           {lit} x {carrier['net_gbps']:.0f} Gb/s = "
+        f"{lit * carrier['net_gbps'] / 1000:.1f} Tb/s (band fits {fit}, {capacity:.1f} Tb/s)",
+    ]
