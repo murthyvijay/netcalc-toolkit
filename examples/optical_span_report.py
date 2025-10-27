@@ -26,3 +26,10 @@ def plan_route(km, max_span_km=80.0, alpha_db_km=0.22, amp_total_dbm=20.0, nf_db
     eol_osnr = osnr.amplifier_chain_osnr_db(launch, span_loss, nf_db, spans)
     return {"spans": spans, "span_km": span_km, "span_loss_db": span_loss,
             "launch_dbm": launch, "osnr_db": eol_osnr}
+
+
+def carrier_summary(baud_g, modulation, fec_overhead=0.15, rolloff=0.1):
+    """Net rate, flexgrid slot and the OSNR-to-SNR conversion for one carrier."""
+    net = coherent.net_rate_gbps(baud_g, modulation, fec_overhead=fec_overhead)
+    m, slot = dwdm.flex_slot(baud_g, rolloff)
+    return {"net_gbps": net, "slot_ghz": slot, "slot_m": m}
