@@ -55,3 +55,19 @@ def route_report(km, channels, baud_g, modulation, cd_tolerance_ps_nm=50000, req
         f"capacity           {lit} x {carrier['net_gbps']:.0f} Gb/s = "
         f"{lit * carrier['net_gbps'] / 1000:.1f} Tb/s (band fits {fit}, {capacity:.1f} Tb/s)",
     ]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--km", type=float, required=True)
+    parser.add_argument("--channels", type=int, default=64)
+    parser.add_argument("--baud", type=float, default=64.0)
+    parser.add_argument("--mod", default="16qam")
+    parser.add_argument("--required-snr", type=float, default=16.0)
+    args = parser.parse_args()
+    print("\n".join(route_report(args.km, args.channels, args.baud, args.mod,
+                                 required_snr_db=args.required_snr)))
+
+
+if __name__ == "__main__":
+    main()
