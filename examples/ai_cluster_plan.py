@@ -40,3 +40,16 @@ def training_lines(gpus, params, rate_bps, tp=8, pp=8, microbatches=32):
         f"pipeline bubble    {parallelism.pipeline_bubble(pp, microbatches):.1%} "
         f"with {microbatches} micro-batches",
     ]
+
+
+def resilience_lines(gpus, params, storage_bps, gpu_mtbf_hours=50000.0):
+    """Checkpoint size and interval for the cluster's failure rate."""
+    size = checkpoint.checkpoint_bytes(params)
+    write = checkpoint.write_time(size, storage_bps)
+    mtbf_s = checkpoint.job_mtbf_hours(gpu_mtbf_hours, gpus) * 3600
+    tau = checkpoint.optimal_interval(write, mtbf_s)
+    return [
+        f"checkpoint         {fmt_size(size)}, {fmt_time(write)} to write",
+        f"job MTBF           {fmt_time(mtbf_s)}; checkpoint every {fmt_time(tau)} "
+        f"(~{checkpoint.wasted_fraction(tau, write, mtbf_s):.1%} of time lost)",
+    ]
