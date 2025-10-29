@@ -15,3 +15,14 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from netcalc.aifabric import checkpoint, parallelism, topology  # noqa: E402
 from netcalc.units import fmt_size, fmt_time, parse_rate  # noqa: E402
+
+
+def fabric_lines(gpus, radix):
+    """Fabric sizing lines: two tiers if they fit, otherwise the three-tier limit."""
+    try:
+        plan = topology.leaf_spine_plan(gpus, radix)
+    except ValueError:
+        return [f"fabric             {gpus} GPUs exceed a two-tier radix-{radix} fabric; "
+                f"three tiers reach {topology.three_tier_max_hosts(radix):,}"]
+    return [f"fabric             {plan['leaves']} leaves + {plan['spines']} spines, "
+            f"{topology.optics_count(plan['leaf_spine_links']):,} optics"]
