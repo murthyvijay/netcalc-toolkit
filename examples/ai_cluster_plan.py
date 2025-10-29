@@ -26,3 +26,17 @@ def fabric_lines(gpus, radix):
                 f"three tiers reach {topology.three_tier_max_hosts(radix):,}"]
     return [f"fabric             {plan['leaves']} leaves + {plan['spines']} spines, "
             f"{topology.optics_count(plan['leaf_spine_links']):,} optics"]
+
+
+def training_lines(gpus, params, rate_bps, tp=8, pp=8, microbatches=32):
+    """Gradient traffic per step and pipeline efficiency for a 3D-parallel layout."""
+    dp = max(gpus // (tp * pp), 1)
+    shard = params / (tp * pp)
+    grad_bytes = parallelism.dp_bytes_per_step(shard, 2, dp)
+    return [
+        f"layout             TP {tp} x PP {pp} x DP {dp}",
+        f"gradient sync      {fmt_size(grad_bytes)} per GPU per step, "
+        f"{fmt_time(parallelism.comm_time(grad_bytes, rate_bps))} at line rate",
+        f"pipeline bubble    {parallelism.pipeline_bubble(pp, microbatches):.1%} "
+        f"with {microbatches} micro-batches",
+    ]
