@@ -53,3 +53,21 @@ def resilience_lines(gpus, params, storage_bps, gpu_mtbf_hours=50000.0):
         f"job MTBF           {fmt_time(mtbf_s)}; checkpoint every {fmt_time(tau)} "
         f"(~{checkpoint.wasted_fraction(tau, write, mtbf_s):.1%} of time lost)",
     ]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--gpus", type=int, required=True)
+    parser.add_argument("--radix", type=int, default=64)
+    parser.add_argument("--params", type=float, default=70e9)
+    parser.add_argument("--rate", default="400G", help="per-GPU back-end bandwidth")
+    parser.add_argument("--storage", default="800G", help="aggregate checkpoint bandwidth")
+    args = parser.parse_args()
+    lines = fabric_lines(args.gpus, args.radix)
+    lines += training_lines(args.gpus, args.params, parse_rate(args.rate))
+    lines += resilience_lines(args.gpus, args.params, parse_rate(args.storage))
+    print("\n".join(lines))
+
+
+if __name__ == "__main__":
+    main()
