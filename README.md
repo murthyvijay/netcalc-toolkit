@@ -181,6 +181,7 @@ The `examples/` folder combines several tools into small reports:
 | `examples/campus_plan.py 10.20.0.0/22 USERS=400 VOICE=200` | VLSM plan with ACL wildcards, the summary route and OSPF uplink costs |
 | `examples/ai_fabric_sizing.py --gpus 512 --rate 400G` | ECMP vs spraying efficiency, PFC headroom, reorder buffer and all-reduce time |
 | `examples/optical_span_report.py --km 600 --channels 64` | spans, launch power, end-of-line OSNR, dispersion and C-band capacity of an amplified DWDM route |
+| `examples/ai_cluster_plan.py --gpus 2048 --radix 64` | leaf-spine size, gradient traffic, pipeline bubble, checkpoint size and interval for a GPU cluster |
 
 `examples/sample_delays.csv` is a sample input for `netcalc jitter file examples/sample_delays.csv`.
 
