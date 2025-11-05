@@ -1,1 +1,1 @@
-"""Protocol calculators: header overhead, goodput, MTU and MSS."""
+"""Protocol calculators: header overhead, goodput, MTU/MSS, IPv6, IPsec and NAT."""
