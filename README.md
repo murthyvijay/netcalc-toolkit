@@ -1,9 +1,11 @@
 # netcalc-toolkit
 
 Small, dependency-free Python calculators for network engineers: Layer 1
-link budgets and FEC, latency/jitter/loss, CCNA/CCNP subnetting and routing
-metrics, protocol overhead, and AI/ML fabric sizing (multipath transport,
-Ultra Ethernet-style spraying, RoCE/PFC/DCQCN, buffers, collectives).
+link budgets and FEC, optics and DWDM, wireless, latency/jitter/loss,
+queueing theory, CCNA/CCNP subnetting and routing metrics, BGP/IS-IS/SPF and
+MPLS, QoS, protocol overhead, and AI/ML fabric sizing (multipath transport,
+Ultra Ethernet-style spraying, RoCE/PFC/DCQCN, buffers, collectives,
+parallelism, checkpoints, topology and inference).
 
 * **Standard library only.** Python 3.9+, nothing to `pip install` to run it.
 * **Every module is both a library and a CLI.** Import the functions, or run
