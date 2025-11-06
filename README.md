@@ -201,7 +201,7 @@ netcalc-toolkit/
 │   ├── __main__.py        # `python -m netcalc` / `netcalc` dispatcher
 │   ├── units.py           # parse "100G", "9KB", "10ms"; dB helpers
 │   ├── layer1/            # ber, qfactor, fec, ser, osnr
-│   ├── perf/              # latency, jitter, loss, throughput, tcp
+│   ├── perf/              # latency, jitter, loss, throughput, tcp, availability, mos
 │   ├── ccna/              # subnet, vlsm, wildcard, summarize, ospf, eigrp, stp, qos
 │   ├── protocols/         # overhead, mtu, ipv6, ipsec, nat
 │   ├── optics/            # dwdm, budget, dispersion, coherent, amplifier
