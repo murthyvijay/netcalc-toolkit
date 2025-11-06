@@ -46,6 +46,12 @@ $ netcalc subnet info 192.168.10.77/26
 
 $ netcalc loadbalance imbalance --flows 64 --paths 64
 busiest path carries 3.93x the even share; effective throughput 25.5%
+
+$ netcalc bgp best "A:lp=200,path=65001 65002" B:path=65003
+best path: A (decided by local_pref)
+
+$ netcalc dwdm convert 1550.12nm
+193.3995 THz = 1550.120 nm; nearest channel n=6 (-0.48 GHz)
 ```
 
 In Python:
