@@ -203,8 +203,14 @@ netcalc-toolkit/
 │   ├── layer1/            # ber, qfactor, fec, ser, osnr
 │   ├── perf/              # latency, jitter, loss, throughput, tcp
 │   ├── ccna/              # subnet, vlsm, wildcard, summarize, ospf, eigrp, stp, qos
-│   ├── protocols/         # overhead, mtu
-│   └── aifabric/          # loadbalance, retransmit, mrc, roce, buffer, collectives
+│   ├── protocols/         # overhead, mtu, ipv6, ipsec, nat
+│   ├── optics/            # dwdm, budget, dispersion, coherent, amplifier
+│   ├── wireless/          # rf, capacity, wifi
+│   ├── queueing/          # littles, erlang, mg1, mm1k
+│   ├── traffic/           # dscp, marker, wred, scheduler
+│   ├── routing/           # bgp, spf, bfd, isis, fhrp, mpls, evpn, convergence
+│   └── aifabric/          # loadbalance, retransmit, mrc, roce, buffer, collectives,
+│                          # parallelism, algorithms, checkpoint, topology, inference
 ├── examples/              # multi-tool reports built on the library
 ├── tests/                 # unittest suite, one file per module
 ├── README.md
