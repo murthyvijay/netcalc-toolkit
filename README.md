@@ -12,7 +12,7 @@ parallelism, checkpoints, topology and inference).
   `python -m netcalc <tool> --help`.
 * **Formulas are documented.** Each module's docstring shows the equation it
   implements, and [TECHNOLOGY.md](TECHNOLOGY.md) explains the concepts.
-* **Tested.** 140+ unit tests under `tests/`.
+* **Tested.** 380+ unit tests under `tests/`.
 
 ## Install
 
