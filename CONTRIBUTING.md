@@ -3,8 +3,9 @@
 New calculators are welcome. To keep the toolkit easy to adopt:
 
 1. **Standard library only.** No third-party imports in `netcalc/`.
-2. **One topic per module**, placed in the matching package (`layer1`, `perf`,
-   `ccna`, `protocols`, `aifabric`).
+2. **One topic per module**, placed in the matching package (`layer1`, `optics`,
+   `wireless`, `perf`, `queueing`, `ccna`, `traffic`, `routing`, `protocols`,
+   `aifabric`).
 3. **Document the formula.** The module docstring states the equation and its
    assumptions, and starts with a one-line summary (it is shown by
    `python -m netcalc`).
