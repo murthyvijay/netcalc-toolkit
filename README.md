@@ -234,12 +234,15 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add a calculator, and
 ## About the commit history
 
 The commit history of this repository was intentionally backdated so that
-the GitHub contribution graph spells **VIJAY**. The code was written in one
-session (with help from Claude, an AI assistant) and then committed
-incrementally, one function, test or doc section at a time, with
-`GIT_AUTHOR_DATE`/`GIT_COMMITTER_DATE` set to the dates that draw the letters.
-The dates show when each piece was committed for the graph, not when it was
-written.
+the GitHub contribution graph spells a name across three years:
+**MURTHY** in 2024, **ANANTHA** in 2025 and **VIJAY** in 2026. The code was
+written in AI-assisted sessions (with Claude, an AI assistant) and then
+committed incrementally, one function, test or doc section at a time, with
+`GIT_AUTHOR_DATE`/`GIT_COMMITTER_DATE` set to the dates that draw the letters
+(four commits on each lit day in 2024 and 2025). The 2024 and 2025 commits
+were added on top of the 2026 history, so `git log` shows them after the
+2026 commits even though their dates are earlier. The dates show when each
+piece was committed for the graph, not when it was written.
 
 ## License
 
