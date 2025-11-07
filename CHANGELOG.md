@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.0
 
 - Optics: ITU-T G.694.1 DWDM grid and flexgrid slots, optical power budget and
   reach, chromatic dispersion and PMD limits, coherent line rates, EDFA planning.

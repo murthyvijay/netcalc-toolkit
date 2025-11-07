@@ -17,4 +17,4 @@ Subpackages:
 Every module is also a command-line tool: ``python -m netcalc.<package>.<module> --help``.
 """
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
