@@ -85,3 +85,11 @@ def parse_time(text):
     if unit not in _TIME:
         raise ValueError(f"unknown time unit in {text!r}")
     return value * _TIME[unit]
+
+
+def fmt_rate(bps, digits=3):
+    """Format bits per second with an SI prefix: ``fmt_rate(4e11) -> '400 Gbps'``."""
+    for prefix, scale in (("T", 1e12), ("G", 1e9), ("M", 1e6), ("k", 1e3)):
+        if abs(bps) >= scale:
+            return f"{bps / scale:.{digits}g} {prefix}bps"
+    return f"{bps:.{digits}g} bps"
