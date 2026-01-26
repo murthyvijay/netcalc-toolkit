@@ -20,3 +20,27 @@ _BINARY = {"Ki": 1024, "Mi": 1024 ** 2, "Gi": 1024 ** 3, "Ti": 1024 ** 4}
 _TIME = {"s": 1.0, "ms": 1e-3, "us": 1e-6, "µs": 1e-6, "ns": 1e-9, "ps": 1e-12}
 
 _NUM = r"([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)"
+
+
+def _split(text):
+    m = re.fullmatch(_NUM + r"\s*([A-Za-zµ/]*)", str(text).strip())
+    if not m:
+        raise ValueError(f"cannot parse quantity: {text!r}")
+    return float(m.group(1)), m.group(2)
+
+
+def parse_rate(text):
+    """Parse a data rate into bits per second.
+
+    >>> parse_rate("100G")
+    100000000000.0
+    >>> parse_rate("25Gbps")
+    25000000000.0
+    >>> parse_rate("1.5 Mb/s")
+    1500000.0
+    """
+    value, unit = _split(text)
+    unit = unit.replace("/s", "").replace("bps", "").replace("bit", "").replace("b", "")
+    if unit not in _DECIMAL:
+        raise ValueError(f"unknown rate unit in {text!r}")
+    return value * _DECIMAL[unit]
