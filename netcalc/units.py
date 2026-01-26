@@ -70,3 +70,18 @@ def parse_size(text):
     if unit in _DECIMAL:
         return value * _DECIMAL[unit] * scale
     raise ValueError(f"unknown size unit in {text!r}")
+
+
+def parse_time(text):
+    """Parse a duration into seconds (bare numbers are seconds).
+
+    >>> parse_time("10ms")
+    0.01
+    >>> parse_time("1.5us")
+    1.5e-06
+    """
+    value, unit = _split(text)
+    unit = unit or "s"
+    if unit not in _TIME:
+        raise ValueError(f"unknown time unit in {text!r}")
+    return value * _TIME[unit]
