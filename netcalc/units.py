@@ -44,3 +44,29 @@ def parse_rate(text):
     if unit not in _DECIMAL:
         raise ValueError(f"unknown rate unit in {text!r}")
     return value * _DECIMAL[unit]
+
+
+def parse_size(text):
+    """Parse a size into bytes. ``B`` means bytes, a lone ``b`` means bits.
+
+    >>> parse_size("1500")
+    1500.0
+    >>> parse_size("9KB")
+    9000.0
+    >>> parse_size("2MiB")
+    2097152.0
+    >>> parse_size("8kb")
+    1000.0
+    """
+    value, unit = _split(text)
+    if unit.endswith("B"):
+        unit, scale = unit[:-1], 1.0
+    elif unit.endswith("b"):
+        unit, scale = unit[:-1], 1 / 8
+    else:
+        scale = 1.0
+    if unit in _BINARY:
+        return value * _BINARY[unit] * scale
+    if unit in _DECIMAL:
+        return value * _DECIMAL[unit] * scale
+    raise ValueError(f"unknown size unit in {text!r}")
