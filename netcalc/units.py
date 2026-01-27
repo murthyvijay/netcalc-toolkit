@@ -111,3 +111,8 @@ def fmt_time(seconds, digits=4):
         if abs(seconds) >= scale:
             return f"{seconds / scale:.{digits}g} {unit}"
     return f"{seconds / 1e-12:.{digits}g} ps"
+
+
+def db_to_linear(db):
+    """Convert a power ratio in dB to linear: ``10 ** (db / 10)``."""
+    return 10 ** (db / 10)
