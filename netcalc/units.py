@@ -121,3 +121,8 @@ def db_to_linear(db):
 def linear_to_db(ratio):
     """Convert a linear power ratio to dB: ``10 * log10(ratio)``."""
     return 10 * math.log10(ratio)
+
+
+def dbm_to_mw(dbm):
+    """Convert optical/electrical power from dBm to milliwatts."""
+    return 10 ** (dbm / 10)
