@@ -93,3 +93,11 @@ def fmt_rate(bps, digits=3):
         if abs(bps) >= scale:
             return f"{bps / scale:.{digits}g} {prefix}bps"
     return f"{bps:.{digits}g} bps"
+
+
+def fmt_size(nbytes, digits=4):
+    """Format bytes with a decimal prefix: ``fmt_size(1.25e6) -> '1.25 MB'``."""
+    for prefix, scale in (("T", 1e12), ("G", 1e9), ("M", 1e6), ("k", 1e3)):
+        if abs(nbytes) >= scale:
+            return f"{nbytes / scale:.{digits}g} {prefix}B"
+    return f"{nbytes:.{digits}g} B"
