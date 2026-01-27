@@ -101,3 +101,13 @@ def fmt_size(nbytes, digits=4):
         if abs(nbytes) >= scale:
             return f"{nbytes / scale:.{digits}g} {prefix}B"
     return f"{nbytes:.{digits}g} B"
+
+
+def fmt_time(seconds, digits=4):
+    """Format seconds with the most readable unit: ``fmt_time(2.5e-6) -> '2.5 us'``."""
+    if seconds == 0:
+        return "0 s"
+    for unit, scale in (("s", 1.0), ("ms", 1e-3), ("us", 1e-6), ("ns", 1e-9)):
+        if abs(seconds) >= scale:
+            return f"{seconds / scale:.{digits}g} {unit}"
+    return f"{seconds / 1e-12:.{digits}g} ps"
