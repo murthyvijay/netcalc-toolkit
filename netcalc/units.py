@@ -116,3 +116,8 @@ def fmt_time(seconds, digits=4):
 def db_to_linear(db):
     """Convert a power ratio in dB to linear: ``10 ** (db / 10)``."""
     return 10 ** (db / 10)
+
+
+def linear_to_db(ratio):
+    """Convert a linear power ratio to dB: ``10 * log10(ratio)``."""
+    return 10 * math.log10(ratio)
