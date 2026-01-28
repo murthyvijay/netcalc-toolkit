@@ -26,3 +26,21 @@ def q_to_ber(q):
     '1.28e-12'
     """
     return 0.5 * math.erfc(q / math.sqrt(2))
+
+
+def ber_to_q(ber):
+    """Linear Q-factor that gives ``ber`` (inverse of :func:`q_to_ber`).
+
+    >>> round(ber_to_q(1e-12), 3)
+    7.034
+    """
+    if not 0 < ber < 0.5:
+        raise ValueError("BER must be between 0 and 0.5")
+    lo, hi = 0.0, 40.0
+    for _ in range(200):
+        mid = (lo + hi) / 2
+        if q_to_ber(mid) > ber:
+            lo = mid
+        else:
+            hi = mid
+    return (lo + hi) / 2
