@@ -17,3 +17,12 @@ Usage::
 
 import argparse
 import math
+
+
+def q_to_ber(q):
+    """BER of a binary signal with linear Q-factor ``q``.
+
+    >>> f"{q_to_ber(7):.2e}"
+    '1.28e-12'
+    """
+    return 0.5 * math.erfc(q / math.sqrt(2))
