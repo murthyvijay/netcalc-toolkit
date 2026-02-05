@@ -22,3 +22,16 @@ import argparse
 import math
 
 from netcalc.units import fmt_time, parse_rate
+
+
+def ber(errors, bits):
+    """Return the measured bit error ratio ``errors / bits``.
+
+    >>> ber(5, 1e12)
+    5e-12
+    """
+    if bits <= 0:
+        raise ValueError("bits must be positive")
+    if errors < 0:
+        raise ValueError("errors cannot be negative")
+    return errors / bits
