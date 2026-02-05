@@ -54,3 +54,8 @@ def q_to_db(q):
 def db_to_q(q_db):
     """Convert a Q-factor in dB back to linear."""
     return 10 ** (q_db / 20)
+
+
+def q_from_eye(mu1, mu0, sigma1, sigma0):
+    """Q-factor from eye-diagram levels and their noise standard deviations."""
+    return (mu1 - mu0) / (sigma1 + sigma0)
