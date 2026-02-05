@@ -15,3 +15,16 @@ class TestQToBer(unittest.TestCase):
     def test_out_of_range(self):
         with self.assertRaises(ValueError):
             qfactor.ber_to_q(0.7)
+
+
+class TestQdB(unittest.TestCase):
+    def test_db(self):
+        self.assertAlmostEqual(qfactor.q_to_db(10), 20.0)
+        self.assertAlmostEqual(qfactor.db_to_q(qfactor.q_to_db(7.03)), 7.03)
+
+    def test_eye(self):
+        self.assertAlmostEqual(qfactor.q_from_eye(1.0, 0.0, 0.07, 0.07), 1 / 0.14)
+
+
+if __name__ == "__main__":
+    unittest.main()
