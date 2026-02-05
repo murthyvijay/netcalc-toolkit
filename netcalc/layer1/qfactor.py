@@ -59,3 +59,31 @@ def db_to_q(q_db):
 def q_from_eye(mu1, mu0, sigma1, sigma0):
     """Q-factor from eye-diagram levels and their noise standard deviations."""
     return (mu1 - mu0) / (sigma1 + sigma0)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("to-ber", help="Q (linear, or dB with --db) to BER")
+    p.add_argument("q", type=float)
+    p.add_argument("--db", action="store_true", help="Q is given in dB")
+    p = sub.add_parser("to-q", help="BER to Q")
+    p.add_argument("ber", type=float)
+    p = sub.add_parser("eye", help="Q and BER from eye levels")
+    for name in ("mu1", "mu0", "s1", "s0"):
+        p.add_argument(f"--{name}", type=float, required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "to-ber":
+        q = db_to_q(args.q) if args.db else args.q
+        print(f"Q = {q:.3f} ({q_to_db(q):.2f} dB) -> BER = {q_to_ber(q):.3e}")
+    elif args.cmd == "to-q":
+        q = ber_to_q(args.ber)
+        print(f"BER = {args.ber:.3e} -> Q = {q:.3f} ({q_to_db(q):.2f} dB)")
+    else:
+        q = q_from_eye(args.mu1, args.mu0, args.s1, args.s0)
+        print(f"Q = {q:.3f} ({q_to_db(q):.2f} dB) -> BER = {q_to_ber(q):.3e}")
+
+
+if __name__ == "__main__":
+    main()
