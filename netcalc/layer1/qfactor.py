@@ -49,3 +49,8 @@ def ber_to_q(ber):
 def q_to_db(q):
     """Express a linear Q-factor in dB (``20 * log10(q)``)."""
     return 20 * math.log10(q)
+
+
+def db_to_q(q_db):
+    """Convert a Q-factor in dB back to linear."""
+    return 10 ** (q_db / 20)
