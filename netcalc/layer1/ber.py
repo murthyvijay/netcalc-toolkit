@@ -89,3 +89,41 @@ def bits_for_confidence(target_ber, confidence=0.95, errors=0):
 def required_test_time(target_ber, rate_bps, confidence=0.95, errors=0):
     """Seconds of traffic at ``rate_bps`` needed for the BER claim."""
     return bits_for_confidence(target_ber, confidence, errors) / rate_bps
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+
+    p = sub.add_parser("measure", help="BER and confidence from a measurement")
+    p.add_argument("--errors", type=int, required=True)
+    p.add_argument("--bits", type=float, required=True)
+    p.add_argument("--target", type=float, help="target BER for a confidence figure")
+
+    p = sub.add_parser("bits", help="bits needed for a confidence level")
+    p.add_argument("--target", type=float, required=True)
+    p.add_argument("--confidence", type=float, default=0.95)
+    p.add_argument("--errors", type=int, default=0)
+
+    p = sub.add_parser("time", help="test duration at a line rate")
+    p.add_argument("--target", type=float, required=True)
+    p.add_argument("--rate", required=True, help="line rate, e.g. 100G")
+    p.add_argument("--confidence", type=float, default=0.95)
+    p.add_argument("--errors", type=int, default=0)
+
+    args = parser.parse_args(argv)
+    if args.cmd == "measure":
+        print(f"BER = {ber(args.errors, args.bits):.3e}")
+        if args.target:
+            cl = confidence_level(args.bits, args.target, args.errors)
+            print(f"confidence BER < {args.target:g}: {cl * 100:.2f} %")
+    elif args.cmd == "bits":
+        n = bits_for_confidence(args.target, args.confidence, args.errors)
+        print(f"bits required: {n:.4e}")
+    else:
+        t = required_test_time(args.target, parse_rate(args.rate), args.confidence, args.errors)
+        print(f"test time: {fmt_time(t)} ({t:.1f} s)")
+
+
+if __name__ == "__main__":
+    main()
