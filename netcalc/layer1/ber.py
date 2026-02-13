@@ -84,3 +84,8 @@ def bits_for_confidence(target_ber, confidence=0.95, errors=0):
         else:
             hi = mid
     return hi / target_ber
+
+
+def required_test_time(target_ber, rate_bps, confidence=0.95, errors=0):
+    """Seconds of traffic at ``rate_bps`` needed for the BER claim."""
+    return bits_for_confidence(target_ber, confidence, errors) / rate_bps
