@@ -58,3 +58,29 @@ def confidence_level(bits, target_ber, errors=0):
     0.95
     """
     return 1.0 - poisson_cdf(errors, bits * target_ber)
+
+
+def bits_for_confidence(target_ber, confidence=0.95, errors=0):
+    """Number of bits needed to claim BER < ``target_ber`` at ``confidence``.
+
+    With zero errors this is the closed form ``-ln(1 - CL) / BER`` (about
+    3 / BER for 95 %). With ``errors`` allowed the Poisson tail is solved
+    numerically.
+
+    >>> round(bits_for_confidence(1e-12, 0.95) / 1e12, 3)
+    2.996
+    """
+    if not 0 < confidence < 1:
+        raise ValueError("confidence must be between 0 and 1")
+    if errors == 0:
+        return -math.log(1 - confidence) / target_ber
+    lo, hi = 0.0, 1.0
+    while poisson_cdf(errors, hi) > 1 - confidence:
+        hi *= 2
+    for _ in range(200):
+        mid = (lo + hi) / 2
+        if poisson_cdf(errors, mid) > 1 - confidence:
+            lo = mid
+        else:
+            hi = mid
+    return hi / target_ber
