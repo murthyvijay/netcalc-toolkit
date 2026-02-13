@@ -35,3 +35,13 @@ def ber(errors, bits):
     if errors < 0:
         raise ValueError("errors cannot be negative")
     return errors / bits
+
+
+def poisson_cdf(k, mean):
+    """Probability of observing ``k`` or fewer events when ``mean`` are expected."""
+    term = math.exp(-mean)
+    total = term
+    for i in range(1, k + 1):
+        term *= mean / i
+        total += term
+    return total
