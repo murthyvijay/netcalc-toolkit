@@ -45,3 +45,16 @@ def poisson_cdf(k, mean):
         term *= mean / i
         total += term
     return total
+
+
+def confidence_level(bits, target_ber, errors=0):
+    """Confidence that the true BER is below ``target_ber``.
+
+    If the true BER were exactly ``target_ber`` we would expect
+    ``bits * target_ber`` errors. The confidence level is the probability
+    that such a link would have shown *more* errors than we observed.
+
+    >>> round(confidence_level(3e12, 1e-12), 3)
+    0.95
+    """
+    return 1.0 - poisson_cdf(errors, bits * target_ber)
