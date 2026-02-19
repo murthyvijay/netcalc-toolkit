@@ -50,3 +50,8 @@ def get_code(name_or_code):
         return PRESETS[key]
     n, k, m = (int(x) for x in key.split(","))
     return RSCode(n, k, m)
+
+
+def correctable_symbols(code):
+    """Number of symbol errors ``t`` the code can correct per codeword."""
+    return (code.n - code.k) // 2
