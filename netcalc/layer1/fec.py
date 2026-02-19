@@ -60,3 +60,8 @@ def correctable_symbols(code):
 def code_rate(code):
     """Fraction of transmitted symbols that carry data (k / n)."""
     return code.k / code.n
+
+
+def overhead_pct(code):
+    """Parity overhead relative to the payload, in percent."""
+    return (code.n - code.k) / code.k * 100
