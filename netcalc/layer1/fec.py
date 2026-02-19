@@ -55,3 +55,8 @@ def get_code(name_or_code):
 def correctable_symbols(code):
     """Number of symbol errors ``t`` the code can correct per codeword."""
     return (code.n - code.k) // 2
+
+
+def code_rate(code):
+    """Fraction of transmitted symbols that carry data (k / n)."""
+    return code.k / code.n
