@@ -65,3 +65,12 @@ def code_rate(code):
 def overhead_pct(code):
     """Parity overhead relative to the payload, in percent."""
     return (code.n - code.k) / code.k * 100
+
+
+def max_burst_bits(code):
+    """Longest bit burst that is always correctable.
+
+    A burst can straddle symbol boundaries, so ``t`` symbols guarantee
+    ``(t - 1) * m + 1`` contiguous errored bits.
+    """
+    return (correctable_symbols(code) - 1) * code.m + 1
