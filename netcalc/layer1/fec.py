@@ -39,3 +39,14 @@ PRESETS = {
     "kr4": RSCode(528, 514, 10),
     "kp4": RSCode(544, 514, 10),
 }
+
+
+def get_code(name_or_code):
+    """Return an :class:`RSCode` from a preset name or ``"n,k,m"`` string."""
+    if isinstance(name_or_code, RSCode):
+        return name_or_code
+    key = str(name_or_code).lower()
+    if key in PRESETS:
+        return PRESETS[key]
+    n, k, m = (int(x) for x in key.split(","))
+    return RSCode(n, k, m)
