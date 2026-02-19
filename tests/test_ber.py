@@ -27,3 +27,12 @@ class TestConfidence(unittest.TestCase):
     def test_more_errors_need_more_bits(self):
         self.assertGreater(ber.bits_for_confidence(1e-12, 0.95, 2),
                            ber.bits_for_confidence(1e-12, 0.95, 1))
+
+
+class TestTestTime(unittest.TestCase):
+    def test_100g(self):
+        self.assertAlmostEqual(ber.required_test_time(1e-12, 100e9), 29.957, places=2)
+
+
+if __name__ == "__main__":
+    unittest.main()
