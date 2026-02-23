@@ -79,3 +79,19 @@ def max_burst_bits(code):
 def symbol_error_prob(pre_ber, m):
     """Probability that an m-bit symbol contains at least one bit error."""
     return -math.expm1(m * math.log1p(-pre_ber))
+
+
+def _binom_term(n, i, p):
+    log = (math.lgamma(n + 1) - math.lgamma(i + 1) - math.lgamma(n - i + 1)
+           + i * math.log(p) + (n - i) * math.log1p(-p))
+    return math.exp(log)
+
+
+def codeword_error_ratio(pre_ber, code):
+    """Probability that a codeword has more than t errored symbols (uncorrectable)."""
+    code = get_code(code)
+    if pre_ber <= 0:
+        return 0.0
+    p = symbol_error_prob(pre_ber, code.m)
+    t = correctable_symbols(code)
+    return sum(_binom_term(code.n, i, p) for i in range(t + 1, code.n + 1))
