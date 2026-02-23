@@ -74,3 +74,8 @@ def max_burst_bits(code):
     ``(t - 1) * m + 1`` contiguous errored bits.
     """
     return (correctable_symbols(code) - 1) * code.m + 1
+
+
+def symbol_error_prob(pre_ber, m):
+    """Probability that an m-bit symbol contains at least one bit error."""
+    return -math.expm1(m * math.log1p(-pre_ber))
