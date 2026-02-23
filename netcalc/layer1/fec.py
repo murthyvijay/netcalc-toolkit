@@ -95,3 +95,19 @@ def codeword_error_ratio(pre_ber, code):
     p = symbol_error_prob(pre_ber, code.m)
     t = correctable_symbols(code)
     return sum(_binom_term(code.n, i, p) for i in range(t + 1, code.n + 1))
+
+
+def post_fec_ber(pre_ber, code):
+    """Estimated BER after decoding.
+
+    Uncorrectable codewords pass their errored symbols through; the output
+    symbol error rate is ``sum(i/n * P(i errors))`` for i > t, and a wrong
+    m-bit symbol has on average ``2^(m-1) / (2^m - 1)`` of its bits flipped.
+    """
+    code = get_code(code)
+    if pre_ber <= 0:
+        return 0.0
+    p = symbol_error_prob(pre_ber, code.m)
+    t = correctable_symbols(code)
+    ser_out = sum(i / code.n * _binom_term(code.n, i, p) for i in range(t + 1, code.n + 1))
+    return ser_out * 2 ** (code.m - 1) / (2 ** code.m - 1)
