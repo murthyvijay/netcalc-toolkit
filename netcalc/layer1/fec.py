@@ -124,3 +124,19 @@ def pre_fec_threshold(code, target_post_ber=1e-13):
         else:
             lo = mid
     return 10 ** lo
+
+
+def fec_margin(measured_pre_ber, code, target_post_ber=1e-13):
+    """Margin of a measured link against the FEC threshold.
+
+    Returns a dict with the threshold, the margin in decades of BER
+    (``log10(threshold / measured)``) and the margin expressed as Q in dB.
+    """
+    threshold = pre_fec_threshold(code, target_post_ber)
+    return {
+        "threshold": threshold,
+        "decades": math.log10(threshold / measured_pre_ber),
+        "q_margin_db": 20 * math.log10(ber_to_q(measured_pre_ber) / ber_to_q(threshold)),
+        "post_fec_ber": post_fec_ber(measured_pre_ber, code),
+        "pass": measured_pre_ber <= threshold,
+    }
