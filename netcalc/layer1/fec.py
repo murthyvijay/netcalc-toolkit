@@ -151,3 +151,38 @@ def net_coding_gain_db(code, target_post_ber=1e-13):
     q_ref = ber_to_q(target_post_ber)
     q_in = ber_to_q(pre_fec_threshold(code, target_post_ber))
     return 20 * math.log10(q_ref / q_in) + 10 * math.log10(code_rate(code))
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    for name, help_ in (("info", "code parameters"), ("post", "post-FEC BER"),
+                        ("threshold", "pre-FEC BER threshold"), ("margin", "FEC margin")):
+        p = sub.add_parser(name, help=help_)
+        p.add_argument("--code", default="kp4", help="kr4, kp4 or n,k,m")
+        if name in ("post", "margin"):
+            p.add_argument("--pre-ber", type=float, required=True)
+        if name in ("threshold", "margin", "info"):
+            p.add_argument("--target", type=float, default=1e-13, help="post-FEC BER target")
+    args = parser.parse_args(argv)
+    code = get_code(args.code)
+
+    if args.cmd == "info":
+        print(f"RS({code.n},{code.k}) m={code.m}: t={correctable_symbols(code)} symbols, "
+              f"rate={code_rate(code):.4f}, overhead={overhead_pct(code):.2f} %, "
+              f"burst={max_burst_bits(code)} bits")
+        print(f"pre-FEC threshold @ {args.target:g}: {pre_fec_threshold(code, args.target):.3e}")
+        print(f"net coding gain: {net_coding_gain_db(code, args.target):.2f} dB")
+    elif args.cmd == "post":
+        print(f"codeword error ratio: {codeword_error_ratio(args.pre_ber, code):.3e}")
+        print(f"post-FEC BER: {post_fec_ber(args.pre_ber, code):.3e}")
+    elif args.cmd == "threshold":
+        print(f"pre-FEC threshold: {pre_fec_threshold(code, args.target):.3e}")
+    else:
+        r = fec_margin(args.pre_ber, code, args.target)
+        print(f"threshold {r['threshold']:.3e}, margin {r['decades']:.2f} decades, "
+              f"{r['q_margin_db']:.2f} dB Q -> {'PASS' if r['pass'] else 'FAIL'}")
+
+
+if __name__ == "__main__":
+    main()
