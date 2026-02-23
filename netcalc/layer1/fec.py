@@ -111,3 +111,16 @@ def post_fec_ber(pre_ber, code):
     t = correctable_symbols(code)
     ser_out = sum(i / code.n * _binom_term(code.n, i, p) for i in range(t + 1, code.n + 1))
     return ser_out * 2 ** (code.m - 1) / (2 ** code.m - 1)
+
+
+def pre_fec_threshold(code, target_post_ber=1e-13):
+    """Highest pre-FEC BER that still meets ``target_post_ber`` (log bisection)."""
+    code = get_code(code)
+    lo, hi = -15.0, math.log10(0.4)
+    for _ in range(100):
+        mid = (lo + hi) / 2
+        if post_fec_ber(10 ** mid, code) > target_post_ber:
+            hi = mid
+        else:
+            lo = mid
+    return 10 ** lo
