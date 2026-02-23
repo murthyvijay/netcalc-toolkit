@@ -140,3 +140,14 @@ def fec_margin(measured_pre_ber, code, target_post_ber=1e-13):
         "post_fec_ber": post_fec_ber(measured_pre_ber, code),
         "pass": measured_pre_ber <= threshold,
     }
+
+
+def net_coding_gain_db(code, target_post_ber=1e-13):
+    """Net coding gain: Q improvement at the target BER minus the rate penalty.
+
+    ``NCG = 20 log10(Q_target) - 20 log10(Q_threshold) + 10 log10(k / n)``
+    """
+    code = get_code(code)
+    q_ref = ber_to_q(target_post_ber)
+    q_in = ber_to_q(pre_fec_threshold(code, target_post_ber))
+    return 20 * math.log10(q_ref / q_in) + 10 * math.log10(code_rate(code))
