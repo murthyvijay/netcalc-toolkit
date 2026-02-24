@@ -20,3 +20,12 @@ import math
 def q_function(x):
     """Gaussian tail probability Q(x) = P(N(0,1) > x)."""
     return 0.5 * math.erfc(x / math.sqrt(2))
+
+
+def pam_ser(levels, snr_db):
+    """SER of M-level PAM at average SNR per symbol ``snr_db``.
+
+    ``SER = 2 (1 - 1/M) Q( sqrt(3 SNR / (M^2 - 1)) )``
+    """
+    snr = 10 ** (snr_db / 10)
+    return 2 * (1 - 1 / levels) * q_function(math.sqrt(3 * snr / (levels ** 2 - 1)))
