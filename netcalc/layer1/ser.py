@@ -29,3 +29,16 @@ def pam_ser(levels, snr_db):
     """
     snr = 10 ** (snr_db / 10)
     return 2 * (1 - 1 / levels) * q_function(math.sqrt(3 * snr / (levels ** 2 - 1)))
+
+
+def qam_ser(order, snr_db):
+    """SER of square M-QAM: two independent sqrt(M)-PAM rails.
+
+    ``SER = 1 - (1 - 2 (1 - 1/sqrt(M)) Q( sqrt(3 SNR / (M - 1)) ))^2``
+    """
+    root = math.isqrt(order)
+    if root * root != order:
+        raise ValueError("only square QAM orders (4, 16, 64, ...) are supported")
+    snr = 10 ** (snr_db / 10)
+    rail = 2 * (1 - 1 / root) * q_function(math.sqrt(3 * snr / (order - 1)))
+    return 1 - (1 - rail) ** 2
