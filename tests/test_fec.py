@@ -33,3 +33,25 @@ class TestPostFec(unittest.TestCase):
     def test_monotonic(self):
         self.assertLess(fec.codeword_error_ratio(1e-5, "kp4"),
                         fec.codeword_error_ratio(1e-4, "kp4"))
+
+
+class TestThresholdAndMargin(unittest.TestCase):
+    def test_kp4_threshold_order_of_magnitude(self):
+        threshold = fec.pre_fec_threshold("kp4", 1e-13)
+        self.assertTrue(1e-4 < threshold < 1e-3)
+        self.assertAlmostEqual(fec.post_fec_ber(threshold, "kp4") / 1e-13, 1, places=1)
+
+    def test_margin(self):
+        good = fec.fec_margin(1e-6, "kp4")
+        bad = fec.fec_margin(1e-3, "kp4")
+        self.assertTrue(good["pass"])
+        self.assertGreater(good["q_margin_db"], 0)
+        self.assertFalse(bad["pass"])
+        self.assertLess(bad["decades"], 0)
+
+    def test_coding_gain_positive(self):
+        self.assertGreater(fec.net_coding_gain_db("kp4"), fec.net_coding_gain_db("kr4"))
+
+
+if __name__ == "__main__":
+    unittest.main()
