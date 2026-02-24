@@ -15,3 +15,8 @@ Usage::
 
 import argparse
 import math
+
+
+def q_function(x):
+    """Gaussian tail probability Q(x) = P(N(0,1) > x)."""
+    return 0.5 * math.erfc(x / math.sqrt(2))
