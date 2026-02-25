@@ -42,3 +42,8 @@ def qam_ser(order, snr_db):
     snr = 10 ** (snr_db / 10)
     rail = 2 * (1 - 1 / root) * q_function(math.sqrt(3 * snr / (order - 1)))
     return 1 - (1 - rail) ** 2
+
+
+def ser_to_ber(ser, bits_per_symbol):
+    """Gray-coded approximation: one bit wrong per symbol error."""
+    return ser / bits_per_symbol
