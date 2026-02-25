@@ -64,3 +64,33 @@ def snr_for_ser(levels, target_ser):
         else:
             hi = mid
     return hi
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("pam", help="PAM-M SER/BER")
+    p.add_argument("--levels", type=int, default=4)
+    p.add_argument("--snr-db", type=float, required=True)
+    p = sub.add_parser("qam", help="square QAM-M SER/BER")
+    p.add_argument("--order", type=int, default=16)
+    p.add_argument("--snr-db", type=float, required=True)
+    p = sub.add_parser("ebn0", help="Eb/N0 to Es/N0")
+    p.add_argument("--ebn0-db", type=float, required=True)
+    p.add_argument("--bits", type=int, required=True, help="bits per symbol")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "pam":
+        s = pam_ser(args.levels, args.snr_db)
+        bits = math.log2(args.levels)
+        print(f"PAM{args.levels} @ {args.snr_db} dB: SER={s:.3e}, BER~{ser_to_ber(s, bits):.3e}")
+    elif args.cmd == "qam":
+        s = qam_ser(args.order, args.snr_db)
+        bits = math.log2(args.order)
+        print(f"{args.order}QAM @ {args.snr_db} dB: SER={s:.3e}, BER~{ser_to_ber(s, bits):.3e}")
+    else:
+        print(f"Es/N0 = {ebn0_to_snr_db(args.ebn0_db, args.bits):.2f} dB")
+
+
+if __name__ == "__main__":
+    main()
