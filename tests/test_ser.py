@@ -25,3 +25,13 @@ class TestQam(unittest.TestCase):
     def test_non_square(self):
         with self.assertRaises(ValueError):
             ser.qam_ser(32, 20)
+
+
+class TestConversions(unittest.TestCase):
+    def test_gray_and_ebn0(self):
+        self.assertEqual(ser.ser_to_ber(2e-6, 2), 1e-6)
+        self.assertAlmostEqual(ser.ebn0_to_snr_db(10, 2), 13.0103, places=4)
+
+
+if __name__ == "__main__":
+    unittest.main()
