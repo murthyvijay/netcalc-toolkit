@@ -52,3 +52,15 @@ def ser_to_ber(ser, bits_per_symbol):
 def ebn0_to_snr_db(ebn0_db, bits_per_symbol):
     """Convert Eb/N0 to Es/N0: ``Es/N0 = Eb/N0 + 10 log10(bits per symbol)``."""
     return ebn0_db + 10 * math.log10(bits_per_symbol)
+
+
+def snr_for_ser(levels, target_ser):
+    """SNR in dB that PAM-M needs to reach ``target_ser`` (bisection)."""
+    lo, hi = -10.0, 60.0
+    for _ in range(100):
+        mid = (lo + hi) / 2
+        if pam_ser(levels, mid) > target_ser:
+            lo = mid
+        else:
+            hi = mid
+    return hi
