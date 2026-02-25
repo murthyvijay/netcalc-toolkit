@@ -15,3 +15,13 @@ class TestPam(unittest.TestCase):
     def test_snr_for_ser(self):
         snr = ser.snr_for_ser(4, 1e-6)
         self.assertAlmostEqual(ser.pam_ser(4, snr) / 1e-6, 1, places=3)
+
+
+class TestQam(unittest.TestCase):
+    def test_qpsk_relation(self):
+        rail = ser.pam_ser(2, 10)  # QPSK = two PAM2 rails, Q(sqrt(Es/N0))
+        self.assertAlmostEqual(ser.qam_ser(4, 10), 1 - (1 - rail) ** 2)
+
+    def test_non_square(self):
+        with self.assertRaises(ValueError):
+            ser.qam_ser(32, 20)
