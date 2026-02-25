@@ -47,3 +47,8 @@ def qam_ser(order, snr_db):
 def ser_to_ber(ser, bits_per_symbol):
     """Gray-coded approximation: one bit wrong per symbol error."""
     return ser / bits_per_symbol
+
+
+def ebn0_to_snr_db(ebn0_db, bits_per_symbol):
+    """Convert Eb/N0 to Es/N0: ``Es/N0 = Eb/N0 + 10 log10(bits per symbol)``."""
+    return ebn0_db + 10 * math.log10(bits_per_symbol)
