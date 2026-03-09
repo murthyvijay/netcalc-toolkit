@@ -49,3 +49,9 @@ def snr_to_osnr_db(snr_db, baud_g, polarizations=2, ref_nm=0.1, wavelength_nm=15
 def osnr_from_powers(signal_dbm, noise_dbm, noise_bw_nm, ref_nm=0.1):
     """OSNR from measured signal and noise powers, normalised to ``ref_nm``."""
     return signal_dbm - (noise_dbm + 10 * math.log10(ref_nm / noise_bw_nm))
+
+
+def cascade_osnr_db(*osnr_db):
+    """Total OSNR of independent noise contributions: 1/OSNR adds linearly."""
+    inv = sum(10 ** (-x / 10) for x in osnr_db)
+    return -10 * math.log10(inv)
