@@ -27,3 +27,8 @@ import argparse
 import math
 
 from netcalc.units import SPEED_OF_LIGHT_M_S
+
+
+def ref_bandwidth_hz(ref_nm=0.1, wavelength_nm=1550.0):
+    """Optical reference bandwidth in Hz: ``c * dlambda / lambda^2``."""
+    return SPEED_OF_LIGHT_M_S * (ref_nm * 1e-9) / (wavelength_nm * 1e-9) ** 2
