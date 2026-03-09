@@ -1,0 +1,29 @@
+"""Optical signal-to-noise ratio (OSNR) and electrical SNR.
+
+OSNR is measured on an optical spectrum analyser as signal power over ASE
+noise power in a 0.1 nm reference bandwidth (12.5 GHz at 1550 nm). Coherent
+DSPs report electrical SNR in the symbol bandwidth instead. They are related
+by::
+
+    OSNR = (p * Rs / (2 * Bref)) * SNR
+
+where ``p`` is the number of polarisations (2 for dual-pol), ``Rs`` the
+symbol rate and ``Bref`` the reference bandwidth in Hz.
+
+For an amplified line the rule of thumb per EDFA is::
+
+    OSNR_dB = 58 + P_in_dBm - NF_dB          (0.1 nm reference)
+
+and noise from cascaded sections adds in linear 1/OSNR.
+
+Usage::
+
+    python -m netcalc.layer1.osnr to-snr --osnr-db 20 --baud 64
+    python -m netcalc.layer1.osnr chain --launch-dbm 1 --span-loss 22 --nf 5.5 --spans 10
+    python -m netcalc.layer1.osnr cascade 25 28 30
+"""
+
+import argparse
+import math
+
+from netcalc.units import SPEED_OF_LIGHT_M_S
