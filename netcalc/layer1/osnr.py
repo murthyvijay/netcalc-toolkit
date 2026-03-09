@@ -38,3 +38,9 @@ def osnr_to_snr_db(osnr_db, baud_g, polarizations=2, ref_nm=0.1, wavelength_nm=1
     """Electrical SNR (dB) from OSNR (dB) for a signal at ``baud_g`` GBd."""
     bref = ref_bandwidth_hz(ref_nm, wavelength_nm)
     return osnr_db - 10 * math.log10(polarizations * baud_g * 1e9 / (2 * bref))
+
+
+def snr_to_osnr_db(snr_db, baud_g, polarizations=2, ref_nm=0.1, wavelength_nm=1550.0):
+    """Required OSNR (dB) to deliver an electrical SNR (dB)."""
+    bref = ref_bandwidth_hz(ref_nm, wavelength_nm)
+    return snr_db + 10 * math.log10(polarizations * baud_g * 1e9 / (2 * bref))
