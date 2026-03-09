@@ -55,3 +55,13 @@ def cascade_osnr_db(*osnr_db):
     """Total OSNR of independent noise contributions: 1/OSNR adds linearly."""
     inv = sum(10 ** (-x / 10) for x in osnr_db)
     return -10 * math.log10(inv)
+
+
+def amplifier_chain_osnr_db(launch_dbm, span_loss_db, nf_db, spans, constant=58.0):
+    """OSNR after ``spans`` identical spans, each followed by an EDFA.
+
+    Each amplifier sees ``launch - span_loss`` at its input, contributing
+    ``58 + P_in - NF``; N identical contributions cost ``10 log10(N)``.
+    """
+    single = constant + (launch_dbm - span_loss_db) - nf_db
+    return single - 10 * math.log10(spans)
