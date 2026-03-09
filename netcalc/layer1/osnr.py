@@ -32,3 +32,9 @@ from netcalc.units import SPEED_OF_LIGHT_M_S
 def ref_bandwidth_hz(ref_nm=0.1, wavelength_nm=1550.0):
     """Optical reference bandwidth in Hz: ``c * dlambda / lambda^2``."""
     return SPEED_OF_LIGHT_M_S * (ref_nm * 1e-9) / (wavelength_nm * 1e-9) ** 2
+
+
+def osnr_to_snr_db(osnr_db, baud_g, polarizations=2, ref_nm=0.1, wavelength_nm=1550.0):
+    """Electrical SNR (dB) from OSNR (dB) for a signal at ``baud_g`` GBd."""
+    bref = ref_bandwidth_hz(ref_nm, wavelength_nm)
+    return osnr_db - 10 * math.log10(polarizations * baud_g * 1e9 / (2 * bref))
