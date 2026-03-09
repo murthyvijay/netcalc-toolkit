@@ -44,3 +44,8 @@ def snr_to_osnr_db(snr_db, baud_g, polarizations=2, ref_nm=0.1, wavelength_nm=15
     """Required OSNR (dB) to deliver an electrical SNR (dB)."""
     bref = ref_bandwidth_hz(ref_nm, wavelength_nm)
     return snr_db + 10 * math.log10(polarizations * baud_g * 1e9 / (2 * bref))
+
+
+def osnr_from_powers(signal_dbm, noise_dbm, noise_bw_nm, ref_nm=0.1):
+    """OSNR from measured signal and noise powers, normalised to ``ref_nm``."""
+    return signal_dbm - (noise_dbm + 10 * math.log10(ref_nm / noise_bw_nm))
