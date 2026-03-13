@@ -65,3 +65,38 @@ def amplifier_chain_osnr_db(launch_dbm, span_loss_db, nf_db, spans, constant=58.
     """
     single = constant + (launch_dbm - span_loss_db) - nf_db
     return single - 10 * math.log10(spans)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("to-snr", help="OSNR to electrical SNR")
+    p.add_argument("--osnr-db", type=float, required=True)
+    p.add_argument("--baud", type=float, required=True, help="symbol rate in GBd")
+    p.add_argument("--pol", type=int, default=2)
+    p = sub.add_parser("to-osnr", help="electrical SNR to required OSNR")
+    p.add_argument("--snr-db", type=float, required=True)
+    p.add_argument("--baud", type=float, required=True)
+    p.add_argument("--pol", type=int, default=2)
+    p = sub.add_parser("chain", help="OSNR of an amplified line")
+    p.add_argument("--launch-dbm", type=float, required=True)
+    p.add_argument("--span-loss", type=float, required=True)
+    p.add_argument("--nf", type=float, default=5.0)
+    p.add_argument("--spans", type=int, required=True)
+    p = sub.add_parser("cascade", help="combine OSNR contributions")
+    p.add_argument("osnr", type=float, nargs="+")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "to-snr":
+        print(f"SNR = {osnr_to_snr_db(args.osnr_db, args.baud, args.pol):.2f} dB")
+    elif args.cmd == "to-osnr":
+        print(f"OSNR = {snr_to_osnr_db(args.snr_db, args.baud, args.pol):.2f} dB (0.1 nm)")
+    elif args.cmd == "chain":
+        o = amplifier_chain_osnr_db(args.launch_dbm, args.span_loss, args.nf, args.spans)
+        print(f"end-of-line OSNR = {o:.2f} dB (0.1 nm)")
+    else:
+        print(f"total OSNR = {cascade_osnr_db(*args.osnr):.2f} dB")
+
+
+if __name__ == "__main__":
+    main()
