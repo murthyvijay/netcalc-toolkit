@@ -22,3 +22,17 @@ With zero errors this simplifies to `N = -ln(1 - CL) / BER`, the "rule of
 three": about `3 / BER` bits for 95 % confidence. At 100 Gb/s, proving
 BER < 1e-12 takes about 30 seconds; proving 1e-15 takes over 8 hours, which
 is why post-FEC BER is estimated rather than measured.
+
+### Q-factor (`qfactor`)
+
+For a binary signal with Gaussian noise on the one and zero levels
+(`mu1, sigma1`, `mu0, sigma0`), the Q-factor is
+`Q = (mu1 - mu0) / (sigma1 + sigma0)` and
+
+```
+BER = 0.5 * erfc(Q / sqrt(2))
+```
+
+Q = 6 gives about 1e-9, Q = 7 about 1e-12. Q in dB is `20 log Q` because Q is
+an amplitude ratio; Q-margin in dB is how optical engineers express
+headroom.
