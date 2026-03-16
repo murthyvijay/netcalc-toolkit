@@ -91,3 +91,23 @@ NCG = 20 log(Q_target) - 20 log(Q_threshold) + 10 log(k / n)
 Real links have burst errors (DFE error propagation, for example), which
 these independent-error formulas underestimate; interleaving across lanes
 in 400G/800G PCS exists partly to spread bursts across codewords.
+
+### OSNR and SNR (`osnr`)
+
+OSNR is measured in a 0.1 nm reference bandwidth (`Bref = c * dlambda /
+lambda^2`, about 12.5 GHz at 1550 nm). Electrical SNR of a coherent receiver
+relates to it through the symbol rate `Rs` and polarisations `p`:
+
+```
+OSNR = (p * Rs / (2 * Bref)) * SNR
+```
+
+so doubling the baud rate costs 3 dB of SNR at the same OSNR. Each EDFA in a
+chain adds ASE noise; with input power `P_in` and noise figure `NF`:
+
+```
+OSNR_dB = 58 + P_in(dBm) - NF(dB) - 10 log(N spans)
+1 / OSNR_total = sum 1 / OSNR_i          (linear)
+```
+
+---
