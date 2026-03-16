@@ -36,3 +36,19 @@ BER = 0.5 * erfc(Q / sqrt(2))
 Q = 6 gives about 1e-9, Q = 7 about 1e-12. Q in dB is `20 log Q` because Q is
 an amplitude ratio; Q-margin in dB is how optical engineers express
 headroom.
+
+### Symbol error rate (`ser`)
+
+Multi-level signalling carries `log2 M` bits per symbol. In additive white
+Gaussian noise with SNR per symbol `Es/N0`:
+
+```
+PAM-M:  SER = 2 (1 - 1/M) Q( sqrt( 3 SNR / (M^2 - 1) ) )
+QAM-M:  SER = 1 - (1 - 2 (1 - 1/sqrt M) Q( sqrt( 3 SNR / (M - 1) ) ))^2
+```
+
+where `Q(x)` is the Gaussian tail. PAM4 (used by 50G/100G/200G-per-lane
+Ethernet) needs about 7 dB more average SNR than NRZ for the same SER, or
+9.5 dB at equal peak amplitude, because each of its three eyes is a third of
+the height. With Gray coding a symbol error almost always
+flips one bit, so `BER ~ SER / log2 M`.
