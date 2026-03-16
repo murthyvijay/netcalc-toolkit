@@ -29,3 +29,12 @@ def serialization_delay(size_bytes, rate_bps):
     1.2e-06
     """
     return size_bytes * 8 / rate_bps
+
+
+def propagation_delay(distance_km, refractive_index=FIBER_REFRACTIVE_INDEX):
+    """Seconds for light to cover ``distance_km`` in a medium.
+
+    Use ``refractive_index=1.0`` for free space / microwave links and
+    about 1.5 for copper twinax (velocity factor ~0.66).
+    """
+    return distance_km * 1000 * refractive_index / SPEED_OF_LIGHT_M_S
