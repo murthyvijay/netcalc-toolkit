@@ -20,3 +20,12 @@ import argparse
 
 from netcalc.units import (FIBER_REFRACTIVE_INDEX, SPEED_OF_LIGHT_M_S, fmt_time,
                            parse_rate, parse_size, parse_time)
+
+
+def serialization_delay(size_bytes, rate_bps):
+    """Seconds to clock ``size_bytes`` onto a link of ``rate_bps``.
+
+    >>> serialization_delay(1500, 10e9)
+    1.2e-06
+    """
+    return size_bytes * 8 / rate_bps
