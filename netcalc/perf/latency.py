@@ -43,3 +43,22 @@ def propagation_delay(distance_km, refractive_index=FIBER_REFRACTIVE_INDEX):
 def km_per_ms(refractive_index=FIBER_REFRACTIVE_INDEX):
     """Distance covered per millisecond in the medium (~204 km in fibre)."""
     return SPEED_OF_LIGHT_M_S / refractive_index / 1000 / 1000
+
+
+def path_latency(size_bytes, rate_bps, hops=1, distance_km=0.0, processing_s=0.0,
+                 queueing_s=0.0, cut_through=False):
+    """One-way latency across ``hops`` links with the same rate.
+
+    Store-and-forward pays serialization on every hop; cut-through switches
+    pay it only once (at the first link). Returns a dict of components and
+    their ``total``.
+    """
+    ser_hops = 1 if cut_through else hops
+    parts = {
+        "serialization": serialization_delay(size_bytes, rate_bps) * ser_hops,
+        "propagation": propagation_delay(distance_km),
+        "processing": processing_s * max(hops - 1, 0),
+        "queueing": queueing_s,
+    }
+    parts["total"] = sum(parts.values())
+    return parts
