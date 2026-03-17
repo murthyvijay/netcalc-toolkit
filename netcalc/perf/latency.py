@@ -62,3 +62,8 @@ def path_latency(size_bytes, rate_bps, hops=1, distance_km=0.0, processing_s=0.0
     }
     parts["total"] = sum(parts.values())
     return parts
+
+
+def rtt(one_way_s, return_one_way_s=None):
+    """Round-trip time from one-way delays (symmetric if only one is given)."""
+    return one_way_s + (one_way_s if return_one_way_s is None else return_one_way_s)
