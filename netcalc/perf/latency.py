@@ -38,3 +38,8 @@ def propagation_delay(distance_km, refractive_index=FIBER_REFRACTIVE_INDEX):
     about 1.5 for copper twinax (velocity factor ~0.66).
     """
     return distance_km * 1000 * refractive_index / SPEED_OF_LIGHT_M_S
+
+
+def km_per_ms(refractive_index=FIBER_REFRACTIVE_INDEX):
+    """Distance covered per millisecond in the medium (~204 km in fibre)."""
+    return SPEED_OF_LIGHT_M_S / refractive_index / 1000 / 1000
