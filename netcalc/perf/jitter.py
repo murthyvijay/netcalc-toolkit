@@ -52,3 +52,13 @@ def pdv(delays):
     """Packet delay variation relative to the minimum delay."""
     floor = min(delays)
     return [d - floor for d in delays]
+
+
+def percentile(values, pct):
+    """Linear-interpolated percentile (``pct`` from 0 to 100)."""
+    ordered = sorted(values)
+    if not ordered:
+        raise ValueError("no values")
+    rank = (len(ordered) - 1) * pct / 100
+    lo, hi = math.floor(rank), math.ceil(rank)
+    return ordered[lo] + (ordered[hi] - ordered[lo]) * (rank - lo)
