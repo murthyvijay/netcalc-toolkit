@@ -24,3 +24,15 @@ import argparse
 import csv
 import math
 import statistics
+
+
+def rfc3550_series(send_times, recv_times):
+    """Jitter estimate after every packet, starting from J = 0."""
+    if len(send_times) != len(recv_times) or len(send_times) < 2:
+        raise ValueError("need two equal-length lists with at least two packets")
+    j, series = 0.0, []
+    for i in range(1, len(send_times)):
+        d = (recv_times[i] - recv_times[i - 1]) - (send_times[i] - send_times[i - 1])
+        j += (abs(d) - j) / 16
+        series.append(j)
+    return series
