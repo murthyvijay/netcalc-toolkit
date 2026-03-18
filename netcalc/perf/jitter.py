@@ -62,3 +62,18 @@ def percentile(values, pct):
     rank = (len(ordered) - 1) * pct / 100
     lo, hi = math.floor(rank), math.ceil(rank)
     return ordered[lo] + (ordered[hi] - ordered[lo]) * (rank - lo)
+
+
+def delay_stats(delays):
+    """Summary statistics for one-way delays or RTT samples."""
+    diffs = [abs(x) for x in ipdv(delays)] or [0.0]
+    return {
+        "count": len(delays),
+        "min": min(delays),
+        "mean": statistics.fmean(delays),
+        "max": max(delays),
+        "stdev": statistics.pstdev(delays),
+        "p99": percentile(delays, 99),
+        "mean_abs_ipdv": statistics.fmean(diffs),
+        "pdv_p99": percentile(pdv(delays), 99),
+    }
