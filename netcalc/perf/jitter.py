@@ -41,3 +41,8 @@ def rfc3550_series(send_times, recv_times):
 def rfc3550_jitter(send_times, recv_times):
     """Final RFC 3550 jitter estimate (same units as the inputs)."""
     return rfc3550_series(send_times, recv_times)[-1]
+
+
+def ipdv(delays):
+    """Consecutive delay differences (IP packet delay variation)."""
+    return [b - a for a, b in zip(delays, delays[1:])]
