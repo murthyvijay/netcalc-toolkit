@@ -77,3 +77,17 @@ def delay_stats(delays):
         "mean_abs_ipdv": statistics.fmean(diffs),
         "pdv_p99": percentile(pdv(delays), 99),
     }
+
+
+def read_csv(path):
+    """Read ``send,recv`` timestamp pairs from a CSV file (header optional)."""
+    send, recv = [], []
+    with open(path, newline="") as fh:
+        for row in csv.reader(fh):
+            try:
+                s, r = float(row[0]), float(row[1])
+            except (ValueError, IndexError):
+                continue
+            send.append(s)
+            recv.append(r)
+    return send, recv
