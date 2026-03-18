@@ -36,3 +36,8 @@ def rfc3550_series(send_times, recv_times):
         j += (abs(d) - j) / 16
         series.append(j)
     return series
+
+
+def rfc3550_jitter(send_times, recv_times):
+    """Final RFC 3550 jitter estimate (same units as the inputs)."""
+    return rfc3550_series(send_times, recv_times)[-1]
