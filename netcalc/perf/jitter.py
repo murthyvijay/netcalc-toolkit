@@ -46,3 +46,9 @@ def rfc3550_jitter(send_times, recv_times):
 def ipdv(delays):
     """Consecutive delay differences (IP packet delay variation)."""
     return [b - a for a, b in zip(delays, delays[1:])]
+
+
+def pdv(delays):
+    """Packet delay variation relative to the minimum delay."""
+    floor = min(delays)
+    return [d - floor for d in delays]
