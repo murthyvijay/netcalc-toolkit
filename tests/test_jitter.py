@@ -36,3 +36,17 @@ class TestDelayStats(unittest.TestCase):
         self.assertEqual(s["min"], 10.0)
         self.assertAlmostEqual(s["mean"], 11.0)
         self.assertAlmostEqual(s["mean_abs_ipdv"], 1.5)
+
+
+class TestCsv(unittest.TestCase):
+    def test_read_csv_skips_header(self):
+        with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False) as fh:
+            fh.write("send,recv\n0,5\n20,26\n")
+        try:
+            self.assertEqual(jitter.read_csv(fh.name), ([0.0, 20.0], [5.0, 26.0]))
+        finally:
+            os.unlink(fh.name)
+
+
+if __name__ == "__main__":
+    unittest.main()
