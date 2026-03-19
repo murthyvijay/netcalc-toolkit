@@ -12,3 +12,10 @@ Usage::
 """
 
 import argparse
+
+
+def loss_ratio(sent, received):
+    """Fraction of packets lost: ``(sent - received) / sent``."""
+    if sent <= 0:
+        raise ValueError("sent must be positive")
+    return (sent - received) / sent
