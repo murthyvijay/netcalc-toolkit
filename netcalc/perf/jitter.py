@@ -91,3 +91,32 @@ def read_csv(path):
             send.append(s)
             recv.append(r)
     return send, recv
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("rfc3550", help="jitter from send/receive timestamps")
+    p.add_argument("--send", type=float, nargs="+", required=True)
+    p.add_argument("--recv", type=float, nargs="+", required=True)
+    p = sub.add_parser("stats", help="statistics of delay samples")
+    p.add_argument("delays", type=float, nargs="+")
+    p = sub.add_parser("file", help="RFC 3550 jitter and stats from a CSV of send,recv")
+    p.add_argument("path")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "rfc3550":
+        print(f"RFC 3550 jitter: {rfc3550_jitter(args.send, args.recv):.4f}")
+    elif args.cmd == "stats":
+        for key, value in delay_stats(args.delays).items():
+            print(f"{key:>14}: {value:.4f}" if isinstance(value, float) else f"{key:>14}: {value}")
+    else:
+        send, recv = read_csv(args.path)
+        print(f"RFC 3550 jitter: {rfc3550_jitter(send, recv):.4f}")
+        delays = [r - s for s, r in zip(send, recv)]
+        for key, value in delay_stats(delays).items():
+            print(f"{key:>14}: {value:.4f}" if isinstance(value, float) else f"{key:>14}: {value}")
+
+
+if __name__ == "__main__":
+    main()
