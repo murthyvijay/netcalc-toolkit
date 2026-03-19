@@ -20,3 +20,19 @@ class TestRfc3550(unittest.TestCase):
     def test_validation(self):
         with self.assertRaises(ValueError):
             jitter.rfc3550_jitter([0], [1])
+
+
+class TestDelayStats(unittest.TestCase):
+    def test_ipdv_and_pdv(self):
+        self.assertEqual(jitter.ipdv([10, 12, 11]), [2, -1])
+        self.assertEqual(jitter.pdv([10, 12, 11]), [0, 2, 1])
+
+    def test_percentile(self):
+        self.assertEqual(jitter.percentile([1, 2, 3, 4, 5], 50), 3)
+        self.assertAlmostEqual(jitter.percentile([0, 10], 99), 9.9)
+
+    def test_stats(self):
+        s = jitter.delay_stats([10.0, 12.0, 11.0])
+        self.assertEqual(s["min"], 10.0)
+        self.assertAlmostEqual(s["mean"], 11.0)
+        self.assertAlmostEqual(s["mean_abs_ipdv"], 1.5)
