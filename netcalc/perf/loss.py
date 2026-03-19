@@ -1,0 +1,14 @@
+"""Packet loss: loss ratio, multi-hop loss, burst analysis from sequence numbers.
+
+Average loss hides the behaviour that hurts applications: bursts. This
+module reports both, and composes per-hop loss into end-to-end loss.
+
+Usage::
+
+    python -m netcalc.perf.loss ratio --sent 100000 --received 99950
+    python -m netcalc.perf.loss path 0.001 0.0005 0.002
+    python -m netcalc.perf.loss seq 1 2 3 6 7 7 5 8 12
+    python -m netcalc.perf.loss any --loss 1e-4 --packets 5000
+"""
+
+import argparse
