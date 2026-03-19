@@ -19,3 +19,11 @@ def loss_ratio(sent, received):
     if sent <= 0:
         raise ValueError("sent must be positive")
     return (sent - received) / sent
+
+
+def path_loss(*hop_loss):
+    """End-to-end loss across independent hops: ``1 - prod(1 - p_i)``."""
+    survive = 1.0
+    for p in hop_loss:
+        survive *= 1 - p
+    return 1 - survive
