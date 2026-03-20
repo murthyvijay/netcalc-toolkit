@@ -32,3 +32,8 @@ def path_loss(*hop_loss):
 def prob_any_loss(loss, packets):
     """Probability that at least one of ``packets`` is lost (e.g. a whole message)."""
     return 1 - (1 - loss) ** packets
+
+
+def expected_transmissions(loss):
+    """Mean transmissions per packet with retransmit-until-success: 1 / (1 - p)."""
+    return 1 / (1 - loss)
