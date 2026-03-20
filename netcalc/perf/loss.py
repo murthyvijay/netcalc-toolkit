@@ -78,3 +78,34 @@ def analyze_sequence(seqs):
         "max_burst": max(bursts, default=0),
         "mean_burst": sum(bursts) / len(bursts) if bursts else 0.0,
     }
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("ratio")
+    p.add_argument("--sent", type=int, required=True)
+    p.add_argument("--received", type=int, required=True)
+    p = sub.add_parser("path", help="combine per-hop loss ratios")
+    p.add_argument("loss", type=float, nargs="+")
+    p = sub.add_parser("seq", help="analyse received sequence numbers")
+    p.add_argument("seqs", type=int, nargs="+")
+    p = sub.add_parser("any", help="chance a message of N packets sees a loss")
+    p.add_argument("--loss", type=float, required=True)
+    p.add_argument("--packets", type=int, required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "ratio":
+        r = loss_ratio(args.sent, args.received)
+        print(f"loss = {r:.6f} ({r * 100:.4f} %)")
+    elif args.cmd == "path":
+        print(f"end-to-end loss = {path_loss(*args.loss):.6e}")
+    elif args.cmd == "seq":
+        for key, value in analyze_sequence(args.seqs).items():
+            print(f"{key:>11}: {value:.4f}" if isinstance(value, float) else f"{key:>11}: {value}")
+    else:
+        print(f"P(at least one loss) = {prob_any_loss(args.loss, args.packets):.4%}")
+
+
+if __name__ == "__main__":
+    main()
