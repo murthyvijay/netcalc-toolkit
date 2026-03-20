@@ -27,3 +27,8 @@ def path_loss(*hop_loss):
     for p in hop_loss:
         survive *= 1 - p
     return 1 - survive
+
+
+def prob_any_loss(loss, packets):
+    """Probability that at least one of ``packets`` is lost (e.g. a whole message)."""
+    return 1 - (1 - loss) ** packets
