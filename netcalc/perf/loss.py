@@ -37,3 +37,44 @@ def prob_any_loss(loss, packets):
 def expected_transmissions(loss):
     """Mean transmissions per packet with retransmit-until-success: 1 / (1 - p)."""
     return 1 / (1 - loss)
+
+
+def analyze_sequence(seqs):
+    """Analyse received sequence numbers.
+
+    Returns counts of unique packets, lost, duplicate and reordered packets,
+    plus loss bursts (runs of consecutive missing numbers) between the first
+    and the highest sequence number seen.
+    """
+    if not seqs:
+        raise ValueError("no sequence numbers")
+    seen, duplicates, reordered, highest = set(), 0, 0, None
+    for s in seqs:
+        if s in seen:
+            duplicates += 1
+            continue
+        if highest is not None and s < highest:
+            reordered += 1
+        seen.add(s)
+        highest = s if highest is None else max(highest, s)
+    first = min(seen)
+    missing = [s for s in range(first, highest + 1) if s not in seen]
+    bursts, run = [], 0
+    for s in range(first, highest + 2):
+        if s <= highest and s not in seen:
+            run += 1
+        elif run:
+            bursts.append(run)
+            run = 0
+    expected = highest - first + 1
+    return {
+        "expected": expected,
+        "received": len(seen),
+        "lost": len(missing),
+        "loss_ratio": len(missing) / expected,
+        "duplicates": duplicates,
+        "reordered": reordered,
+        "bursts": len(bursts),
+        "max_burst": max(bursts, default=0),
+        "mean_burst": sum(bursts) / len(bursts) if bursts else 0.0,
+    }
