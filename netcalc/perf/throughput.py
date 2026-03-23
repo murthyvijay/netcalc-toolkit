@@ -30,3 +30,13 @@ def bdp_bytes(rate_bps, rtt_s):
 def window_limited_throughput(window_bytes, rtt_s):
     """Maximum throughput (bps) of a single flow limited by its window."""
     return window_bytes * 8 / rtt_s
+
+
+def window_scale_shift(window_bytes):
+    """TCP window-scale shift count (RFC 7323) needed to advertise ``window_bytes``."""
+    shift = 0
+    while (65535 << shift) < window_bytes:
+        shift += 1
+    if shift > 14:
+        raise ValueError("window exceeds the RFC 7323 maximum (shift 14, ~1 GiB)")
+    return shift
