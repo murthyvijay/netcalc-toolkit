@@ -25,3 +25,8 @@ def bdp_bytes(rate_bps, rtt_s):
     100000000.0
     """
     return rate_bps * rtt_s / 8
+
+
+def window_limited_throughput(window_bytes, rtt_s):
+    """Maximum throughput (bps) of a single flow limited by its window."""
+    return window_bytes * 8 / rtt_s
