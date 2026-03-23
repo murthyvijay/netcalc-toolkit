@@ -40,3 +40,13 @@ def window_scale_shift(window_bytes):
     if shift > 14:
         raise ValueError("window exceeds the RFC 7323 maximum (shift 14, ~1 GiB)")
     return shift
+
+
+def transfer_time(size_bytes, rate_bps, rtt_s=0.0, setup_rtts=1.0, efficiency=1.0):
+    """Approximate wall-clock time to move ``size_bytes``.
+
+    ``setup_rtts`` round trips for the handshake (1 for TCP, 2 with TLS 1.3
+    over TCP), then the payload at ``rate_bps * efficiency`` plus half an
+    RTT for the last byte to arrive.
+    """
+    return setup_rtts * rtt_s + size_bytes * 8 / (rate_bps * efficiency) + rtt_s / 2
