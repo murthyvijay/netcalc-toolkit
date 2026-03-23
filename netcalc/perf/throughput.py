@@ -55,3 +55,38 @@ def transfer_time(size_bytes, rate_bps, rtt_s=0.0, setup_rtts=1.0, efficiency=1.
 def flows_to_fill(rate_bps, rtt_s, window_bytes):
     """Parallel window-limited flows needed to fill a link."""
     return math.ceil(rate_bps / window_limited_throughput(window_bytes, rtt_s))
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("bdp")
+    p.add_argument("--rate", required=True)
+    p.add_argument("--rtt", required=True)
+    p = sub.add_parser("window")
+    p.add_argument("--window", required=True)
+    p.add_argument("--rtt", required=True)
+    p.add_argument("--rate", help="link rate, to report flows needed")
+    p = sub.add_parser("transfer")
+    p.add_argument("--size", required=True)
+    p.add_argument("--rate", required=True)
+    p.add_argument("--rtt", default="0")
+    p.add_argument("--efficiency", type=float, default=1.0, help="goodput / line rate")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "bdp":
+        b = bdp_bytes(parse_rate(args.rate), parse_time(args.rtt))
+        print(f"BDP = {fmt_size(b)}; TCP window-scale shift >= {window_scale_shift(b)}")
+    elif args.cmd == "window":
+        w, r = parse_size(args.window), parse_time(args.rtt)
+        print(f"max throughput = {fmt_rate(window_limited_throughput(w, r))}")
+        if args.rate:
+            print(f"flows to fill {args.rate}: {flows_to_fill(parse_rate(args.rate), r, w)}")
+    else:
+        t = transfer_time(parse_size(args.size), parse_rate(args.rate), parse_time(args.rtt),
+                          efficiency=args.efficiency)
+        print(f"transfer time = {fmt_time(t)}")
+
+
+if __name__ == "__main__":
+    main()
