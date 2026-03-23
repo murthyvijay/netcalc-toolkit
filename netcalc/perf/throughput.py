@@ -16,3 +16,12 @@ import argparse
 import math
 
 from netcalc.units import fmt_rate, fmt_size, fmt_time, parse_rate, parse_size, parse_time
+
+
+def bdp_bytes(rate_bps, rtt_s):
+    """Bandwidth-delay product in bytes.
+
+    >>> bdp_bytes(10e9, 0.08)
+    100000000.0
+    """
+    return rate_bps * rtt_s / 8
