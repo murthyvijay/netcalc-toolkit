@@ -50,3 +50,8 @@ def transfer_time(size_bytes, rate_bps, rtt_s=0.0, setup_rtts=1.0, efficiency=1.
     RTT for the last byte to arrive.
     """
     return setup_rtts * rtt_s + size_bytes * 8 / (rate_bps * efficiency) + rtt_s / 2
+
+
+def flows_to_fill(rate_bps, rtt_s, window_bytes):
+    """Parallel window-limited flows needed to fill a link."""
+    return math.ceil(rate_bps / window_limited_throughput(window_bytes, rtt_s))
