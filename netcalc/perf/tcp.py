@@ -40,3 +40,15 @@ def mathis_throughput(mss_bytes, rtt_s, loss, c=MATHIS_C):
 def mathis_max_loss(mss_bytes, rtt_s, rate_bps, c=MATHIS_C):
     """Highest loss rate at which one flow can still reach ``rate_bps``."""
     return (mss_bytes * 8 * c / (rtt_s * rate_bps)) ** 2
+
+
+def padhye_throughput(mss_bytes, rtt_s, loss, rto_s, b=2, wmax_bytes=None):
+    """PFTK model throughput in bits per second (optionally window-capped)."""
+    if loss <= 0:
+        raise ValueError("loss must be > 0")
+    denom = (rtt_s * math.sqrt(2 * b * loss / 3)
+             + rto_s * min(1.0, 3 * math.sqrt(3 * b * loss / 8)) * loss * (1 + 32 * loss ** 2))
+    rate = mss_bytes * 8 / denom
+    if wmax_bytes:
+        rate = min(rate, wmax_bytes * 8 / rtt_s)
+    return rate
