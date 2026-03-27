@@ -28,3 +28,10 @@ import math
 from netcalc.units import fmt_rate, parse_rate, parse_time
 
 MATHIS_C = math.sqrt(3 / 2)
+
+
+def mathis_throughput(mss_bytes, rtt_s, loss, c=MATHIS_C):
+    """Mathis model throughput in bits per second."""
+    if loss <= 0:
+        raise ValueError("loss must be > 0 for the Mathis model")
+    return mss_bytes * 8 / rtt_s * c / math.sqrt(loss)
