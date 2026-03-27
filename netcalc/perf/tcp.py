@@ -52,3 +52,32 @@ def padhye_throughput(mss_bytes, rtt_s, loss, rto_s, b=2, wmax_bytes=None):
     if wmax_bytes:
         rate = min(rate, wmax_bytes * 8 / rtt_s)
     return rate
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    for name in ("mathis", "padhye", "max-loss"):
+        p = sub.add_parser(name)
+        p.add_argument("--mss", type=float, default=1460)
+        p.add_argument("--rtt", required=True)
+        if name == "max-loss":
+            p.add_argument("--rate", required=True)
+        else:
+            p.add_argument("--loss", type=float, required=True)
+        if name == "padhye":
+            p.add_argument("--rto", default="200ms")
+    args = parser.parse_args(argv)
+    rtt = parse_time(args.rtt)
+
+    if args.cmd == "mathis":
+        print(f"Mathis throughput = {fmt_rate(mathis_throughput(args.mss, rtt, args.loss))}")
+    elif args.cmd == "padhye":
+        r = padhye_throughput(args.mss, rtt, args.loss, parse_time(args.rto))
+        print(f"Padhye throughput = {fmt_rate(r)}")
+    else:
+        print(f"max loss = {mathis_max_loss(args.mss, rtt, parse_rate(args.rate)):.3e}")
+
+
+if __name__ == "__main__":
+    main()
