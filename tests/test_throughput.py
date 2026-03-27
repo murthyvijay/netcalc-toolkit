@@ -12,3 +12,12 @@ class TestBdp(unittest.TestCase):
         self.assertEqual(throughput.window_scale_shift(100e6), 11)
         with self.assertRaises(ValueError):
             throughput.window_scale_shift(2 ** 31)
+
+
+class TestWindowLimits(unittest.TestCase):
+    def test_classic_64k_window(self):
+        rate = throughput.window_limited_throughput(65535, 0.03)
+        self.assertAlmostEqual(rate / 1e6, 17.476, places=2)
+
+    def test_flows_to_fill(self):
+        self.assertEqual(throughput.flows_to_fill(10e9, 0.03, 65535), 573)
