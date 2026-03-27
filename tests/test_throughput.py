@@ -21,3 +21,13 @@ class TestWindowLimits(unittest.TestCase):
 
     def test_flows_to_fill(self):
         self.assertEqual(throughput.flows_to_fill(10e9, 0.03, 65535), 573)
+
+
+class TestTransferTime(unittest.TestCase):
+    def test_transfer(self):
+        self.assertAlmostEqual(throughput.transfer_time(1.25e9, 1e9, 0.0), 10.0)
+        self.assertAlmostEqual(throughput.transfer_time(1.25e9, 1e9, 0.1), 10.15)
+
+
+if __name__ == "__main__":
+    unittest.main()
