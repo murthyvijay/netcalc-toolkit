@@ -125,3 +125,19 @@ OSNR_dB = 58 + P_in(dBm) - NF(dB) - 10 log(N spans)
 
 Store-and-forward devices pay serialization at every hop; cut-through
 switches start forwarding after the header, so serialization is paid once.
+
+### Jitter (`jitter`)
+
+RFC 3550 defines interarrival jitter from sender timestamps `S` and receive
+times `R`:
+
+```
+D(i-1, i) = (R_i - R_{i-1}) - (S_i - S_{i-1})
+J = J + (|D| - J) / 16
+```
+
+The difference of differences cancels any constant clock offset between the
+hosts, and the 1/16 gain makes J a smoothed mean deviation. IPDV (RFC 3393)
+keeps the raw sequence of consecutive delay differences; PDV (RFC 5481)
+measures each delay against the minimum and is the better input for sizing
+de-jitter buffers (use a high percentile).
