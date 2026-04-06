@@ -141,3 +141,12 @@ hosts, and the 1/16 gain makes J a smoothed mean deviation. IPDV (RFC 3393)
 keeps the raw sequence of consecutive delay differences; PDV (RFC 5481)
 measures each delay against the minimum and is the better input for sizing
 de-jitter buffers (use a high percentile).
+
+### Packet loss (`loss`)
+
+`loss = (sent - received) / sent`. Over independent hops,
+`loss_e2e = 1 - prod (1 - p_i)`. The probability that a message of N packets
+loses at least one is `1 - (1 - p)^N`: at p = 1e-5 a 64 MB message in 4 KB
+packets (16 384 packets) has a 15 % chance of needing recovery. The `seq`
+analyser also counts bursts, duplicates and reordering, because the burst
+structure matters as much as the average.
