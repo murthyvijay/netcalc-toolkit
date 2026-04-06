@@ -111,3 +111,5 @@ OSNR_dB = 58 + P_in(dBm) - NF(dB) - 10 log(N spans)
 ```
 
 ---
+
+## 2. Latency, jitter, loss and throughput
