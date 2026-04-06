@@ -150,3 +150,11 @@ loses at least one is `1 - (1 - p)^N`: at p = 1e-5 a 64 MB message in 4 KB
 packets (16 384 packets) has a 15 % chance of needing recovery. The `seq`
 analyser also counts bursts, duplicates and reordering, because the burst
 structure matters as much as the average.
+
+### Throughput and BDP (`throughput`)
+
+A window-based sender can have at most one window per RTT in flight:
+`throughput <= W / RTT`. Filling a link needs `W >= BDP = R * RTT`. A 64 KB
+window over 30 ms RTT caps one flow at 17.5 Mb/s; 10G over 80 ms needs a
+100 MB window, which TCP can only advertise with window scaling (RFC 7323,
+shift count up to 14).
