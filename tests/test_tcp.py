@@ -16,3 +16,17 @@ class TestMathis(unittest.TestCase):
     def test_zero_loss_rejected(self):
         with self.assertRaises(ValueError):
             tcp.mathis_throughput(1460, 0.05, 0)
+
+
+class TestPadhye(unittest.TestCase):
+    def test_timeouts_reduce_throughput(self):
+        self.assertLess(tcp.padhye_throughput(1460, 0.05, 0.02, 1.0),
+                        tcp.padhye_throughput(1460, 0.05, 0.02, 0.2))
+
+    def test_window_cap(self):
+        capped = tcp.padhye_throughput(1460, 0.05, 1e-6, 0.2, wmax_bytes=65535)
+        self.assertAlmostEqual(capped, 65535 * 8 / 0.05)
+
+
+if __name__ == "__main__":
+    unittest.main()
