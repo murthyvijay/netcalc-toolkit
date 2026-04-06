@@ -113,3 +113,15 @@ OSNR_dB = 58 + P_in(dBm) - NF(dB) - 10 log(N spans)
 ---
 
 ## 2. Latency, jitter, loss and throughput
+
+### Latency (`latency`)
+
+| component | formula | example |
+|---|---|---|
+| serialization | `bits / R` | 1500 B at 10G = 1.2 us; 9000 B at 400G = 180 ns |
+| propagation | `distance * n / c` | fibre n = 1.468, about 4.9 us/km or 204 km/ms |
+| processing | per device | 300 ns to a few us for switches |
+| queueing | depends on load | see QoS below |
+
+Store-and-forward devices pay serialization at every hop; cut-through
+switches start forwarding after the header, so serialization is paid once.
