@@ -158,3 +158,23 @@ A window-based sender can have at most one window per RTT in flight:
 window over 30 ms RTT caps one flow at 17.5 Mb/s; 10G over 80 ms needs a
 100 MB window, which TCP can only advertise with window scaling (RFC 7323,
 shift count up to 14).
+
+### TCP models (`tcp`)
+
+Mathis et al. (1997) for loss-based congestion avoidance:
+
+```
+throughput = (MSS / RTT) * sqrt(3/2) / sqrt(p)
+```
+
+Padhye et al. (1998) add retransmission timeouts, which dominate when loss
+is high:
+
+```
+B = MSS / ( RTT sqrt(2bp/3) + RTO min(1, 3 sqrt(3bp/8)) p (1 + 32 p^2) )
+```
+
+Both show why long-RTT paths are so sensitive to loss: throughput falls as
+`1 / (RTT * sqrt(p))`.
+
+---
