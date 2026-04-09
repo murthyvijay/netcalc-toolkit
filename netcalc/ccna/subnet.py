@@ -78,3 +78,13 @@ def subnet_info(cidr):
             "last_host": str(net.broadcast_address),
         })
     return info
+
+
+def prefix_for_hosts(hosts, version=4):
+    """Longest prefix whose usable host count is at least ``hosts``."""
+    bits = 32 if version == 4 else 128
+    extra = 0 if version == 6 else 2
+    host_bits = max(math.ceil(math.log2(hosts + extra)), 0)
+    if host_bits > bits:
+        raise ValueError("too many hosts for the address family")
+    return bits - host_bits
