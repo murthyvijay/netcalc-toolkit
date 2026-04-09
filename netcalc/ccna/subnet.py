@@ -29,3 +29,16 @@ def address_class(addr):
     if first < 240:
         return "D"
     return "E"
+
+
+def usable_hosts(prefixlen, version=4):
+    """Usable host addresses in a prefix.
+
+    IPv4 subtracts network and broadcast, except /31 (RFC 3021 point-to-point,
+    2 hosts) and /32 (1 host). IPv6 has no broadcast, so all addresses count.
+    """
+    bits = 32 if version == 4 else 128
+    total = 2 ** (bits - prefixlen)
+    if version == 6 or prefixlen >= 31:
+        return total
+    return total - 2
