@@ -42,3 +42,39 @@ def usable_hosts(prefixlen, version=4):
     if version == 6 or prefixlen >= 31:
         return total
     return total - 2
+
+
+def _host_bounds(net):
+    if net.prefixlen >= 31:
+        return str(net.network_address), str(net.broadcast_address)
+    return str(net.network_address + 1), str(net.broadcast_address - 1)
+
+
+def subnet_info(cidr):
+    """Describe the network containing ``cidr`` (host bits are allowed)."""
+    iface = ipaddress.ip_interface(cidr)
+    net = iface.network
+    info = {
+        "address": str(iface.ip),
+        "network": str(net.network_address),
+        "prefix": net.prefixlen,
+        "netmask": str(net.netmask),
+        "total_addresses": net.num_addresses,
+        "usable_hosts": usable_hosts(net.prefixlen, net.version),
+        "scope": "private" if net.is_private else "public",
+    }
+    if net.version == 4:
+        hosts = list(_host_bounds(net))
+        info.update({
+            "wildcard": str(net.hostmask),
+            "broadcast": str(net.broadcast_address),
+            "first_host": hosts[0],
+            "last_host": hosts[1],
+            "class": address_class(net.network_address),
+        })
+    else:
+        info.update({
+            "first_host": str(net.network_address),
+            "last_host": str(net.broadcast_address),
+        })
+    return info
