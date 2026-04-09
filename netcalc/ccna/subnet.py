@@ -15,3 +15,17 @@ Usage::
 import argparse
 import ipaddress
 import math
+
+
+def address_class(addr):
+    """Classful class letter of an IPv4 address (A-E)."""
+    first = int(ipaddress.IPv4Address(addr)) >> 24
+    if first < 128:
+        return "A"
+    if first < 192:
+        return "B"
+    if first < 224:
+        return "C"
+    if first < 240:
+        return "D"
+    return "E"
