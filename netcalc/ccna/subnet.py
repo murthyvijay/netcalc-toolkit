@@ -94,3 +94,32 @@ def split(cidr, new_prefix):
     """Split a network into equal subnets of ``new_prefix``."""
     net = ipaddress.ip_network(cidr, strict=False)
     return [str(s) for s in net.subnets(new_prefix=new_prefix)]
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("info", help="describe a subnet")
+    p.add_argument("cidr")
+    p = sub.add_parser("split", help="split into smaller subnets")
+    p.add_argument("cidr")
+    p.add_argument("--prefix", type=int, required=True)
+    p = sub.add_parser("hosts", help="prefix needed for N hosts")
+    p.add_argument("hosts", type=int)
+    p.add_argument("--v6", action="store_true")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "info":
+        for key, value in subnet_info(args.cidr).items():
+            print(f"{key:>16}: {value}")
+    elif args.cmd == "split":
+        for s in split(args.cidr, args.prefix):
+            print(s)
+    else:
+        version = 6 if args.v6 else 4
+        prefix = prefix_for_hosts(args.hosts, version)
+        print(f"/{prefix} ({usable_hosts(prefix, version)} usable hosts)")
+
+
+if __name__ == "__main__":
+    main()
