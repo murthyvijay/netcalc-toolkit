@@ -88,3 +88,9 @@ def prefix_for_hosts(hosts, version=4):
     if host_bits > bits:
         raise ValueError("too many hosts for the address family")
     return bits - host_bits
+
+
+def split(cidr, new_prefix):
+    """Split a network into equal subnets of ``new_prefix``."""
+    net = ipaddress.ip_network(cidr, strict=False)
+    return [str(s) for s in net.subnets(new_prefix=new_prefix)]
