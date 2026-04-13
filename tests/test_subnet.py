@@ -31,3 +31,19 @@ class TestClasses(unittest.TestCase):
         self.assertEqual(subnet.address_class("10.1.1.1"), "A")
         self.assertEqual(subnet.address_class("172.16.0.1"), "B")
         self.assertEqual(subnet.address_class("224.0.0.5"), "D")
+
+
+class TestSizing(unittest.TestCase):
+    def test_prefix_for_hosts(self):
+        self.assertEqual(subnet.prefix_for_hosts(500), 23)
+        self.assertEqual(subnet.prefix_for_hosts(62), 26)
+        self.assertEqual(subnet.prefix_for_hosts(63), 25)
+        self.assertEqual(subnet.prefix_for_hosts(2), 30)
+
+    def test_split(self):
+        self.assertEqual(subnet.split("10.0.0.0/22", 24),
+                         ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"])
+
+
+if __name__ == "__main__":
+    unittest.main()
