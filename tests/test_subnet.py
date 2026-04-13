@@ -24,3 +24,10 @@ class TestSubnetInfo(unittest.TestCase):
         info = subnet.subnet_info("2001:db8::1/64")
         self.assertEqual(info["network"], "2001:db8::")
         self.assertEqual(info["usable_hosts"], 2 ** 64)
+
+
+class TestClasses(unittest.TestCase):
+    def test_address_class(self):
+        self.assertEqual(subnet.address_class("10.1.1.1"), "A")
+        self.assertEqual(subnet.address_class("172.16.0.1"), "B")
+        self.assertEqual(subnet.address_class("224.0.0.5"), "D")
