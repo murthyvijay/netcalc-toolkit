@@ -44,3 +44,10 @@ def allocate(block, requirements):
         })
         cursor += size
     return plan
+
+
+def utilization(block, plan):
+    """Fraction of the block's addresses consumed by the plan."""
+    base = ipaddress.ip_network(block, strict=False)
+    used = sum(ipaddress.ip_network(p["subnet"]).num_addresses for p in plan)
+    return used / base.num_addresses
