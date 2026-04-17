@@ -17,3 +17,15 @@ class TestAllocate(unittest.TestCase):
     def test_exhausted(self):
         with self.assertRaises(ValueError):
             vlsm.allocate("192.168.1.0/26", {"A": 60, "B": 10})
+
+
+class TestHelpers(unittest.TestCase):
+    def test_parse_and_utilization(self):
+        reqs = vlsm.parse_requirements(["A=100", "B=20"])
+        self.assertEqual(reqs, {"A": 100, "B": 20})
+        plan = vlsm.allocate("10.0.0.0/24", reqs)
+        self.assertAlmostEqual(vlsm.utilization("10.0.0.0/24", plan), (128 + 32) / 256)
+
+
+if __name__ == "__main__":
+    unittest.main()
