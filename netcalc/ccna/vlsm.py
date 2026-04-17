@@ -60,3 +60,19 @@ def parse_requirements(items):
         name, _, hosts = item.partition("=")
         reqs[name] = int(hosts)
     return reqs
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("block", help="address block, e.g. 10.0.0.0/22")
+    parser.add_argument("segments", nargs="+", help="NAME=HOSTS")
+    args = parser.parse_args(argv)
+    plan = allocate(args.block, parse_requirements(args.segments))
+    print(f"{'name':<10}{'needed':>8}{'usable':>8}  subnet")
+    for row in plan:
+        print(f"{row['name']:<10}{row['needed']:>8}{row['usable']:>8}  {row['subnet']}")
+    print(f"block utilisation: {utilization(args.block, plan):.1%}")
+
+
+if __name__ == "__main__":
+    main()
