@@ -51,3 +51,12 @@ def utilization(block, plan):
     base = ipaddress.ip_network(block, strict=False)
     used = sum(ipaddress.ip_network(p["subnet"]).num_addresses for p in plan)
     return used / base.num_addresses
+
+
+def parse_requirements(items):
+    """Turn ``["SALES=100", "HR=20"]`` into ``{"SALES": 100, "HR": 20}``."""
+    reqs = {}
+    for item in items:
+        name, _, hosts = item.partition("=")
+        reqs[name] = int(hosts)
+    return reqs
