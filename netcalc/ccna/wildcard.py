@@ -14,3 +14,11 @@ Usage::
 
 import argparse
 import ipaddress
+
+
+def _int(addr):
+    return int(ipaddress.IPv4Address(addr))
+
+
+def _ip(value):
+    return str(ipaddress.IPv4Address(value))
