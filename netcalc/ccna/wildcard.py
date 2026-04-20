@@ -39,3 +39,9 @@ def wildcard_to_mask(wildcard):
 def prefix_to_wildcard(prefixlen):
     """``/20 -> 0.0.15.255``."""
     return _ip((1 << (32 - prefixlen)) - 1)
+
+
+def is_contiguous(wildcard):
+    """True when the 1 bits of the wildcard are all at the low end."""
+    w = _int(wildcard)
+    return (w & (w + 1)) == 0
