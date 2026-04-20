@@ -45,3 +45,9 @@ def is_contiguous(wildcard):
     """True when the 1 bits of the wildcard are all at the low end."""
     w = _int(wildcard)
     return (w & (w + 1)) == 0
+
+
+def matches(address, wildcard, candidate):
+    """Does ``candidate`` match the ACL entry ``address wildcard``?"""
+    care = _int(wildcard) ^ 0xFFFFFFFF
+    return (_int(address) & care) == (_int(candidate) & care)
