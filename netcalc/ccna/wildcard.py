@@ -22,3 +22,8 @@ def _int(addr):
 
 def _ip(value):
     return str(ipaddress.IPv4Address(value))
+
+
+def mask_to_wildcard(mask):
+    """``255.255.255.224 -> 0.0.0.31``."""
+    return _ip(_int(mask) ^ 0xFFFFFFFF)
