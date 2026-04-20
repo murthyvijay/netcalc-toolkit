@@ -56,3 +56,10 @@ def matches(address, wildcard, candidate):
 def match_count(wildcard):
     """Number of addresses an ACL entry with this wildcard matches."""
     return 2 ** bin(_int(wildcard)).count("1")
+
+
+def range_to_entries(first, last):
+    """Minimal list of ``(address, wildcard)`` ACL entries covering a range."""
+    nets = ipaddress.summarize_address_range(ipaddress.IPv4Address(first),
+                                             ipaddress.IPv4Address(last))
+    return [(str(n.network_address), str(n.hostmask)) for n in nets]
