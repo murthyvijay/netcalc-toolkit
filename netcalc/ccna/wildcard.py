@@ -51,3 +51,8 @@ def matches(address, wildcard, candidate):
     """Does ``candidate`` match the ACL entry ``address wildcard``?"""
     care = _int(wildcard) ^ 0xFFFFFFFF
     return (_int(address) & care) == (_int(candidate) & care)
+
+
+def match_count(wildcard):
+    """Number of addresses an ACL entry with this wildcard matches."""
+    return 2 ** bin(_int(wildcard)).count("1")
