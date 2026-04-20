@@ -27,3 +27,10 @@ def _ip(value):
 def mask_to_wildcard(mask):
     """``255.255.255.224 -> 0.0.0.31``."""
     return _ip(_int(mask) ^ 0xFFFFFFFF)
+
+
+def wildcard_to_mask(wildcard):
+    """``0.0.0.31 -> 255.255.255.224`` (only for contiguous wildcards)."""
+    if not is_contiguous(wildcard):
+        raise ValueError("non-contiguous wildcard has no subnet-mask equivalent")
+    return _ip(_int(wildcard) ^ 0xFFFFFFFF)
