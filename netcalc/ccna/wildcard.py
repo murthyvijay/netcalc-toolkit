@@ -34,3 +34,8 @@ def wildcard_to_mask(wildcard):
     if not is_contiguous(wildcard):
         raise ValueError("non-contiguous wildcard has no subnet-mask equivalent")
     return _ip(_int(wildcard) ^ 0xFFFFFFFF)
+
+
+def prefix_to_wildcard(prefixlen):
+    """``/20 -> 0.0.15.255``."""
+    return _ip((1 << (32 - prefixlen)) - 1)
