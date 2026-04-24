@@ -31,3 +31,10 @@ def single_summary(networks):
     bits = nets[0].max_prefixlen
     prefix = bits - (low ^ high).bit_length()
     return str(ipaddress.ip_network((low, prefix), strict=False))
+
+
+def summary_waste(networks):
+    """Addresses covered by :func:`single_summary` that are not in ``networks``."""
+    summary = ipaddress.ip_network(single_summary(networks))
+    covered = sum(ipaddress.ip_network(n).num_addresses for n in exact_aggregate(networks))
+    return summary.num_addresses - covered
