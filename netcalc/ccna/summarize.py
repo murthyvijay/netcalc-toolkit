@@ -15,3 +15,9 @@ Usage::
 
 import argparse
 import ipaddress
+
+
+def exact_aggregate(networks):
+    """Collapse networks into the minimal list of covering prefixes."""
+    nets = [ipaddress.ip_network(n, strict=False) for n in networks]
+    return [str(n) for n in ipaddress.collapse_addresses(nets)]
