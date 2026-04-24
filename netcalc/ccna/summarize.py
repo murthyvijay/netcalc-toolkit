@@ -21,3 +21,13 @@ def exact_aggregate(networks):
     """Collapse networks into the minimal list of covering prefixes."""
     nets = [ipaddress.ip_network(n, strict=False) for n in networks]
     return [str(n) for n in ipaddress.collapse_addresses(nets)]
+
+
+def single_summary(networks):
+    """Smallest single prefix containing every network."""
+    nets = [ipaddress.ip_network(n, strict=False) for n in networks]
+    low = min(int(n.network_address) for n in nets)
+    high = max(int(n.broadcast_address) for n in nets)
+    bits = nets[0].max_prefixlen
+    prefix = bits - (low ^ high).bit_length()
+    return str(ipaddress.ip_network((low, prefix), strict=False))
