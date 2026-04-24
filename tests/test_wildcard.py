@@ -13,3 +13,19 @@ class TestConversions(unittest.TestCase):
         self.assertFalse(wildcard.is_contiguous("0.0.254.255"))
         with self.assertRaises(ValueError):
             wildcard.wildcard_to_mask("0.0.254.255")
+
+
+class TestMatching(unittest.TestCase):
+    def test_odd_third_octet(self):
+        self.assertTrue(wildcard.matches("10.1.1.0", "0.0.254.255", "10.1.7.9"))
+        self.assertFalse(wildcard.matches("10.1.1.0", "0.0.254.255", "10.1.8.9"))
+        self.assertEqual(wildcard.match_count("0.0.254.255"), 2 ** 15)
+
+    def test_range_entries(self):
+        self.assertEqual(wildcard.range_to_entries("172.16.4.0", "172.16.7.255"),
+                         [("172.16.4.0", "0.0.3.255")])
+        self.assertEqual(len(wildcard.range_to_entries("10.0.0.1", "10.0.0.6")), 4)
+
+
+if __name__ == "__main__":
+    unittest.main()
