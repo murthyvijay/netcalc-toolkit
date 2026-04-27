@@ -33,3 +33,8 @@ def interface_cost(bandwidth_bps, reference_bps=DEFAULT_REF_BPS):
 def path_cost(bandwidths_bps, reference_bps=DEFAULT_REF_BPS):
     """Sum of outgoing interface costs along a path."""
     return sum(interface_cost(bw, reference_bps) for bw in bandwidths_bps)
+
+
+def recommended_reference(fastest_bps, headroom=10):
+    """Reference bandwidth leaving ``headroom``x room above the fastest link."""
+    return fastest_bps * headroom
