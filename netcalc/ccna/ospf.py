@@ -23,3 +23,8 @@ from netcalc.units import fmt_rate, parse_rate
 DEFAULT_REF_BPS = 100e6
 COMMON_RATES = ["10M", "100M", "1G", "10G", "25G", "40G", "100G", "400G", "800G"]
 MAX_COST = 65535
+
+
+def interface_cost(bandwidth_bps, reference_bps=DEFAULT_REF_BPS):
+    """OSPF cost of an interface (1..65535)."""
+    return min(MAX_COST, max(1, int(reference_bps // bandwidth_bps)))
