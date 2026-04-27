@@ -38,3 +38,8 @@ def path_cost(bandwidths_bps, reference_bps=DEFAULT_REF_BPS):
 def recommended_reference(fastest_bps, headroom=10):
     """Reference bandwidth leaving ``headroom``x room above the fastest link."""
     return fastest_bps * headroom
+
+
+def cost_table(reference_bps=DEFAULT_REF_BPS, rates=COMMON_RATES):
+    """List of ``(rate string, cost)`` for common link speeds."""
+    return [(r, interface_cost(parse_rate(r), reference_bps)) for r in rates]
