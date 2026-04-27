@@ -28,3 +28,8 @@ MAX_COST = 65535
 def interface_cost(bandwidth_bps, reference_bps=DEFAULT_REF_BPS):
     """OSPF cost of an interface (1..65535)."""
     return min(MAX_COST, max(1, int(reference_bps // bandwidth_bps)))
+
+
+def path_cost(bandwidths_bps, reference_bps=DEFAULT_REF_BPS):
+    """Sum of outgoing interface costs along a path."""
+    return sum(interface_cost(bw, reference_bps) for bw in bandwidths_bps)
