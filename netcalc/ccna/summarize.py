@@ -38,3 +38,18 @@ def summary_waste(networks):
     summary = ipaddress.ip_network(single_summary(networks))
     covered = sum(ipaddress.ip_network(n).num_addresses for n in exact_aggregate(networks))
     return summary.num_addresses - covered
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("networks", nargs="+")
+    args = parser.parse_args(argv)
+    print("exact aggregate: " + ", ".join(exact_aggregate(args.networks)))
+    print(f"single summary:  {single_summary(args.networks)}")
+    waste = summary_waste(args.networks)
+    if waste:
+        print(f"warning: summary also covers {waste} addresses not in the list")
+
+
+if __name__ == "__main__":
+    main()
