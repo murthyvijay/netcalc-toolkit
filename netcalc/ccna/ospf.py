@@ -43,3 +43,31 @@ def recommended_reference(fastest_bps, headroom=10):
 def cost_table(reference_bps=DEFAULT_REF_BPS, rates=COMMON_RATES):
     """List of ``(rate string, cost)`` for common link speeds."""
     return [(r, interface_cost(parse_rate(r), reference_bps)) for r in rates]
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("cost")
+    p.add_argument("bandwidth")
+    p.add_argument("--ref", default="100M")
+    p = sub.add_parser("table")
+    p.add_argument("--ref", default="100M")
+    p = sub.add_parser("path")
+    p.add_argument("bandwidths", nargs="+")
+    p.add_argument("--ref", default="100M")
+    args = parser.parse_args(argv)
+    ref = parse_rate(args.ref)
+
+    if args.cmd == "cost":
+        print(interface_cost(parse_rate(args.bandwidth), ref))
+    elif args.cmd == "table":
+        print(f"reference bandwidth {fmt_rate(ref)}")
+        for rate, cost in cost_table(ref):
+            print(f"{rate:>6}: {cost}")
+    else:
+        print(path_cost([parse_rate(b) for b in args.bandwidths], ref))
+
+
+if __name__ == "__main__":
+    main()
