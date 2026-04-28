@@ -35,3 +35,8 @@ def classic_metric(bandwidths_kbps, delays_us, k=DEFAULT_K, load=1, reliability=
 def is_feasible_successor(reported_distance, feasible_distance):
     """Feasibility condition: RD must be strictly less than the current FD."""
     return reported_distance < feasible_distance
+
+
+def feasible_successors(feasible_distance, reported_distances):
+    """Filter neighbours whose reported distance passes the feasibility condition."""
+    return [rd for rd in reported_distances if is_feasible_successor(rd, feasible_distance)]
