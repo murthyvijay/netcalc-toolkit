@@ -19,3 +19,14 @@ Usage::
 import argparse
 
 DEFAULT_K = (1, 0, 1, 0, 0)
+
+
+def classic_metric(bandwidths_kbps, delays_us, k=DEFAULT_K, load=1, reliability=255):
+    """EIGRP classic composite metric for a path."""
+    k1, k2, k3, k4, k5 = k
+    bw = 10 ** 7 // min(bandwidths_kbps)
+    delay = sum(delays_us) // 10
+    metric = k1 * bw + (k2 * bw) // (256 - load) + k3 * delay
+    if k5:
+        metric = metric * k5 // (reliability + k4)
+    return 256 * metric
