@@ -40,3 +40,8 @@ def is_feasible_successor(reported_distance, feasible_distance):
 def feasible_successors(feasible_distance, reported_distances):
     """Filter neighbours whose reported distance passes the feasibility condition."""
     return [rd for rd in reported_distances if is_feasible_successor(rd, feasible_distance)]
+
+
+def variance_paths(best_metric, metrics, variance=1):
+    """Paths eligible for unequal-cost load balancing with ``variance``."""
+    return [m for m in metrics if m <= best_metric * variance]
