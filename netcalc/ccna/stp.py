@@ -23,3 +23,16 @@ import math
 from netcalc.units import parse_rate
 
 SHORT_COSTS = [(10e9, 2), (1e9, 4), (100e6, 19), (10e6, 100)]
+
+
+def timers(diameter=7, hello=2):
+    """Recommended 802.1D timers (seconds) and worst-case convergence."""
+    max_age = 4 * hello + 2 * diameter - 2
+    forward_delay = math.ceil((4 * hello + 3 * diameter) / 2)
+    return {
+        "hello": hello,
+        "max_age": max_age,
+        "forward_delay": forward_delay,
+        "stp_convergence": max_age + 2 * forward_delay,
+        "rstp_convergence": 3 * hello,
+    }
