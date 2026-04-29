@@ -36,3 +36,11 @@ def timers(diameter=7, hello=2):
         "stp_convergence": max_age + 2 * forward_delay,
         "rstp_convergence": 3 * hello,
     }
+
+
+def port_cost_short(bandwidth_bps):
+    """802.1D-1998 16-bit ("short") path cost."""
+    for rate, cost in SHORT_COSTS:
+        if bandwidth_bps >= rate:
+            return cost
+    return 100
