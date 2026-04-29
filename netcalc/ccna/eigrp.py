@@ -45,3 +45,30 @@ def feasible_successors(feasible_distance, reported_distances):
 def variance_paths(best_metric, metrics, variance=1):
     """Paths eligible for unequal-cost load balancing with ``variance``."""
     return [m for m in metrics if m <= best_metric * variance]
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("metric")
+    p.add_argument("--bw-kbps", type=int, nargs="+", required=True)
+    p.add_argument("--delay-us", type=int, nargs="+", required=True)
+    p.add_argument("--k", type=int, nargs=5, default=list(DEFAULT_K))
+    p.add_argument("--load", type=int, default=1)
+    p.add_argument("--reliability", type=int, default=255)
+    p = sub.add_parser("fs", help="feasibility condition check")
+    p.add_argument("--fd", type=int, required=True)
+    p.add_argument("--rd", type=int, nargs="+", required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "metric":
+        print(classic_metric(args.bw_kbps, args.delay_us, tuple(args.k), args.load,
+                             args.reliability))
+    else:
+        for rd in args.rd:
+            ok = is_feasible_successor(rd, args.fd)
+            print(f"RD {rd}: {'feasible successor' if ok else 'not feasible'}")
+
+
+if __name__ == "__main__":
+    main()
