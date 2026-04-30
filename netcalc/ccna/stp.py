@@ -49,3 +49,13 @@ def port_cost_short(bandwidth_bps):
 def port_cost_long(bandwidth_bps):
     """802.1t 32-bit ("long") path cost: 20 Tbps / bandwidth, minimum 1."""
     return max(1, int(20e12 // bandwidth_bps))
+
+
+def bridge_priority(priority, vlan=1):
+    """Bridge priority field with the extended system ID (priority + VLAN).
+
+    Priority must be a multiple of 4096 when the extended system ID is used.
+    """
+    if priority % 4096 or not 0 <= priority <= 61440:
+        raise ValueError("priority must be a multiple of 4096 between 0 and 61440")
+    return priority + vlan
