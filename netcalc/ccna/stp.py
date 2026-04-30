@@ -59,3 +59,15 @@ def bridge_priority(priority, vlan=1):
     if priority % 4096 or not 0 <= priority <= 61440:
         raise ValueError("priority must be a multiple of 4096 between 0 and 61440")
     return priority + vlan
+
+
+def _mac_int(mac):
+    return int(mac.replace(".", "").replace(":", "").replace("-", ""), 16)
+
+
+def elect_root(bridges):
+    """Root bridge among ``"priority:mac"`` strings: lowest priority, then MAC."""
+    def key(b):
+        prio, _, mac = b.partition(":")
+        return int(prio), _mac_int(mac)
+    return min(bridges, key=key)
