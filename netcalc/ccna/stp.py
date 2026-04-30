@@ -44,3 +44,8 @@ def port_cost_short(bandwidth_bps):
         if bandwidth_bps >= rate:
             return cost
     return 100
+
+
+def port_cost_long(bandwidth_bps):
+    """802.1t 32-bit ("long") path cost: 20 Tbps / bandwidth, minimum 1."""
+    return max(1, int(20e12 // bandwidth_bps))
