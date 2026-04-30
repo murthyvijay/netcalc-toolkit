@@ -71,3 +71,29 @@ def elect_root(bridges):
         prio, _, mac = b.partition(":")
         return int(prio), _mac_int(mac)
     return min(bridges, key=key)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("timers")
+    p.add_argument("--diameter", type=int, default=7)
+    p.add_argument("--hello", type=float, default=2)
+    p = sub.add_parser("cost")
+    p.add_argument("bandwidth")
+    p = sub.add_parser("root")
+    p.add_argument("bridges", nargs="+", help="PRIORITY:MAC")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "timers":
+        for key, value in timers(args.diameter, args.hello).items():
+            print(f"{key:>17}: {value:g} s")
+    elif args.cmd == "cost":
+        bw = parse_rate(args.bandwidth)
+        print(f"short (802.1D): {port_cost_short(bw)}, long (802.1t): {port_cost_long(bw)}")
+    else:
+        print(f"root bridge: {elect_root(args.bridges)}")
+
+
+if __name__ == "__main__":
+    main()
