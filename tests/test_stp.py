@@ -26,3 +26,18 @@ class TestCosts(unittest.TestCase):
         self.assertEqual(stp.port_cost_long(1e9), 20000)
         self.assertEqual(stp.port_cost_long(10e9), 2000)
         self.assertEqual(stp.port_cost_long(100e6), 200000)
+
+
+class TestBridgeId(unittest.TestCase):
+    def test_priority(self):
+        self.assertEqual(stp.bridge_priority(32768, 10), 32778)
+        with self.assertRaises(ValueError):
+            stp.bridge_priority(1000)
+
+    def test_root_election(self):
+        bridges = ["32768:0011.2233.4455", "4096:00aa.bbcc.ddee", "4096:0000.0000.0001"]
+        self.assertEqual(stp.elect_root(bridges), "4096:0000.0000.0001")
+
+
+if __name__ == "__main__":
+    unittest.main()
