@@ -35,3 +35,13 @@ def mm1(link_bps, utilization, packet_bytes):
         "system_time": wait + 1 / mu,
         "avg_queue_len": utilization ** 2 / (1 - utilization),
     }
+
+
+def cbwfq_allocation(link_bps, shares_pct):
+    """Guaranteed bandwidth per class from percentage shares (sum <= 100)."""
+    total = sum(shares_pct.values())
+    if total > 100:
+        raise ValueError(f"class shares add up to {total} % (> 100 %)")
+    alloc = {name: link_bps * pct / 100 for name, pct in shares_pct.items()}
+    alloc["unallocated"] = link_bps * (100 - total) / 100
+    return alloc
