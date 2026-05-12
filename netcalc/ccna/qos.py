@@ -20,3 +20,18 @@ Usage::
 import argparse
 
 from netcalc.units import fmt_rate, fmt_time, parse_rate, parse_size
+
+
+def mm1(link_bps, utilization, packet_bytes):
+    """M/M/1 queue statistics for a link at ``utilization`` (0..1)."""
+    if not 0 <= utilization < 1:
+        raise ValueError("utilization must be in [0, 1)")
+    mu = link_bps / (packet_bytes * 8)
+    lam = utilization * mu
+    wait = utilization / (mu - lam)
+    return {
+        "service_time": 1 / mu,
+        "queue_wait": wait,
+        "system_time": wait + 1 / mu,
+        "avg_queue_len": utilization ** 2 / (1 - utilization),
+    }
