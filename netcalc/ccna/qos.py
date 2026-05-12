@@ -55,3 +55,8 @@ def shaping_interval(cir_bps, bc_bits):
 def recommended_policer_burst(cir_bps, seconds=1.5):
     """Policer committed burst in bytes for ``seconds`` of traffic at CIR."""
     return cir_bps / 8 * seconds
+
+
+def parse_shares(items):
+    """``["VOICE=10", "DATA=40"] -> {"VOICE": 10.0, "DATA": 40.0}``."""
+    return {k: float(v) for k, _, v in (i.partition("=") for i in items)}
