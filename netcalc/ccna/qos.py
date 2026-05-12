@@ -60,3 +60,37 @@ def recommended_policer_burst(cir_bps, seconds=1.5):
 def parse_shares(items):
     """``["VOICE=10", "DATA=40"] -> {"VOICE": 10.0, "DATA": 40.0}``."""
     return {k: float(v) for k, _, v in (i.partition("=") for i in items)}
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("mm1")
+    p.add_argument("--rate", required=True)
+    p.add_argument("--load", type=float, required=True)
+    p.add_argument("--size", default="1000")
+    p = sub.add_parser("cbwfq")
+    p.add_argument("--rate", required=True)
+    p.add_argument("classes", nargs="+", help="NAME=PERCENT")
+    p = sub.add_parser("shaper")
+    p.add_argument("--cir", required=True)
+    p.add_argument("--bc", type=float, help="committed burst in bits")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "mm1":
+        stats = mm1(parse_rate(args.rate), args.load, parse_size(args.size))
+        for key, value in stats.items():
+            print(f"{key:>14}: {value:.3f}" if key == "avg_queue_len"
+                  else f"{key:>14}: {fmt_time(value)}")
+    elif args.cmd == "cbwfq":
+        for name, bw in cbwfq_allocation(parse_rate(args.rate), parse_shares(args.classes)).items():
+            print(f"{name:>12}: {fmt_rate(bw)}")
+    else:
+        cir = parse_rate(args.cir)
+        print(f"recommended policer Bc: {recommended_policer_burst(cir):.0f} bytes")
+        if args.bc:
+            print(f"shaping interval Tc: {fmt_time(shaping_interval(cir, args.bc))}")
+
+
+if __name__ == "__main__":
+    main()
