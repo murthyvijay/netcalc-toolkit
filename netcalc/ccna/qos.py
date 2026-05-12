@@ -50,3 +50,8 @@ def cbwfq_allocation(link_bps, shares_pct):
 def shaping_interval(cir_bps, bc_bits):
     """Token bucket refill interval Tc = Bc / CIR (seconds)."""
     return bc_bits / cir_bps
+
+
+def recommended_policer_burst(cir_bps, seconds=1.5):
+    """Policer committed burst in bytes for ``seconds`` of traffic at CIR."""
+    return cir_bps / 8 * seconds
