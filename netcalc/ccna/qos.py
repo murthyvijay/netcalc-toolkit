@@ -45,3 +45,8 @@ def cbwfq_allocation(link_bps, shares_pct):
     alloc = {name: link_bps * pct / 100 for name, pct in shares_pct.items()}
     alloc["unallocated"] = link_bps * (100 - total) / 100
     return alloc
+
+
+def shaping_interval(cir_bps, bc_bits):
+    """Token bucket refill interval Tc = Bc / CIR (seconds)."""
+    return bc_bits / cir_bps
