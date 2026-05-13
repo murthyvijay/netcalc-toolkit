@@ -189,3 +189,10 @@ point-to-point links (RFC 3021, 2 hosts) and /32 host routes. The prefix that
 fits H hosts is `32 - ceil(log2(H + 2))`. VLSM allocates the largest segment
 first and aligns each subnet on a multiple of its size, which guarantees no
 overlap and minimal waste.
+
+### Wildcard masks (`wildcard`)
+
+A wildcard is the inverse of a mask: `0` = must match, `1` = ignore. An
+address matches an ACL entry when `(entry & ~wildcard) == (addr & ~wildcard)`.
+Wildcards need not be contiguous: `10.1.1.0 0.0.254.255` matches every odd
+third octet. An entry with `k` one-bits matches `2^k` addresses.
