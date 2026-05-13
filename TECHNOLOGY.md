@@ -180,3 +180,12 @@ Both show why long-RTT paths are so sensitive to loss: throughput falls as
 ---
 
 ## 3. CCNA / CCNP calculations
+
+### Subnetting and VLSM (`subnet`, `vlsm`)
+
+For prefix length `L` in IPv4 there are `2^(32-L)` addresses and
+`2^(32-L) - 2` usable hosts (network and broadcast reserved), except /31
+point-to-point links (RFC 3021, 2 hosts) and /32 host routes. The prefix that
+fits H hosts is `32 - ceil(log2(H + 2))`. VLSM allocates the largest segment
+first and aligns each subnet on a multiple of its size, which guarantees no
+overlap and minimal waste.
