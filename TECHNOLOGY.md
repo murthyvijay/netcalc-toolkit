@@ -178,3 +178,5 @@ Both show why long-RTT paths are so sensitive to loss: throughput falls as
 `1 / (RTT * sqrt(p))`.
 
 ---
+
+## 3. CCNA / CCNP calculations
