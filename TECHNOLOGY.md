@@ -234,3 +234,14 @@ proposal/agreement handshakes. Port cost is 802.1D short (4 for 1G, 2 for
 10G) or 802.1t long (`20 Tb/s / bandwidth`). The root bridge has the lowest
 bridge ID: priority (a multiple of 4096 plus the VLAN with extended system
 ID), then MAC.
+
+### QoS and queueing (`qos`)
+
+For an M/M/1 queue with utilisation `rho`, mean waiting time is
+`rho / (mu - lambda)` and mean queue length `rho^2 / (1 - rho)`. At 50 %
+load the queue holds 0.5 packets on average; at 90 % it holds 8.1. CBWFQ
+guarantees each class its configured share under congestion. A token-bucket
+shaper refills every `Tc = Bc / CIR`; Cisco's policer guideline is
+`Bc = CIR / 8 * 1.5 s` bytes.
+
+---
