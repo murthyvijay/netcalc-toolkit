@@ -203,3 +203,10 @@ A single summary is the longest prefix shared by the lowest and highest
 address: `prefix = 32 - bit_length(low XOR high)`. If the component routes do
 not fill it, the summary also attracts traffic for addresses you do not have
 (a black-hole risk), which the tool reports.
+
+### OSPF cost (`ospf`)
+
+`cost = max(1, floor(reference_bw / interface_bw))`, path cost is the sum of
+outgoing interface costs. The 100 Mb/s default makes every modern link cost 1,
+so set `auto-cost reference-bandwidth` above your fastest link on every
+router.
