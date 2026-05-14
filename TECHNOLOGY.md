@@ -223,3 +223,14 @@ Default K values (1, 0, 1, 0, 0) give `256 * (BW + DELAY)`. A neighbour is a
 feasible successor (loop-free backup) when its reported distance is strictly
 less than the current feasible distance. `variance V` allows unequal-cost
 paths with metric up to `V *` the best.
+
+### Spanning Tree (`stp`)
+
+802.1D ties timers to the network diameter `d` and hello time `h`:
+`max_age = 4h + 2d - 2`, `forward_delay = (4h + 3d) / 2`. Defaults (h = 2,
+d = 7) give 20 s and 15 s; reconvergence after an indirect failure can take
+`max_age + 2 * forward_delay` = 50 s, which RSTP replaces with
+proposal/agreement handshakes. Port cost is 802.1D short (4 for 1G, 2 for
+10G) or 802.1t long (`20 Tb/s / bandwidth`). The root bridge has the lowest
+bridge ID: priority (a multiple of 4096 plus the VLAN with extended system
+ID), then MAC.
