@@ -61,3 +61,15 @@ STACKS = {
     "roce_write": ["eth", "ipv4", "udp", "bth", "reth", "icrc"],
     "roce6": ["eth", "ipv6", "udp", "bth", "icrc"],
 }
+
+
+def resolve_stack(stack):
+    """Accept a stack name, a comma string or a list; return a list of layers."""
+    if isinstance(stack, str):
+        if stack in STACKS:
+            return list(STACKS[stack])
+        stack = stack.split(",")
+    unknown = [layer for layer in stack if layer not in HEADERS]
+    if unknown:
+        raise ValueError(f"unknown layers: {unknown}")
+    return list(stack)
