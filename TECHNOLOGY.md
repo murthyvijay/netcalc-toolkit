@@ -210,3 +210,16 @@ not fill it, the summary also attracts traffic for addresses you do not have
 outgoing interface costs. The 100 Mb/s default makes every modern link cost 1,
 so set `auto-cost reference-bandwidth` above your fastest link on every
 router.
+
+### EIGRP metric (`eigrp`)
+
+```
+BW    = 10^7 / min bandwidth (kbps)
+DELAY = sum delay (us) / 10
+metric = 256 * (K1 BW + K2 BW / (256 - load) + K3 DELAY) [* K5 / (rel + K4)]
+```
+
+Default K values (1, 0, 1, 0, 0) give `256 * (BW + DELAY)`. A neighbour is a
+feasible successor (loop-free backup) when its reported distance is strictly
+less than the current feasible distance. `variance V` allows unequal-cost
+paths with metric up to `V *` the best.
