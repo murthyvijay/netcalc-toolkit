@@ -33,3 +33,16 @@ Ultra Ethernet-style spraying, RoCE/PFC/DCQCN, buffers, collectives).
 | `loss` | loss ratio, multi-hop loss, burst/duplicate/reorder analysis | `netcalc loss seq 1 2 3 6 7 7 5 8 12` |
 | `throughput` | BDP, window-limited throughput, window scaling, transfer time | `netcalc throughput bdp --rate 10G --rtt 80ms` |
 | `tcp` | Mathis and Padhye TCP throughput models, max tolerable loss | `netcalc tcp mathis --rtt 50ms --loss 1e-4` |
+
+### CCNA / CCNP (`netcalc.ccna`)
+
+| tool | what it answers | example |
+|---|---|---|
+| `subnet` | network/broadcast/host range, mask and wildcard, class, prefix for N hosts, split (IPv4 and IPv6) | `netcalc subnet split 10.0.0.0/22 --prefix 24` |
+| `vlsm` | VLSM plan for named segments | `netcalc vlsm 192.168.1.0/24 SALES=100 ENG=50 HR=20` |
+| `wildcard` | mask/wildcard conversion, ACL matching (non-contiguous too), range to ACL entries | `netcalc wildcard match 10.1.1.0 0.0.254.255 10.1.7.9` |
+| `summarize` | exact aggregate and single summary route, with over-coverage warning | `netcalc summarize 172.16.0.0/24 172.16.1.0/24` |
+| `ospf` | interface cost, path cost, reference bandwidth table | `netcalc ospf table --ref 400G` |
+| `eigrp` | classic composite metric with K values, feasibility condition, variance | `netcalc eigrp metric --bw-kbps 100000 --delay-us 100` |
+| `stp` | 802.1D timers from diameter, short/long port costs, root election | `netcalc stp timers --diameter 4` |
+| `qos` | M/M/1 queueing delay, CBWFQ shares, shaper Tc and policer Bc | `netcalc qos mm1 --rate 1G --load 0.8` |
