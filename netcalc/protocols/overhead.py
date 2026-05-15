@@ -83,3 +83,8 @@ def header_bytes(stack):
 def frame_bytes(payload, stack):
     """Ethernet frame size (header to FCS), padded to the 64-byte minimum."""
     return max(ETH_MIN_FRAME, payload + header_bytes(stack))
+
+
+def wire_bytes(payload, stack):
+    """Bytes of line time a packet occupies, including preamble and IFG."""
+    return frame_bytes(payload, stack) + ETH_WIRE_EXTRA
