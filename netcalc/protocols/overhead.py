@@ -98,3 +98,8 @@ def efficiency(payload, stack):
 def goodput(payload, stack, rate_bps):
     """Application-layer throughput at full line rate (bps)."""
     return rate_bps * efficiency(payload, stack)
+
+
+def packets_per_second(frame, rate_bps):
+    """Maximum frames per second for a given frame size (64..9216 bytes)."""
+    return rate_bps / ((max(frame, ETH_MIN_FRAME) + ETH_WIRE_EXTRA) * 8)
