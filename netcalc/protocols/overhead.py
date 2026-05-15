@@ -88,3 +88,8 @@ def frame_bytes(payload, stack):
 def wire_bytes(payload, stack):
     """Bytes of line time a packet occupies, including preamble and IFG."""
     return frame_bytes(payload, stack) + ETH_WIRE_EXTRA
+
+
+def efficiency(payload, stack):
+    """Fraction of the line rate that is application payload."""
+    return payload / wire_bytes(payload, stack)
