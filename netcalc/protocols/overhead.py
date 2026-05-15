@@ -73,3 +73,8 @@ def resolve_stack(stack):
     if unknown:
         raise ValueError(f"unknown layers: {unknown}")
     return list(stack)
+
+
+def header_bytes(stack):
+    """Bytes of headers and trailers in a stack (excluding preamble/IFG)."""
+    return sum(HEADERS[layer] for layer in resolve_stack(stack))
