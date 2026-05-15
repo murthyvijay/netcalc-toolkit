@@ -78,3 +78,8 @@ def resolve_stack(stack):
 def header_bytes(stack):
     """Bytes of headers and trailers in a stack (excluding preamble/IFG)."""
     return sum(HEADERS[layer] for layer in resolve_stack(stack))
+
+
+def frame_bytes(payload, stack):
+    """Ethernet frame size (header to FCS), padded to the 64-byte minimum."""
+    return max(ETH_MIN_FRAME, payload + header_bytes(stack))
