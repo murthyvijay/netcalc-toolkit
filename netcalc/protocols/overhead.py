@@ -93,3 +93,8 @@ def wire_bytes(payload, stack):
 def efficiency(payload, stack):
     """Fraction of the line rate that is application payload."""
     return payload / wire_bytes(payload, stack)
+
+
+def goodput(payload, stack, rate_bps):
+    """Application-layer throughput at full line rate (bps)."""
+    return rate_bps * efficiency(payload, stack)
