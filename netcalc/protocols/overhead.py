@@ -103,3 +103,36 @@ def goodput(payload, stack, rate_bps):
 def packets_per_second(frame, rate_bps):
     """Maximum frames per second for a given frame size (64..9216 bytes)."""
     return rate_bps / ((max(frame, ETH_MIN_FRAME) + ETH_WIRE_EXTRA) * 8)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("goodput")
+    p.add_argument("--payload", type=int, required=True)
+    p.add_argument("--stack", default="tcp", help="stack name or comma list of layers")
+    p.add_argument("--rate", default="10G")
+    p = sub.add_parser("pps")
+    p.add_argument("--frame", type=int, default=64)
+    p.add_argument("--rate", default="10G")
+    sub.add_parser("stacks", help="list predefined stacks")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "goodput":
+        rate = parse_rate(args.rate)
+        layers = resolve_stack(args.stack)
+        print(f"stack: {' / '.join(layers)} ({header_bytes(layers)} B headers)")
+        print(f"frame {frame_bytes(args.payload, layers)} B, "
+              f"wire {wire_bytes(args.payload, layers)} B, "
+              f"efficiency {efficiency(args.payload, layers):.2%}")
+        print(f"goodput: {fmt_rate(goodput(args.payload, layers, rate))}")
+    elif args.cmd == "pps":
+        pps = packets_per_second(args.frame, parse_rate(args.rate))
+        print(f"{pps / 1e6:.3f} Mpps")
+    else:
+        for name, layers in STACKS.items():
+            print(f"{name:>11}: {' / '.join(layers)} ({header_bytes(layers)} B)")
+
+
+if __name__ == "__main__":
+    main()
