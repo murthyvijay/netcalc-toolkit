@@ -41,3 +41,11 @@ def mss(mtu, ipv6=False, timestamps=False, extra_options=0):
     ip_header = 40 if ipv6 else 20
     options = (12 if timestamps else 0) + extra_options
     return mtu - ip_header - 20 - options
+
+
+def encap_overhead(*encaps):
+    """Total bytes added by a list of encapsulations."""
+    unknown = [e for e in encaps if e not in ENCAP_BYTES]
+    if unknown:
+        raise ValueError(f"unknown encapsulations: {unknown}")
+    return sum(ENCAP_BYTES[e] for e in encaps)
