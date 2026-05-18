@@ -49,3 +49,8 @@ def encap_overhead(*encaps):
     if unknown:
         raise ValueError(f"unknown encapsulations: {unknown}")
     return sum(ENCAP_BYTES[e] for e in encaps)
+
+
+def effective_mtu(mtu, *encaps):
+    """Inner MTU left after carrying ``encaps`` over a link of ``mtu``."""
+    return mtu - encap_overhead(*encaps)
