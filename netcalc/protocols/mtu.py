@@ -34,3 +34,10 @@ ENCAP_BYTES = {
 
 ROCE_MTUS = (256, 512, 1024, 2048, 4096)
 ROCE_HEADERS = 20 + 8 + 12 + 4  # IPv4 + UDP + BTH + ICRC
+
+
+def mss(mtu, ipv6=False, timestamps=False, extra_options=0):
+    """TCP maximum segment size for an IP MTU."""
+    ip_header = 40 if ipv6 else 20
+    options = (12 if timestamps else 0) + extra_options
+    return mtu - ip_header - 20 - options
