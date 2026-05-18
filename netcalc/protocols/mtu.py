@@ -54,3 +54,8 @@ def encap_overhead(*encaps):
 def effective_mtu(mtu, *encaps):
     """Inner MTU left after carrying ``encaps`` over a link of ``mtu``."""
     return mtu - encap_overhead(*encaps)
+
+
+def required_underlay_mtu(inner_mtu, *encaps):
+    """Underlay MTU needed to carry ``inner_mtu`` without fragmentation."""
+    return inner_mtu + encap_overhead(*encaps)
