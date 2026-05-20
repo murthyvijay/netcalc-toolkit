@@ -68,3 +68,35 @@ def roce_path_mtu(ethernet_mtu, ipv6=False):
     if not fitting:
         raise ValueError("Ethernet MTU too small for RoCE")
     return fitting[-1]
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("mss")
+    p.add_argument("--mtu", type=int, default=1500)
+    p.add_argument("--ipv6", action="store_true")
+    p.add_argument("--timestamps", action="store_true")
+    p = sub.add_parser("overlay", help="underlay MTU required for an overlay")
+    p.add_argument("--inner-mtu", type=int, default=1500)
+    p.add_argument("encaps", nargs="+", choices=sorted(ENCAP_BYTES))
+    p = sub.add_parser("effective", help="inner MTU left after encapsulation")
+    p.add_argument("--mtu", type=int, default=1500)
+    p.add_argument("encaps", nargs="+", choices=sorted(ENCAP_BYTES))
+    p = sub.add_parser("roce", help="RoCE path MTU for an Ethernet MTU")
+    p.add_argument("--mtu", type=int, default=9000)
+    p.add_argument("--ipv6", action="store_true")
+    args = parser.parse_args(argv)
+
+    if args.cmd == "mss":
+        print(f"MSS = {mss(args.mtu, args.ipv6, args.timestamps)} bytes")
+    elif args.cmd == "overlay":
+        print(f"underlay MTU >= {required_underlay_mtu(args.inner_mtu, *args.encaps)}")
+    elif args.cmd == "effective":
+        print(f"effective MTU = {effective_mtu(args.mtu, *args.encaps)}")
+    else:
+        print(f"RoCE path MTU = {roce_path_mtu(args.mtu, args.ipv6)}")
+
+
+if __name__ == "__main__":
+    main()
