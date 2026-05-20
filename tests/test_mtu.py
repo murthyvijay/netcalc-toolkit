@@ -20,3 +20,15 @@ class TestEncapsulation(unittest.TestCase):
         self.assertEqual(mtu.encap_overhead("mpls", "mpls", "dot1q"), 12)
         with self.assertRaises(ValueError):
             mtu.encap_overhead("tunnel_of_love")
+
+
+class TestRoce(unittest.TestCase):
+    def test_path_mtu(self):
+        self.assertEqual(mtu.roce_path_mtu(1500), 1024)
+        self.assertEqual(mtu.roce_path_mtu(9000), 4096)
+        self.assertEqual(mtu.roce_path_mtu(4200), 4096)
+        self.assertEqual(mtu.roce_path_mtu(4120, ipv6=True), 2048)
+
+
+if __name__ == "__main__":
+    unittest.main()
