@@ -247,3 +247,21 @@ shaper refills every `Tc = Bc / CIR`; Cisco's policer guideline is
 ---
 
 ## 4. Protocol overhead and MTU
+
+### Header overhead and goodput (`overhead`)
+
+On the wire each Ethernet frame adds an 8-byte preamble/SFD and a 12-byte
+inter-frame gap to its 14-byte header and 4-byte FCS. Goodput is
+
+```
+goodput = R * payload / (payload + headers + 20)
+```
+
+| stack | headers (B) | efficiency at full size |
+|---|---|---|
+| Ethernet/IPv4/TCP, 1460 B payload | 58 | 94.9 % |
+| VXLAN (IPv4 underlay) carrying TCP | 108 | about 92 % at 1500 B inner MTU |
+| RoCEv2 (Eth/IPv4/UDP/BTH/ICRC), 4096 B | 62 | 98.0 % |
+
+Minimum frames are 64 bytes (84 on the wire), so 10GbE tops out at 14.88
+Mpps; this is the figure to size packet-rate limited devices against.
