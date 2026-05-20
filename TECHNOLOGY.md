@@ -245,3 +245,5 @@ shaper refills every `Tc = Bc / CIR`; Cisco's policer guideline is
 `Bc = CIR / 8 * 1.5 s` bytes.
 
 ---
+
+## 4. Protocol overhead and MTU
