@@ -59,3 +59,12 @@ def effective_mtu(mtu, *encaps):
 def required_underlay_mtu(inner_mtu, *encaps):
     """Underlay MTU needed to carry ``inner_mtu`` without fragmentation."""
     return inner_mtu + encap_overhead(*encaps)
+
+
+def roce_path_mtu(ethernet_mtu, ipv6=False):
+    """Largest RoCE path MTU that fits in an Ethernet (IP) MTU."""
+    headers = ROCE_HEADERS + (20 if ipv6 else 0)
+    fitting = [m for m in ROCE_MTUS if m + headers <= ethernet_mtu]
+    if not fitting:
+        raise ValueError("Ethernet MTU too small for RoCE")
+    return fitting[-1]
