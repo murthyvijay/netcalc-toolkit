@@ -46,3 +46,10 @@ Ultra Ethernet-style spraying, RoCE/PFC/DCQCN, buffers, collectives).
 | `eigrp` | classic composite metric with K values, feasibility condition, variance | `netcalc eigrp metric --bw-kbps 100000 --delay-us 100` |
 | `stp` | 802.1D timers from diameter, short/long port costs, root election | `netcalc stp timers --diameter 4` |
 | `qos` | M/M/1 queueing delay, CBWFQ shares, shaper Tc and policer Bc | `netcalc qos mm1 --rate 1G --load 0.8` |
+
+### Protocols (`netcalc.protocols`)
+
+| tool | what it answers | example |
+|---|---|---|
+| `overhead` | header bytes, wire efficiency, goodput and pps for Ethernet/IP/TCP/UDP/VXLAN/RoCEv2 stacks | `netcalc overhead goodput --payload 4096 --stack roce --rate 400G` |
+| `mtu` | TCP MSS, overlay underlay MTU (VXLAN, GRE, IPsec, ...), RoCE path MTU | `netcalc mtu overlay --inner-mtu 1500 vxlan` |
