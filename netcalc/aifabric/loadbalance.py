@@ -54,3 +54,12 @@ def simulate_max_load(flows, paths, units_per_flow=1, trials=2000, seed=1):
             load[rng.randrange(paths)] += 1
         total += max(load) / ideal
     return total / trials
+
+
+def effective_throughput_fraction(max_load_ratio):
+    """Fraction of fabric bandwidth usable when the job runs at the slowest path.
+
+    Synchronous collectives finish when the most loaded path finishes, so the
+    useful throughput is ``1 / max_load_ratio`` of the ideal.
+    """
+    return 1 / max_load_ratio
