@@ -19,3 +19,15 @@ Usage::
 import argparse
 import math
 import random
+
+
+def collision_probability(flows, paths):
+    """Probability that at least two of ``flows`` hash onto the same path.
+
+    The birthday problem: ``1 - P! / ((P - F)! * P^F)``.
+    """
+    if flows > paths:
+        return 1.0
+    log_no_collision = (math.lgamma(paths + 1) - math.lgamma(paths - flows + 1)
+                        - flows * math.log(paths))
+    return 1 - math.exp(log_no_collision)
