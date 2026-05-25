@@ -36,3 +36,21 @@ def collision_probability(flows, paths):
 def expected_idle_paths(flows, paths):
     """Expected number of paths that receive no flow: ``P (1 - 1/P)^F``."""
     return paths * (1 - 1 / paths) ** flows
+
+
+def simulate_max_load(flows, paths, units_per_flow=1, trials=2000, seed=1):
+    """Mean of the busiest path's load divided by the ideal (even) load.
+
+    ``units_per_flow=1`` models flow-level ECMP; a larger value models
+    spraying each flow as that many independently hashed packets or
+    sub-flows (for example several queue pairs per connection).
+    """
+    rng = random.Random(seed)
+    ideal = flows * units_per_flow / paths
+    total = 0.0
+    for _ in range(trials):
+        load = [0] * paths
+        for _ in range(flows * units_per_flow):
+            load[rng.randrange(paths)] += 1
+        total += max(load) / ideal
+    return total / trials
