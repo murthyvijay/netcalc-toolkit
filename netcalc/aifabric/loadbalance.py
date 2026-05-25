@@ -31,3 +31,8 @@ def collision_probability(flows, paths):
     log_no_collision = (math.lgamma(paths + 1) - math.lgamma(paths - flows + 1)
                         - flows * math.log(paths))
     return 1 - math.exp(log_no_collision)
+
+
+def expected_idle_paths(flows, paths):
+    """Expected number of paths that receive no flow: ``P (1 - 1/P)^F``."""
+    return paths * (1 - 1 / paths) ** flows
