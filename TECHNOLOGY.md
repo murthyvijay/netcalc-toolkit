@@ -265,3 +265,14 @@ goodput = R * payload / (payload + headers + 20)
 
 Minimum frames are 64 bytes (84 on the wire), so 10GbE tops out at 14.88
 Mpps; this is the figure to size packet-rate limited devices against.
+
+### MTU and MSS (`mtu`)
+
+`MSS = MTU - IP header (20 or 40) - TCP header (20) - options`. Overlays
+consume underlay MTU: VXLAN over IPv4 adds 50 bytes (outer Ethernet 14,
+IPv4 20, UDP 8, VXLAN 8), so a 1500-byte tenant MTU needs at least 1550 in
+the underlay, and data-centre fabrics usually run 9216. RoCEv2 picks its path
+MTU from 256 to 4096 bytes; with a 1500-byte Ethernet MTU only 1024 fits,
+which is why RDMA fabrics run jumbo frames.
+
+---
