@@ -63,3 +63,30 @@ def effective_throughput_fraction(max_load_ratio):
     useful throughput is ``1 / max_load_ratio`` of the ideal.
     """
     return 1 / max_load_ratio
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("collide")
+    p.add_argument("--flows", type=int, required=True)
+    p.add_argument("--paths", type=int, required=True)
+    p = sub.add_parser("imbalance")
+    p.add_argument("--flows", type=int, required=True)
+    p.add_argument("--paths", type=int, required=True)
+    p.add_argument("--spray", type=int, default=1, help="packets/sub-flows per flow")
+    p.add_argument("--trials", type=int, default=2000)
+    p.add_argument("--seed", type=int, default=1)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "collide":
+        print(f"P(collision) = {collision_probability(args.flows, args.paths):.2%}")
+        print(f"expected idle paths = {expected_idle_paths(args.flows, args.paths):.2f}")
+    else:
+        ratio = simulate_max_load(args.flows, args.paths, args.spray, args.trials, args.seed)
+        print(f"busiest path carries {ratio:.2f}x the even share; "
+              f"effective throughput {effective_throughput_fraction(ratio):.1%}")
+
+
+if __name__ == "__main__":
+    main()
