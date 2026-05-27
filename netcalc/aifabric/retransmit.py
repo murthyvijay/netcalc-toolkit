@@ -34,3 +34,8 @@ def window_packets(rate_bps, rtt_s, mtu_bytes):
 def selective_efficiency(loss):
     """Goodput fraction with selective retransmission."""
     return 1 - loss
+
+
+def go_back_n_efficiency(loss, window):
+    """Goodput fraction with go-back-N and ``window`` packets in flight."""
+    return (1 - loss) / (1 - loss + loss * window)
