@@ -29,3 +29,8 @@ from netcalc.units import fmt_rate, fmt_time, parse_rate, parse_size, parse_time
 def window_packets(rate_bps, rtt_s, mtu_bytes):
     """Packets in flight needed to fill the pipe (BDP / MTU, at least 1)."""
     return max(1, math.ceil(bdp_bytes(rate_bps, rtt_s) / mtu_bytes))
+
+
+def selective_efficiency(loss):
+    """Goodput fraction with selective retransmission."""
+    return 1 - loss
