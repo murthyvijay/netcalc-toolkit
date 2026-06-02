@@ -39,3 +39,8 @@ def selective_efficiency(loss):
 def go_back_n_efficiency(loss, window):
     """Goodput fraction with go-back-N and ``window`` packets in flight."""
     return (1 - loss) / (1 - loss + loss * window)
+
+
+def message_retransmit_probability(loss, packets):
+    """Probability that a message of ``packets`` sees at least one loss."""
+    return 1 - (1 - loss) ** packets
