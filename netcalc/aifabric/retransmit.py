@@ -44,3 +44,15 @@ def go_back_n_efficiency(loss, window):
 def message_retransmit_probability(loss, packets):
     """Probability that a message of ``packets`` sees at least one loss."""
     return 1 - (1 - loss) ** packets
+
+
+def expected_message_time(size_bytes, rate_bps, mtu_bytes, loss, recovery_s):
+    """Expected completion time of one message including loss recovery.
+
+    Adds ``recovery_s`` (an RTO or a NAK round trip) weighted by the chance
+    the message needs any retransmission. Collective operations wait for the
+    slowest message, so this tail matters more than the average.
+    """
+    packets = math.ceil(size_bytes / mtu_bytes)
+    base = size_bytes * 8 / rate_bps
+    return base + message_retransmit_probability(loss, packets) * recovery_s
