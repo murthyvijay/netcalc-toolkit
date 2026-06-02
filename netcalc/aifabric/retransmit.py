@@ -56,3 +56,38 @@ def expected_message_time(size_bytes, rate_bps, mtu_bytes, loss, recovery_s):
     packets = math.ceil(size_bytes / mtu_bytes)
     base = size_bytes * 8 / rate_bps
     return base + message_retransmit_probability(loss, packets) * recovery_s
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("compare", help="go-back-N vs selective goodput")
+    p.add_argument("--loss", type=float, required=True)
+    p.add_argument("--rate", default="400G")
+    p.add_argument("--rtt", default="10us")
+    p.add_argument("--mtu", default="4096")
+    p = sub.add_parser("message", help="message completion time with loss")
+    p.add_argument("--loss", type=float, required=True)
+    p.add_argument("--size", required=True)
+    p.add_argument("--rate", default="400G")
+    p.add_argument("--mtu", default="4096")
+    p.add_argument("--rto", default="1ms", help="recovery time when a loss occurs")
+    args = parser.parse_args(argv)
+    rate, mtu = parse_rate(args.rate), parse_size(args.mtu)
+
+    if args.cmd == "compare":
+        w = window_packets(rate, parse_time(args.rtt), mtu)
+        sr, gbn = selective_efficiency(args.loss), go_back_n_efficiency(args.loss, w)
+        print(f"window = {w} packets")
+        print(f"selective repeat: {sr:.4%} -> {fmt_rate(rate * sr)}")
+        print(f"go-back-N:        {gbn:.4%} -> {fmt_rate(rate * gbn)}")
+    else:
+        size = parse_size(args.size)
+        packets = math.ceil(size / mtu)
+        prob = message_retransmit_probability(args.loss, packets)
+        t = expected_message_time(size, rate, mtu, args.loss, parse_time(args.rto))
+        print(f"{packets} packets, P(any loss) = {prob:.2%}, expected time {fmt_time(t)}")
+
+
+if __name__ == "__main__":
+    main()
