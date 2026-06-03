@@ -55,3 +55,8 @@ def failover_capacity(paths, path_rate_bps, failed=0):
     if failed > paths:
         raise ValueError("more failed paths than paths")
     return (paths - failed) * path_rate_bps
+
+
+def reorder_buffer_bytes(rate_bps, delay_skew_s, mtu_bytes=0):
+    """Receiver buffer to absorb path delay skew: rate * skew (+ one MTU)."""
+    return rate_bps * delay_skew_s / 8 + mtu_bytes
