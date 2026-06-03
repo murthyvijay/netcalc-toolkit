@@ -43,3 +43,8 @@ def coverage_probability(paths, values):
     total = sum((-1) ** k * math.comb(paths, k) * (1 - k / paths) ** values
                 for k in range(paths + 1))
     return min(1.0, max(0.0, total))
+
+
+def expected_paths_used(paths, values):
+    """Expected number of distinct paths hit by ``values`` entropies."""
+    return paths * (1 - (1 - 1 / paths) ** values)
