@@ -48,3 +48,10 @@ def coverage_probability(paths, values):
 def expected_paths_used(paths, values):
     """Expected number of distinct paths hit by ``values`` entropies."""
     return paths * (1 - (1 - 1 / paths) ** values)
+
+
+def failover_capacity(paths, path_rate_bps, failed=0):
+    """Aggregate capacity with ``failed`` paths removed from the spray set."""
+    if failed > paths:
+        raise ValueError("more failed paths than paths")
+    return (paths - failed) * path_rate_bps
