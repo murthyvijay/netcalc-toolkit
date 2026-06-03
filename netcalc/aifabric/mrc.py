@@ -28,3 +28,8 @@ from netcalc.units import fmt_rate, fmt_size, parse_rate, parse_size, parse_time
 def harmonic(n):
     """n-th harmonic number H(n) = 1 + 1/2 + ... + 1/n."""
     return sum(1 / i for i in range(1, n + 1))
+
+
+def expected_entropies_to_cover(paths):
+    """Expected random entropy values until every path has been hit: P * H(P)."""
+    return paths * harmonic(paths)
