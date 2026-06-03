@@ -33,3 +33,13 @@ def harmonic(n):
 def expected_entropies_to_cover(paths):
     """Expected random entropy values until every path has been hit: P * H(P)."""
     return paths * harmonic(paths)
+
+
+def coverage_probability(paths, values):
+    """Probability that ``values`` random entropies hit all ``paths``.
+
+    Inclusion-exclusion: ``sum_k (-1)^k C(P, k) (1 - k/P)^V``.
+    """
+    total = sum((-1) ** k * math.comb(paths, k) * (1 - k / paths) ** values
+                for k in range(paths + 1))
+    return min(1.0, max(0.0, total))
