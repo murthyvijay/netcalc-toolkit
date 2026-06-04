@@ -40,3 +40,15 @@ QUANTUM_BITS = 512
 def cable_delay(length_m, refractive_index=FIBER_REFRACTIVE_INDEX):
     """One-way propagation delay of a cable in seconds."""
     return length_m * refractive_index / SPEED_OF_LIGHT_M_S
+
+
+def pfc_headroom(rate_bps, cable_m, mtu_bytes=4096, response_s=1e-6,
+                 refractive_index=FIBER_REFRACTIVE_INDEX):
+    """Per-priority PFC headroom estimate in bytes (see module docstring).
+
+    ``response_s`` lumps the PHY/MAC and peer pause-processing delay; check
+    your switch vendor's numbers for production configs.
+    """
+    wire = 2 * cable_delay(cable_m, refractive_index) * rate_bps / 8
+    response = response_s * rate_bps / 8
+    return wire + 2 * mtu_bytes + response + PFC_FRAME_BYTES
