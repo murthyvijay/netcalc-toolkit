@@ -57,3 +57,12 @@ def pfc_headroom(rate_bps, cable_m, mtu_bytes=4096, response_s=1e-6,
 def pause_time(quanta, rate_bps):
     """Duration of a PFC pause: one quantum is 512 bit times."""
     return quanta * QUANTUM_BITS / rate_bps
+
+
+def ecn_mark_probability(queue_bytes, kmin_bytes, kmax_bytes, pmax):
+    """RED-style ECN marking probability for an instantaneous queue depth."""
+    if queue_bytes <= kmin_bytes:
+        return 0.0
+    if queue_bytes >= kmax_bytes:
+        return 1.0
+    return (queue_bytes - kmin_bytes) / (kmax_bytes - kmin_bytes) * pmax
