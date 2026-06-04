@@ -15,3 +15,17 @@ class TestEntropy(unittest.TestCase):
 
     def test_expected_paths_used(self):
         self.assertAlmostEqual(mrc.expected_paths_used(2, 2), 1.5)
+
+
+class TestCapacity(unittest.TestCase):
+    def test_failover(self):
+        self.assertEqual(mrc.failover_capacity(8, 400e9, 1), 7 * 400e9)
+        with self.assertRaises(ValueError):
+            mrc.failover_capacity(2, 1e9, 3)
+
+    def test_reorder_buffer(self):
+        self.assertAlmostEqual(mrc.reorder_buffer_bytes(800e9, 4e-6, 4096), 400000 + 4096)
+
+
+if __name__ == "__main__":
+    unittest.main()
