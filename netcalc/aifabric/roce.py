@@ -52,3 +52,8 @@ def pfc_headroom(rate_bps, cable_m, mtu_bytes=4096, response_s=1e-6,
     wire = 2 * cable_delay(cable_m, refractive_index) * rate_bps / 8
     response = response_s * rate_bps / 8
     return wire + 2 * mtu_bytes + response + PFC_FRAME_BYTES
+
+
+def pause_time(quanta, rate_bps):
+    """Duration of a PFC pause: one quantum is 512 bit times."""
+    return quanta * QUANTUM_BITS / rate_bps
