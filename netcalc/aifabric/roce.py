@@ -66,3 +66,32 @@ def ecn_mark_probability(queue_bytes, kmin_bytes, kmax_bytes, pmax):
     if queue_bytes >= kmax_bytes:
         return 1.0
     return (queue_bytes - kmin_bytes) / (kmax_bytes - kmin_bytes) * pmax
+
+
+def dcqcn_trace(line_rate_bps, cnp_steps, steps, g=1 / 256, rate_ai_bps=None,
+                fast_recovery_stages=5, alpha=1.0):
+    """Simulate DCQCN's sending rate over ``steps`` timer periods.
+
+    ``cnp_steps`` is a set of step indices at which a CNP arrives. Between
+    CNPs the rate recovers: fast recovery for ``fast_recovery_stages``
+    periods, then additive increase by ``rate_ai_bps`` (default 0.5 % of line
+    rate). Returns a list of ``(step, rate_bps, alpha)``.
+    """
+    rate_ai = rate_ai_bps or line_rate_bps * 0.005
+    rc = rt = line_rate_bps
+    since_cut = 0
+    trace = []
+    for step in range(steps):
+        if step in cnp_steps:
+            alpha = (1 - g) * alpha + g
+            rt = rc
+            rc = rc * (1 - alpha / 2)
+            since_cut = 0
+        else:
+            alpha = (1 - g) * alpha
+            since_cut += 1
+            if since_cut > fast_recovery_stages:
+                rt = min(line_rate_bps, rt + rate_ai)
+            rc = min(line_rate_bps, (rt + rc) / 2)
+        trace.append((step, rc, alpha))
+    return trace
