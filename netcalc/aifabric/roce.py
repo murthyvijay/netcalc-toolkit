@@ -35,3 +35,8 @@ from netcalc.units import (FIBER_REFRACTIVE_INDEX, SPEED_OF_LIGHT_M_S, fmt_rate,
 
 PFC_FRAME_BYTES = 64
 QUANTUM_BITS = 512
+
+
+def cable_delay(length_m, refractive_index=FIBER_REFRACTIVE_INDEX):
+    """One-way propagation delay of a cable in seconds."""
+    return length_m * refractive_index / SPEED_OF_LIGHT_M_S
