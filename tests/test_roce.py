@@ -18,3 +18,10 @@ class TestPfc(unittest.TestCase):
 
     def test_pause_quanta(self):
         self.assertAlmostEqual(roce.pause_time(65535, 100e9), 65535 * 512 / 100e9)
+
+
+class TestEcn(unittest.TestCase):
+    def test_red_curve(self):
+        self.assertEqual(roce.ecn_mark_probability(50, 100, 400, 0.2), 0.0)
+        self.assertAlmostEqual(roce.ecn_mark_probability(250, 100, 400, 0.2), 0.1)
+        self.assertEqual(roce.ecn_mark_probability(500, 100, 400, 0.2), 1.0)
