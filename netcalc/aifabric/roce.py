@@ -95,3 +95,46 @@ def dcqcn_trace(line_rate_bps, cnp_steps, steps, g=1 / 256, rate_ai_bps=None,
             rc = min(line_rate_bps, (rt + rc) / 2)
         trace.append((step, rc, alpha))
     return trace
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("headroom", help="PFC headroom per priority")
+    p.add_argument("--rate", required=True)
+    p.add_argument("--cable", default="100m", help="cable length in metres, e.g. 100m")
+    p.add_argument("--mtu", default="4096")
+    p.add_argument("--response", default="1us")
+    p = sub.add_parser("quanta", help="pause duration of a quanta value")
+    p.add_argument("--rate", required=True)
+    p.add_argument("--quanta", type=int, default=65535)
+    p = sub.add_parser("ecn", help="ECN marking probability")
+    p.add_argument("--queue", required=True)
+    p.add_argument("--kmin", required=True)
+    p.add_argument("--kmax", required=True)
+    p.add_argument("--pmax", type=float, default=0.2)
+    p = sub.add_parser("dcqcn", help="DCQCN rate trace after back-to-back CNPs")
+    p.add_argument("--rate", required=True)
+    p.add_argument("--cnps", type=int, default=3, help="CNPs at steps 0..N-1")
+    p.add_argument("--steps", type=int, default=20)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "headroom":
+        cable = float(args.cable.rstrip("m"))
+        h = pfc_headroom(parse_rate(args.rate), cable, parse_size(args.mtu),
+                         parse_time(args.response))
+        print(f"PFC headroom per priority >= {fmt_size(h)}")
+    elif args.cmd == "quanta":
+        print(f"pause = {fmt_time(pause_time(args.quanta, parse_rate(args.rate)))}")
+    elif args.cmd == "ecn":
+        prob = ecn_mark_probability(parse_size(args.queue), parse_size(args.kmin),
+                                    parse_size(args.kmax), args.pmax)
+        print(f"mark probability = {prob:.2%}")
+    else:
+        rate = parse_rate(args.rate)
+        for step, rc, alpha in dcqcn_trace(rate, set(range(args.cnps)), args.steps):
+            print(f"{step:>3}  {fmt_rate(rc):>12}  alpha={alpha:.3f}")
+
+
+if __name__ == "__main__":
+    main()
