@@ -25,3 +25,19 @@ class TestEcn(unittest.TestCase):
         self.assertEqual(roce.ecn_mark_probability(50, 100, 400, 0.2), 0.0)
         self.assertAlmostEqual(roce.ecn_mark_probability(250, 100, 400, 0.2), 0.1)
         self.assertEqual(roce.ecn_mark_probability(500, 100, 400, 0.2), 1.0)
+
+
+class TestDcqcn(unittest.TestCase):
+    def test_cut_and_recover(self):
+        trace = roce.dcqcn_trace(100e9, {0}, 50)
+        self.assertAlmostEqual(trace[0][1], 50e9)
+        self.assertGreater(trace[-1][1], 95e9)
+        self.assertLess(trace[-1][2], trace[0][2])
+
+    def test_repeated_cnps_keep_cutting(self):
+        trace = roce.dcqcn_trace(100e9, {0, 1, 2}, 3)
+        self.assertLess(trace[2][1], trace[1][1])
+
+
+if __name__ == "__main__":
+    unittest.main()
