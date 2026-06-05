@@ -31,3 +31,12 @@ def incast_buffer(senders, burst_bytes, sender_rate_bps, port_rate_bps=None):
     duration = burst_bytes * 8 / sender_rate_bps
     drained = port_rate * duration / 8
     return max(0.0, senders * burst_bytes - drained)
+
+
+def absorb_time(buffer_bytes, senders, sender_rate_bps, port_rate_bps=None):
+    """How long a buffer absorbs ``senders`` at full rate before overflowing."""
+    port_rate = port_rate_bps or sender_rate_bps
+    excess = senders * sender_rate_bps - port_rate
+    if excess <= 0:
+        return float("inf")
+    return buffer_bytes * 8 / excess
