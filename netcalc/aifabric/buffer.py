@@ -19,3 +19,15 @@ Usage::
 import argparse
 
 from netcalc.units import fmt_size, fmt_time, parse_rate, parse_size
+
+
+def incast_buffer(senders, burst_bytes, sender_rate_bps, port_rate_bps=None):
+    """Peak queue (bytes) when ``senders`` each send ``burst_bytes`` at once.
+
+    All senders transmit for ``burst / sender_rate`` seconds while the egress
+    port drains at ``port_rate``; the queue peaks at the end of the burst.
+    """
+    port_rate = port_rate_bps or sender_rate_bps
+    duration = burst_bytes * 8 / sender_rate_bps
+    drained = port_rate * duration / 8
+    return max(0.0, senders * burst_bytes - drained)
