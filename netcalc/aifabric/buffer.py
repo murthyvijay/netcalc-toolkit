@@ -40,3 +40,8 @@ def absorb_time(buffer_bytes, senders, sender_rate_bps, port_rate_bps=None):
     if excess <= 0:
         return float("inf")
     return buffer_bytes * 8 / excess
+
+
+def dt_queue_limit(buffer_bytes, alpha, congested_queues):
+    """Steady-state per-queue limit under the dynamic threshold algorithm."""
+    return alpha * buffer_bytes / (1 + alpha * congested_queues)
