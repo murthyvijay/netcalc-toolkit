@@ -50,3 +50,36 @@ def dt_queue_limit(buffer_bytes, alpha, congested_queues):
 def dt_free_buffer(buffer_bytes, alpha, congested_queues):
     """Buffer left free when ``congested_queues`` sit at their DT limit."""
     return buffer_bytes / (1 + alpha * congested_queues)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("incast")
+    p.add_argument("--senders", type=int, required=True)
+    p.add_argument("--burst", required=True)
+    p.add_argument("--rate", required=True, help="sender and port rate")
+    p = sub.add_parser("dt")
+    p.add_argument("--buffer", required=True)
+    p.add_argument("--alpha", type=float, default=1.0)
+    p.add_argument("--queues", type=int, required=True)
+    p = sub.add_parser("absorb")
+    p.add_argument("--buffer", required=True)
+    p.add_argument("--senders", type=int, required=True)
+    p.add_argument("--rate", required=True)
+    args = parser.parse_args(argv)
+
+    if args.cmd == "incast":
+        b = incast_buffer(args.senders, parse_size(args.burst), parse_rate(args.rate))
+        print(f"peak queue = {fmt_size(b)}")
+    elif args.cmd == "dt":
+        buf = parse_size(args.buffer)
+        print(f"per-queue limit = {fmt_size(dt_queue_limit(buf, args.alpha, args.queues))}, "
+              f"free = {fmt_size(dt_free_buffer(buf, args.alpha, args.queues))}")
+    else:
+        t = absorb_time(parse_size(args.buffer), args.senders, parse_rate(args.rate))
+        print(f"buffer absorbs the incast for {fmt_time(t)}")
+
+
+if __name__ == "__main__":
+    main()
