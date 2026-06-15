@@ -45,3 +45,8 @@ def absorb_time(buffer_bytes, senders, sender_rate_bps, port_rate_bps=None):
 def dt_queue_limit(buffer_bytes, alpha, congested_queues):
     """Steady-state per-queue limit under the dynamic threshold algorithm."""
     return alpha * buffer_bytes / (1 + alpha * congested_queues)
+
+
+def dt_free_buffer(buffer_bytes, alpha, congested_queues):
+    """Buffer left free when ``congested_queues`` sit at their DT limit."""
+    return buffer_bytes / (1 + alpha * congested_queues)
