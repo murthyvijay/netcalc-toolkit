@@ -39,3 +39,8 @@ BUSBW_FACTORS = {
     "broadcast": lambda n: 1.0,
     "reduce": lambda n: 1.0,
 }
+
+
+def algbw(size_bytes, time_s):
+    """Algorithm bandwidth in bits per second."""
+    return size_bytes * 8 / time_s
