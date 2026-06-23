@@ -49,3 +49,9 @@ def algbw(size_bytes, time_s):
 def busbw(op, size_bytes, time_s, ranks):
     """Bus bandwidth in bits per second for collective ``op``."""
     return algbw(size_bytes, time_s) * BUSBW_FACTORS[op](ranks)
+
+
+def ring_allreduce_time(size_bytes, ranks, bw_bps, alpha_s=0.0):
+    """Alpha-beta estimate of ring all-reduce time in seconds."""
+    steps = 2 * (ranks - 1)
+    return steps * alpha_s + 2 * (ranks - 1) / ranks * size_bytes * 8 / bw_bps
