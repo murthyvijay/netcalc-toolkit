@@ -276,3 +276,10 @@ MTU from 256 to 4096 bytes; with a 1500-byte Ethernet MTU only 1024 fits,
 which is why RDMA fabrics run jumbo frames.
 
 ---
+
+## 5. AI/ML fabrics
+
+Distributed training synchronises gradients with collectives (all-reduce,
+all-gather, reduce-scatter, all-to-all) that move very large messages between
+every GPU, in lock step. The job advances at the speed of the slowest flow,
+so tail behaviour (worst link, worst loss event) matters more than averages.
