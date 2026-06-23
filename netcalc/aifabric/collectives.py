@@ -60,3 +60,32 @@ def ring_allreduce_time(size_bytes, ranks, bw_bps, alpha_s=0.0):
 def bytes_per_rank(op, size_bytes, ranks):
     """Bytes each rank sends for ``op`` with an optimal algorithm."""
     return size_bytes * BUSBW_FACTORS[op](ranks)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("busbw")
+    p.add_argument("--op", choices=sorted(BUSBW_FACTORS), default="all_reduce")
+    p.add_argument("--size", required=True)
+    p.add_argument("--time", required=True)
+    p.add_argument("--ranks", type=int, required=True)
+    p = sub.add_parser("ring")
+    p.add_argument("--size", required=True)
+    p.add_argument("--ranks", type=int, required=True)
+    p.add_argument("--bw", required=True, help="per-rank network bandwidth")
+    p.add_argument("--alpha", default="0", help="per-step latency")
+    args = parser.parse_args(argv)
+    size = parse_size(args.size)
+
+    if args.cmd == "busbw":
+        t = parse_time(args.time)
+        print(f"algbw = {fmt_rate(algbw(size, t))}, "
+              f"busbw = {fmt_rate(busbw(args.op, size, t, args.ranks))}")
+    else:
+        t = ring_allreduce_time(size, args.ranks, parse_rate(args.bw), parse_time(args.alpha))
+        print(f"ring all-reduce = {fmt_time(t)}")
+
+
+if __name__ == "__main__":
+    main()
