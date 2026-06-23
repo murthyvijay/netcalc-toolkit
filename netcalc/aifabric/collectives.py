@@ -55,3 +55,8 @@ def ring_allreduce_time(size_bytes, ranks, bw_bps, alpha_s=0.0):
     """Alpha-beta estimate of ring all-reduce time in seconds."""
     steps = 2 * (ranks - 1)
     return steps * alpha_s + 2 * (ranks - 1) / ranks * size_bytes * 8 / bw_bps
+
+
+def bytes_per_rank(op, size_bytes, ranks):
+    """Bytes each rank sends for ``op`` with an optimal algorithm."""
+    return size_bytes * BUSBW_FACTORS[op](ranks)
