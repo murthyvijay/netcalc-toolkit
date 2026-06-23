@@ -44,3 +44,8 @@ BUSBW_FACTORS = {
 def algbw(size_bytes, time_s):
     """Algorithm bandwidth in bits per second."""
     return size_bytes * 8 / time_s
+
+
+def busbw(op, size_bytes, time_s, ranks):
+    """Bus bandwidth in bits per second for collective ``op``."""
+    return algbw(size_bytes, time_s) * BUSBW_FACTORS[op](ranks)
