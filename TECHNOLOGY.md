@@ -283,3 +283,22 @@ Distributed training synchronises gradients with collectives (all-reduce,
 all-gather, reduce-scatter, all-to-all) that move very large messages between
 every GPU, in lock step. The job advances at the speed of the slowest flow,
 so tail behaviour (worst link, worst loss event) matters more than averages.
+
+### Load balancing: ECMP vs packet spraying (`loadbalance`)
+
+ECMP hashes each flow's 5-tuple to one path. With few, large flows, hash
+collisions are almost certain: placing F flows on P paths has collision
+probability `1 - P! / ((P - F)! P^F)` (the birthday problem), and on average
+`P (1 - 1/P)^F` paths stay idle. With 64 flows on 64 paths the busiest path
+typically carries about 4x its fair share, so a synchronous job sees roughly
+25 % of fabric bandwidth.
+
+Two fixes appear in practice:
+
+* **More entropy per connection.** Split each connection over several queue
+  pairs or sub-flows with different UDP source ports (Meta describes using
+  multiple QPs per GPU pair to improve ECMP spread). `--spray N` models N
+  independently hashed sub-flows per flow.
+* **Packet spraying.** Choose a path per packet, as Ultra Ethernet's transport
+  does. Load becomes nearly even, at the cost of out-of-order arrival, which
+  the transport must tolerate.
