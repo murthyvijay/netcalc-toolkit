@@ -302,3 +302,27 @@ Two fixes appear in practice:
 * **Packet spraying.** Choose a path per packet, as Ultra Ethernet's transport
   does. Load becomes nearly even, at the cost of out-of-order arrival, which
   the transport must tolerate.
+
+### Ultra Ethernet and loss recovery (`retransmit`)
+
+The Ultra Ethernet Consortium (UEC) defines an Ethernet stack for AI and HPC.
+Its transport (UET) is designed around multipath packet spraying: each packet
+carries an entropy value used for path selection, delivery can be unordered,
+loss is repaired by selective retransmission, and congestion control combines
+sender-side signals (ECN, delay) with receiver-side credit. It does not
+depend on a lossless (PFC) fabric.
+
+Why selective retransmission matters: classic RoCE NICs use **go-back-N**,
+resending everything after a lost packet. With `W` packets in flight,
+
+```
+go-back-N efficiency   = (1 - p) / (1 - p + p W)
+selective efficiency   = 1 - p
+```
+
+At 400 Gb/s and 10 us RTT, W is about 123 packets of 4 KB; at p = 1e-4
+go-back-N loses about 1.2 % of goodput while selective repeat loses 0.01 %.
+Spraying also creates reordering that go-back-N would treat as loss, so
+spraying and selective repair go together. For tail latency, the expected
+completion time of a message of N packets is
+`base + (1 - (1 - p)^N) * recovery_time`.
