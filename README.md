@@ -53,3 +53,14 @@ Ultra Ethernet-style spraying, RoCE/PFC/DCQCN, buffers, collectives).
 |---|---|---|
 | `overhead` | header bytes, wire efficiency, goodput and pps for Ethernet/IP/TCP/UDP/VXLAN/RoCEv2 stacks | `netcalc overhead goodput --payload 4096 --stack roce --rate 400G` |
 | `mtu` | TCP MSS, overlay underlay MTU (VXLAN, GRE, IPsec, ...), RoCE path MTU | `netcalc mtu overlay --inner-mtu 1500 vxlan` |
+
+### AI fabric (`netcalc.aifabric`)
+
+| tool | what it answers | example |
+|---|---|---|
+| `loadbalance` | ECMP collision probability, worst-path load for flow hashing vs packet spraying | `netcalc loadbalance imbalance --flows 64 --paths 64 --spray 64` |
+| `retransmit` | go-back-N vs selective retransmission goodput, message tail time under loss | `netcalc retransmit compare --loss 1e-4 --rate 400G` |
+| `mrc` | multipath reliable connection: entropy values to cover paths, failover capacity, reorder buffer | `netcalc mrc entropy --paths 64` |
+| `roce` | PFC headroom, pause quanta, ECN marking curve, DCQCN rate trace | `netcalc roce headroom --rate 400G --cable 100m` |
+| `buffer` | incast peak queue, absorb time, shared-buffer dynamic thresholds | `netcalc buffer dt --buffer 64MB --queues 8` |
+| `collectives` | NCCL algbw/busbw, ring all-reduce time (alpha-beta model) | `netcalc collectives busbw --size 1GB --time 25ms --ranks 64` |
