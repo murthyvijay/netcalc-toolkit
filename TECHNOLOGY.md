@@ -326,3 +326,19 @@ Spraying also creates reordering that go-back-N would treat as loss, so
 spraying and selective repair go together. For tail latency, the expected
 completion time of a message of N packets is
 `base + (1 - (1 - p)^N) * recovery_time`.
+
+### Multipath reliable connection (`mrc`)
+
+A multipath reliable connection keeps the semantics of one reliable RDMA
+connection while spreading its packets over many paths by varying the
+entropy field. Sizing questions:
+
+* **Entropy coverage.** Random entropy values hit paths like coupons: touching
+  all P paths takes `P * H(P)` values on average (`H` = harmonic number,
+  about 304 for 64 paths). The probability that V values cover all paths is
+  `sum_k (-1)^k C(P,k) (1 - k/P)^V`.
+* **Failover.** Removing f failed paths from the spray set leaves
+  `(P - f) / P` of capacity, instead of stalling the flows hashed onto them.
+* **Reorder buffer.** The receiver must hold data for the delay skew between
+  the fastest and slowest path: `buffer = R * skew (+ one MTU)`. 800 Gb/s with
+  4 us of skew needs about 400 KB per connection.
