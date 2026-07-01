@@ -374,3 +374,15 @@ traffic engineering, and finding that receiver-driven admission in the
 collective library, rather than DCQCN tuning, was the effective way to
 control congestion in their setting. The `loadbalance --spray` and `buffer`
 tools model the first and last of those trade-offs.
+
+### Switch buffers (`buffer`)
+
+**Incast.** N senders bursting B bytes each at line rate into one port build
+a queue of about `N * B - drained` (with equal rates, `(N - 1) * B`).
+A buffer absorbs `N` senders for `buffer * 8 / ((N * R_sender) - R_port)`
+seconds.
+
+**Dynamic thresholds.** Shared-buffer switches cap each queue at
+`alpha * free buffer`. With n equally congested queues the per-queue limit
+settles at `alpha * B / (1 + alpha * n)` and `B / (1 + alpha * n)` stays free
+for new bursts, which is the trade-off alpha tunes.
