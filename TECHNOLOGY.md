@@ -342,3 +342,35 @@ entropy field. Sizing questions:
 * **Reorder buffer.** The receiver must hold data for the delay skew between
   the fastest and slowest path: `buffer = R * skew (+ one MTU)`. 800 Gb/s with
   4 us of skew needs about 400 KB per connection.
+
+### RoCEv2, PFC, ECN and DCQCN (`roce`)
+
+RoCEv2 carries InfiniBand transport (BTH) over UDP port 4791. Because its NIC
+transport traditionally uses go-back-N, the fabric is made lossless with
+**Priority Flow Control** (802.1Qbb): a congested queue pauses the upstream
+port for one traffic class.
+
+**PFC headroom.** After XOFF is triggered, data keeps arriving for a round
+trip on the cable plus reaction time. Per priority and port:
+
+```
+headroom = 2 * cable_delay * R / 8 + 2 * MTU + response_time * R / 8 + 64
+```
+
+At 400 Gb/s on 100 m of fibre this is roughly 100 KB, which is why deep
+headroom pools and short cables matter. A pause of `q` quanta lasts
+`q * 512 / R` seconds.
+
+**ECN and DCQCN.** Switches mark ECN between thresholds Kmin and Kmax with a
+RED-style probability (0 below Kmin, linear to Pmax, 1 above Kmax). The
+receiver NIC returns Congestion Notification Packets; DCQCN cuts the rate
+`Rc <- Rc (1 - alpha/2)` with `alpha <- (1 - g) alpha + g`, then recovers
+toward the pre-cut target rate in fast-recovery and additive-increase stages.
+
+**Meta's RoCE experience.** Meta's SIGCOMM 2024 paper on RDMA over Ethernet
+for training at scale reports running RoCEv2 with PFC on dedicated backend
+fabrics, handling ECMP imbalance with more queue pairs per connection and
+traffic engineering, and finding that receiver-driven admission in the
+collective library, rather than DCQCN tuning, was the effective way to
+control congestion in their setting. The `loadbalance --spray` and `buffer`
+tools model the first and last of those trade-offs.
