@@ -386,3 +386,20 @@ seconds.
 `alpha * free buffer`. With n equally congested queues the per-queue limit
 settles at `alpha * B / (1 + alpha * n)` and `B / (1 + alpha * n)` stays free
 for new bursts, which is the trade-off alpha tunes.
+
+### Collectives (`collectives`)
+
+Benchmarks such as nccl-tests report `algbw = size / time` and
+`busbw = algbw * factor`, where the factor (`2(n-1)/n` for all-reduce,
+`(n-1)/n` for all-gather, reduce-scatter and all-to-all) converts to per-link
+load so it can be compared with link speed. The alpha-beta model of a ring
+all-reduce is
+
+```
+T = 2 (n - 1) alpha + 2 (n - 1) / n * S / B
+```
+
+The first term (latency) grows with ranks, which is why large jobs switch to
+tree or hierarchical algorithms for small messages.
+
+---
