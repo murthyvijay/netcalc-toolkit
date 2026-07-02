@@ -28,6 +28,37 @@ netcalc fec info --code kp4
 
 Run the tests with `python -m unittest discover -s tests -t .`
 
+## Quick start
+
+```bash
+$ netcalc fec margin --code kp4 --pre-ber 1e-6
+threshold 2.771e-04, margin 2.44 decades, 2.78 dB Q -> PASS
+
+$ netcalc subnet info 192.168.10.77/26
+         network: 192.168.10.64
+       broadcast: 192.168.10.127
+      first_host: 192.168.10.65
+       last_host: 192.168.10.126
+    usable_hosts: 62
+             ...
+
+$ netcalc loadbalance imbalance --flows 64 --paths 64
+busiest path carries 3.93x the even share; effective throughput 25.5%
+```
+
+In Python:
+
+```python
+from netcalc.layer1 import fec
+from netcalc.perf import tcp
+
+fec.pre_fec_threshold("kp4", target_post_ber=1e-13)   # 2.77e-04
+tcp.mathis_throughput(mss_bytes=1460, rtt_s=0.05, loss=1e-4)  # ~28.6 Mbps
+```
+
+Rates, sizes and times accept friendly strings everywhere on the command
+line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
+
 ## Tools
 
 ### Layer 1 (`netcalc.layer1`)
