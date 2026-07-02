@@ -12,6 +12,22 @@ Ultra Ethernet-style spraying, RoCE/PFC/DCQCN, buffers, collectives).
   implements, and [TECHNOLOGY.md](TECHNOLOGY.md) explains the concepts.
 * **Tested.** 140+ unit tests under `tests/`.
 
+## Install
+
+```bash
+git clone https://github.com/murthyvijay/netcalc-toolkit.git
+cd netcalc-toolkit
+
+# run straight from the checkout ...
+python -m netcalc
+
+# ... or install the `netcalc` command
+pip install .
+netcalc fec info --code kp4
+```
+
+Run the tests with `python -m unittest discover -s tests -t .`
+
 ## Tools
 
 ### Layer 1 (`netcalc.layer1`)
