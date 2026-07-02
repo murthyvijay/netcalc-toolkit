@@ -37,3 +37,22 @@ TOOLS = {
     "buffer": "netcalc.aifabric.buffer",
     "collectives": "netcalc.aifabric.collectives",
 }
+
+
+def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    if not argv or argv[0] in ("-h", "--help", "list"):
+        print("usage: python -m netcalc <tool> [args]   (or: netcalc <tool> [args])\n")
+        for name, module in TOOLS.items():
+            doc = (importlib.import_module(module).__doc__ or "").strip().split("\n")[0]
+            print(f"  {name:<12} {doc}")
+        return 0
+    if argv[0] not in TOOLS:
+        print(f"unknown tool {argv[0]!r}; run without arguments to list tools", file=sys.stderr)
+        return 2
+    importlib.import_module(TOOLS[argv[0]]).main(argv[1:])
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
