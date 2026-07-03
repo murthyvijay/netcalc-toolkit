@@ -24,3 +24,20 @@ def plan_campus(block, segments):
 def uplink_costs(reference="100G"):
     """OSPF costs for typical campus uplinks with a modern reference bandwidth."""
     return ospf.cost_table(parse_rate(reference), ["1G", "10G", "25G", "40G", "100G"])
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("block")
+    parser.add_argument("segments", nargs="+", help="NAME=HOSTS")
+    args = parser.parse_args()
+    plan = plan_campus(args.block, vlsm.parse_requirements(args.segments))
+    for row in plan:
+        print(f"{row['name']:<8} {row['subnet']:<18} wildcard {row['wildcard']}")
+    print("summary route:", summarize.single_summary([r["subnet"] for r in plan]))
+    print("OSPF uplink costs (ref 100G):",
+          ", ".join(f"{rate}={cost}" for rate, cost in uplink_costs()))
+
+
+if __name__ == "__main__":
+    main()
