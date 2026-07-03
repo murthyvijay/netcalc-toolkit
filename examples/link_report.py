@@ -29,3 +29,16 @@ def link_report(pre_ber, rate_bps, code="kp4", target=1e-13):
         f"time to verify pre-FEC BER at 95 %: "
         f"{fmt_time(ber.required_test_time(pre_ber, rate_bps))}",
     ]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--pre-ber", type=float, required=True)
+    parser.add_argument("--rate", default="400G")
+    parser.add_argument("--code", default="kp4")
+    args = parser.parse_args()
+    print("\n".join(link_report(args.pre_ber, parse_rate(args.rate), args.code)))
+
+
+if __name__ == "__main__":
+    main()
