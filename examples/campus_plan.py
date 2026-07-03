@@ -19,3 +19,8 @@ def plan_campus(block, segments):
     for row in plan:
         row["wildcard"] = wildcard.mask_to_wildcard(row["mask"])
     return plan
+
+
+def uplink_costs(reference="100G"):
+    """OSPF costs for typical campus uplinks with a modern reference bandwidth."""
+    return ospf.cost_table(parse_rate(reference), ["1G", "10G", "25G", "40G", "100G"])
