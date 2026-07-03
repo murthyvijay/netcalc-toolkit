@@ -11,3 +11,11 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from netcalc.ccna import ospf, summarize, vlsm, wildcard  # noqa: E402
 from netcalc.units import parse_rate  # noqa: E402
+
+
+def plan_campus(block, segments):
+    """VLSM plan plus the wildcard each subnet needs in an ACL."""
+    plan = vlsm.allocate(block, segments)
+    for row in plan:
+        row["wildcard"] = wildcard.mask_to_wildcard(row["mask"])
+    return plan
