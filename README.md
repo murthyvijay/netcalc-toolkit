@@ -142,3 +142,11 @@ netcalc-toolkit/
 ├── TECHNOLOGY.md          # the concepts and formulas behind each tool
 └── pyproject.toml
 ```
+
+## Accuracy notes
+
+These are engineering estimates, not vendor sign-off tools. FEC math assumes
+independent bit errors (real links have bursts and error propagation from
+DFE), PFC headroom uses a generic response time, and the TCP models describe
+loss-based congestion control. Each docstring states its assumptions; check
+vendor documentation before configuring production hardware.
