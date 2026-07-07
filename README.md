@@ -111,3 +111,15 @@ line: `100G`, `25Gbps`, `9KB`, `2MiB`, `10ms`, `600ns`.
 | `roce` | PFC headroom, pause quanta, ECN marking curve, DCQCN rate trace | `netcalc roce headroom --rate 400G --cable 100m` |
 | `buffer` | incast peak queue, absorb time, shared-buffer dynamic thresholds | `netcalc buffer dt --buffer 64MB --queues 8` |
 | `collectives` | NCCL algbw/busbw, ring all-reduce time (alpha-beta model) | `netcalc collectives busbw --size 1GB --time 25ms --ranks 64` |
+
+## Examples
+
+The `examples/` folder combines several tools into small reports:
+
+| script | what it does |
+|---|---|
+| `examples/link_report.py --pre-ber 3e-7` | Q-factor, KP4 post-FEC BER, FEC margin and verdict for a PAM4 link |
+| `examples/campus_plan.py 10.20.0.0/22 USERS=400 VOICE=200` | VLSM plan with ACL wildcards, the summary route and OSPF uplink costs |
+| `examples/ai_fabric_sizing.py --gpus 512 --rate 400G` | ECMP vs spraying efficiency, PFC headroom, reorder buffer and all-reduce time |
+
+`examples/sample_delays.csv` is a sample input for `netcalc jitter file examples/sample_delays.csv`.
