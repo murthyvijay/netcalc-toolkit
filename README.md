@@ -123,3 +123,22 @@ The `examples/` folder combines several tools into small reports:
 | `examples/ai_fabric_sizing.py --gpus 512 --rate 400G` | ECMP vs spraying efficiency, PFC headroom, reorder buffer and all-reduce time |
 
 `examples/sample_delays.csv` is a sample input for `netcalc jitter file examples/sample_delays.csv`.
+
+## Repository layout
+
+```
+netcalc-toolkit/
+├── netcalc/
+│   ├── __main__.py        # `python -m netcalc` / `netcalc` dispatcher
+│   ├── units.py           # parse "100G", "9KB", "10ms"; dB helpers
+│   ├── layer1/            # ber, qfactor, fec, ser, osnr
+│   ├── perf/              # latency, jitter, loss, throughput, tcp
+│   ├── ccna/              # subnet, vlsm, wildcard, summarize, ospf, eigrp, stp, qos
+│   ├── protocols/         # overhead, mtu
+│   └── aifabric/          # loadbalance, retransmit, mrc, roce, buffer, collectives
+├── examples/              # multi-tool reports built on the library
+├── tests/                 # unittest suite, one file per module
+├── README.md
+├── TECHNOLOGY.md          # the concepts and formulas behind each tool
+└── pyproject.toml
+```
