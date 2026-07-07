@@ -29,3 +29,24 @@ def fabric_summary(gpus, rate_bps, paths, size_bytes, skew_s=4e-6, cable_m=50):
         "reorder_buffer": mrc.reorder_buffer_bytes(rate_bps, skew_s, 4096),
         "allreduce_time": collectives.ring_allreduce_time(size_bytes, gpus, rate_bps, 5e-6),
     }
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    parser.add_argument("--gpus", type=int, default=512)
+    parser.add_argument("--rate", default="400G")
+    parser.add_argument("--paths", type=int, default=64)
+    parser.add_argument("--size", default="1GB")
+    parser.add_argument("--skew", default="4us")
+    args = parser.parse_args()
+    s = fabric_summary(args.gpus, parse_rate(args.rate), args.paths, parse_size(args.size),
+                       parse_time(args.skew))
+    print(f"ECMP flow hashing efficiency : {s['ecmp_efficiency']:.0%}")
+    print(f"packet spraying efficiency   : {s['spray_efficiency']:.0%}")
+    print(f"PFC headroom per priority    : {fmt_size(s['pfc_headroom'])}")
+    print(f"multipath reorder buffer     : {fmt_size(s['reorder_buffer'])}")
+    print(f"ring all-reduce of {args.size:<9} : {fmt_time(s['allreduce_time'])}")
+
+
+if __name__ == "__main__":
+    main()
