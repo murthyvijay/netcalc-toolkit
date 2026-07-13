@@ -150,3 +150,8 @@ independent bit errors (real links have bursts and error propagation from
 DFE), PFC headroom uses a generic response time, and the TCP models describe
 loss-based congestion control. Each docstring states its assumptions; check
 vendor documentation before configuring production hardware.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add a calculator, and
+[CHANGELOG.md](CHANGELOG.md) for what is included.
