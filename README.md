@@ -155,3 +155,7 @@ vendor documentation before configuring production hardware.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add a calculator, and
 [CHANGELOG.md](CHANGELOG.md) for what is included.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
