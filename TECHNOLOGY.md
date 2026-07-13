@@ -412,3 +412,15 @@ The first term (latency) grows with ranks, which is why large jobs switch to
 tree or hierarchical algorithms for small messages.
 
 ---
+
+## References
+
+- RFC 3550 (RTP, interarrival jitter), RFC 3393 (IPDV), RFC 5481 (PDV)
+- RFC 7323 (TCP window scaling), RFC 3021 (/31 point-to-point)
+- IEEE 802.3 Clause 91 (RS-FEC), IEEE 802.1D / 802.1w / 802.1t, IEEE 802.1Qbb (PFC)
+- M. Mathis et al., "The Macroscopic Behavior of the TCP Congestion Avoidance Algorithm", 1997
+- J. Padhye et al., "Modeling TCP Throughput: A Simple Model and its Empirical Validation", SIGCOMM 1998
+- Y. Zhu et al., "Congestion Control for Large-Scale RDMA Deployments" (DCQCN), SIGCOMM 2015
+- A. Gangidi et al., "RDMA over Ethernet for Distributed AI Training at Meta Scale", SIGCOMM 2024
+- Ultra Ethernet Consortium, Ultra Ethernet Specification 1.0, 2025
+- NVIDIA, nccl-tests performance documentation (algbw and busbw)
