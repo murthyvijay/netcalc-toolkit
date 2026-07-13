@@ -4,6 +4,15 @@ This document explains the networking concepts behind each netcalc tool and
 the formulas it uses. Notation: `R` = line rate (bits/s), `RTT` = round-trip
 time, `p` = probability (loss or error), `log` = log10 unless noted.
 
+- [1. Layer 1: errors, FEC and optical noise](#1-layer-1-errors-fec-and-optical-noise)
+- [2. Latency, jitter, loss and throughput](#2-latency-jitter-loss-and-throughput)
+- [3. CCNA / CCNP calculations](#3-ccna--ccnp-calculations)
+- [4. Protocol overhead and MTU](#4-protocol-overhead-and-mtu)
+- [5. AI/ML fabrics](#5-aiml-fabrics)
+- [References](#references)
+
+---
+
 ## 1. Layer 1: errors, FEC and optical noise
 
 ### Bit error ratio (`ber`)
