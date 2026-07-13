@@ -156,6 +156,16 @@ vendor documentation before configuring production hardware.
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add a calculator, and
 [CHANGELOG.md](CHANGELOG.md) for what is included.
 
+## About the commit history
+
+The commit history of this repository was intentionally backdated so that
+the GitHub contribution graph spells **VIJAY**. The code was written in one
+session (with help from Claude, an AI assistant) and then committed
+incrementally, one function, test or doc section at a time, with
+`GIT_AUTHOR_DATE`/`GIT_COMMITTER_DATE` set to the dates that draw the letters.
+The dates show when each piece was committed for the graph, not when it was
+written.
+
 ## License
 
 MIT, see [LICENSE](LICENSE).
